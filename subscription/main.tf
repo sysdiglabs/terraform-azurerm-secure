@@ -1,0 +1,22 @@
+provider "azurerm" {
+  features {}
+
+  skip_provider_registration = true
+}
+data "azurerm_subscription" "primary" {
+  subscription_id = var.subscription_id
+}
+
+# create service principal in customer tenant
+resource "azuread_service_principal" "sysdig_sp" {
+  # Using Sysdig's application ID in sysdigqatenant tenant.
+  # TODO: use application id from sysdig tenant
+  application_id = "0a800625-0e0d-4805-827c-743371e8518c"
+}
+
+# assign "Reader" role to Sysdig SP for primary subscription
+resource "azurerm_role_assignment" "sysdig_reader" {
+  scope                = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id         = azuread_service_principal.sysdig_sp.object_id
+}
