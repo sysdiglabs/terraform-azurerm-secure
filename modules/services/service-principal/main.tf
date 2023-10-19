@@ -1,11 +1,6 @@
 provider "azurerm" {
   skip_provider_registration = true
-  use_cli = false
   features {}
-}
-
-provider "azuread" {
-  use_cli = false
 }
 
 data "azurerm_subscription" "primary" {
