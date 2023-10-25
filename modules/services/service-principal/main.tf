@@ -23,7 +23,3 @@ resource "azurerm_role_assignment" "sysdig_reader" {
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
-
-output "subscription_id" {
-  value = azuread_service_principal.sysdig_sp.object_id
-}
