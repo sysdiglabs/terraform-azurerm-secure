@@ -42,7 +42,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_subscription_sample" {
       active_directory_service_principal = {
         account_enabled = true
         display_name    = project-posture.service_principal_display_name
-        app_id          = project-posture.service_principal_id
+        id              = project-posture.service_principal_id
       }
     }
   })
