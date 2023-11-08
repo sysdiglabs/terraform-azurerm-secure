@@ -12,7 +12,8 @@ data "azurerm_subscription" "primary" {
 resource "azuread_service_principal" "sysdig_sp" {
   # Using Sysdig's application ID in sysdigqatenant tenant.
   # TODO: use application id from sysdig tenant
-  application_id = "0a800625-0e0d-4805-827c-743371e8518c"
+  application_id = var.sysdig_application_id
+  display_name   = "Service principal for secure posture management"
 }
 
 #---------------------------------------------------------------------------------------------
