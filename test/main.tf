@@ -4,8 +4,8 @@ provider "azurerm" {
 terraform {
   required_providers {
     sysdig = {
-      source  = "sysdiglabs/sysdig"
-      version = "~> 1.15.1"
+      source = "local/sysdiglabs/sysdig"
+      version = "~> 1.0.0"
     }
   }
 }
