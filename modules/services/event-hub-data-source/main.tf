@@ -1,3 +1,4 @@
+# TODO: Remove this at the end, check configuration possibilities
 # Azure provider configuration
 provider "azurerm" {
   features {}
@@ -10,7 +11,7 @@ data "azurerm_subscription" "current" {
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
-resource "azuread_service_principal" "sysdig_sp" {
+resource "azuread_service_principal" "sysdig_service_principal" {
   # NOTE: Application ID of the APP
   client_id = var.sysdig_client_id
 }
@@ -19,9 +20,8 @@ resource "azuread_service_principal" "sysdig_sp" {
 # Create a resource group for Sysdig resources
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
-  name = "sysdig-resources"
-  # TODO: This should probably be a variable
-  location = var.location // "West Europe"
+  name     = "sysdig-resource-group"
+  location = var.location
 }
 
 #---------------------------------------------------------------------------------------------
@@ -31,7 +31,8 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   name                = "sysdig-event-hub-namespace"
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
-  sku                 = "Standard"
+  // NOTE: Discuss which should be the default plan for the namespace (Basic, Standard, Premium)
+  sku = var.namespace_sku
 }
 
 #---------------------------------------------------------------------------------------------
