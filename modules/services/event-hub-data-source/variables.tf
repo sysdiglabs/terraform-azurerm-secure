@@ -36,4 +36,11 @@ variable "message_retention_days" {
 variable "location" {
   type        = string
   description = "Location where Sysdig-related resources will be created"
+  default     = "West Europe"
+}
+
+variable "namespace_sku" {
+  type        = string
+  description = "SKU (Plan) for the namespace that will be created"
+  default     = "Standard"
 }
