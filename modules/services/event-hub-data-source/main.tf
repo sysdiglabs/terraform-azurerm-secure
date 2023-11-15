@@ -3,13 +3,7 @@ provider "azurerm" {
     features {}
 }
 
-provider "azuread" {
-  tenant_id = var.tenant_id
-}
-
-# Fetching the subscription details
-data "azurerm_subscription" "primary" {
-    subscription_id = var.subscription_id
+data "azurerm_subscription" "current" {
 }
 
 #---------------------------------------------------------------------------------------------
@@ -83,9 +77,9 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 #---------------------------------------------------------------------------------------------
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
-resource "azurerm_monitor_diagnostic_setting" "example" {
-    name                       = "example-setting"
-    target_resource_id         = data.azurerm_subscription.primary.id
+resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
+    name                       = "sysdig_diagnostic_setting"
+    target_resource_id         = data.azurerm_subscription.current.id
     eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
     eventhub_name              = azurerm_eventhub.sysdig_event_hub.name
 
