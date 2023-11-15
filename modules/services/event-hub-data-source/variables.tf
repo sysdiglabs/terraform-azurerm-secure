@@ -32,3 +32,8 @@ variable "message_retention_days" {
   type        = number
   default     = 1
 }
+
+variable "location" {
+  type        = string
+  description = "Location where Sysdig-related resources will be created"
+}

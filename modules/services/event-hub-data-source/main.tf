@@ -21,7 +21,7 @@ resource "azuread_service_principal" "sysdig_sp" {
 resource "azurerm_resource_group" "sysdig_resource_group" {
   name = "sysdig-resources"
   # TODO: This should probably be a variable
-  location = "West Europe"
+  location = var.location // "West Europe"
 }
 
 #---------------------------------------------------------------------------------------------
