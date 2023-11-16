@@ -44,3 +44,8 @@ variable "namespace_sku" {
   description = "SKU (Plan) for the namespace that will be created"
   default     = "Standard"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Identifier of the subscription to be onboarded"
+}
