@@ -3,9 +3,9 @@ output "service_principal_display_name" {
   description = "Display name of the Service Principal created"
 }
 
-output "service_principal_application_id" {
+output "service_principal_client_id" {
   value       = azuread_service_principal.sysdig_sp.client_id
-  description = "Application ID of the Service Principal created"
+  description = "Client ID of the Service Principal created"
 }
 output "service_principal_id" {
     value       = azuread_service_principal.sysdig_sp.id
