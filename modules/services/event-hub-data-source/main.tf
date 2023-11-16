@@ -53,7 +53,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
 # Create an Event Hub within the Sysdig Namespace
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub" "sysdig_event_hub" {
-  name                = "sysdigeventhub"
+  name                = "sysdig-event-hub"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   partition_count     = var.partition_count
@@ -65,7 +65,7 @@ resource "azurerm_eventhub" "sysdig_event_hub" {
 #---------------------------------------------------------------------------------------------
 # NOTE: Check what exactly this is, do we need it one per subscription? Probably not
 resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
-  name                = "sysdig"
+  name                = "sysdig-consumer-group"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   eventhub_name       = azurerm_eventhub.sysdig_event_hub.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
