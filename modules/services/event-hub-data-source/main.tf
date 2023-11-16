@@ -39,7 +39,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
 # Create an Event Hub within the Sysdig Namespace
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub" "sysdig_event_hub" {
-  name                = "sysdigeventhub"
+  name                = "sysdig-event-hub"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   partition_count     = var.partition_count
@@ -51,7 +51,7 @@ resource "azurerm_eventhub" "sysdig_event_hub" {
 #---------------------------------------------------------------------------------------------
 # NOTE: Check what exactly this is, do we need it one per subscription? Probably not
 resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
-  name                = "sysdig"
+  name                = "sysdig-consumer-group"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   eventhub_name       = azurerm_eventhub.sysdig_event_hub.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
@@ -83,7 +83,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  name                           = "sysdig_diagnostic_setting"
+  name                           = "sysdig-diagnostic-setting"
   target_resource_id             = data.azurerm_subscription.current.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
