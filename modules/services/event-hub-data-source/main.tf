@@ -6,8 +6,10 @@ provider "azurerm" {
   features {}
 }
 
-# NOTE: Check another auth method
-data "azurerm_subscription" "current" {
+#---------------------------------------------------------------------------------------------
+# Fetch the subscription data
+#---------------------------------------------------------------------------------------------
+data "azurerm_subscription" "sysdig_subscription" {
   subscription_id = var.subscription_id
 }
 
@@ -34,8 +36,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   name                = "sysdig-event-hub-namespace"
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
-  // NOTE: Discuss which should be the default plan for the namespace (Basic, Standard, Premium)
-  sku = var.namespace_sku
+  sku                 = var.namespace_sku
 }
 
 #---------------------------------------------------------------------------------------------
@@ -52,7 +53,6 @@ resource "azurerm_eventhub" "sysdig_event_hub" {
 #---------------------------------------------------------------------------------------------
 # Create a Consumer Group within the Sysdig Event Hub
 #---------------------------------------------------------------------------------------------
-# NOTE: Check what exactly this is, do we need it one per subscription? Probably not
 resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
   name                = "sysdig-consumer-group"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
@@ -91,7 +91,6 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
-  # TODO: Double check that this is the minimum set required
   enabled_log {
     category = "Administrative"
   }
