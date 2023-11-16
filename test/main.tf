@@ -12,11 +12,11 @@ terraform {
 
 provider "sysdig" {
   sysdig_secure_url       = "https://secure-staging.sysdig.com"
-  sysdig_secure_api_token = "6f9cb282-b956-41a5-b213-eaac199a9881"
+  sysdig_secure_api_token = "<client_secret>"
 }
 
 module "project-posture" {
-  source                = "../modules/service-principal"
+  source                = "../modules/services/service-principal"
   subscription_id       = "db4d1aaa-4d7f-47d8-b0fe-445d0d70ffce"
   sysdig_application_id = "a39a3795-c3d7-4c8b-9c1a-24ea5011be8a"
 }
@@ -27,6 +27,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_subscription_test" {
   provider_id = "test-azure-provider"
   provider_type = "PROVIDER_AZURE"
   provider_tenant_id = module.project-posture.subscription_tenant_id
+  provider_alias = module.project-posture.subscription_alias
 
   feature {
 
