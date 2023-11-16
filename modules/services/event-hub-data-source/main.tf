@@ -1,6 +1,8 @@
 # TODO: Remove this at the end, check configuration possibilities
 # Azure provider configuration
 provider "azurerm" {
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
   features {}
 }
 
@@ -77,7 +79,7 @@ resource "azurerm_eventhub_namespace_authorization_rule" "sysdig_rule" {
 resource "azurerm_role_assignment" "sysdig_data_receiver" {
   scope                = azurerm_eventhub_namespace.sysdig_event_hub_namespace.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
+  principal_id         = azuread_service_principal.sysdig_service_principal.object_id
 }
 
 #---------------------------------------------------------------------------------------------
