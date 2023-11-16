@@ -11,7 +11,11 @@ variable "subscription_id" {
 variable "sysdig_client_id" {
   type        = string
   description = "Application ID of the enterprise application in the Sysdig tenant"
-  default = "07f34d7e-ff4e-44e0-aaa4-2560a5667166"
+}
+
+variable "location" {
+  type        = string
+  description = "Location where Sysdig-related resources will be created"
 }
 
 variable "location" {
