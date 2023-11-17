@@ -1,11 +1,3 @@
-# TODO: Remove this at the end, check configuration possibilities
-# Azure provider configuration
-provider "azurerm" {
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-  features {}
-}
-
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -17,7 +9,6 @@ data "azurerm_subscription" "sysdig_subscription" {
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_service_principal" {
-  # NOTE: Application ID of the APP
   client_id = var.sysdig_client_id
 }
 
