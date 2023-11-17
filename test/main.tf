@@ -18,7 +18,7 @@ provider "sysdig" {
 module "project-posture" {
   source                = "../modules/services/service-principal"
   subscription_id       = "db4d1aaa-4d7f-47d8-b0fe-445d0d70ffce"
-  sysdig_application_id = "a39a3795-c3d7-4c8b-9c1a-24ea5011be8a"
+  sysdig_client_id = "a39a3795-c3d7-4c8b-9c1a-24ea5011be8a"
 }
 
 
