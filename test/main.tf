@@ -46,7 +46,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_subscription_test" {
           display_name              = module.project-posture.service_principal_display_name
           id                        = module.project-posture.service_principal_id
           app_display_name          = module.project-posture.service_principal_app_display_name
-          app_id                    = module.project-posture.service_principal_app_id
+          app_id                    = module.project-posture.service_principal_client_id
           app_owner_organization_id = module.project-posture.service_principal_app_owner_organization_id
         }
       }
