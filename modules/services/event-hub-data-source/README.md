@@ -1,7 +1,12 @@
 # Azure Event Hub Datasource Module
 
-This Module creates the resources required to -- TODO 
+This Module creates the resources required to send Subscription-specific activity logs to Sysdig by directing those to a dedicated `Event Hub` which will be queries by the Sysdig backend to retrieve the data. 
 
+The following resources will be created in each instrumented account:
+- `Diagnostic Settings` to enable producing activity logs at `Subscription` level
+- An `Event Hub` and its namespace to receive the activity logs
+- A `Resource Group` to contain the `Event Hub`
+- The necessary `Service Principal` and `Rule` to enable the activity log publishing operation
 
 ## Requirements
 
@@ -50,3 +55,11 @@ No modules.
 ## Outputs
 
 No outputs.
+
+## Authors
+
+Module is maintained by [Sysdig](https://sysdig.com).
+
+## License
+
+Apache 2 Licensed. See LICENSE for full details.
