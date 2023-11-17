@@ -5,5 +5,5 @@ variable "subscription_id" {
 
 variable "sysdig_client_id" {
   type = string
-  description = "Service Application ID in the Sysdig tenant"
+  description = "Service client ID in the Sysdig tenant"
 }
