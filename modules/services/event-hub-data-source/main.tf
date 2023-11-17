@@ -1,3 +1,16 @@
+provider "azurerm" {
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
+  features {}
+}
+
+data "azurerm_subscriptions" "available" {
+}
+
+# output "available_subscriptions" {
+#   value = data.azurerm_subscriptions.available.subscriptions
+# }
+
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -77,8 +90,11 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  name                           = "sysdig-diagnostic-setting"
-  target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
+  count = length(data.azurerm_subscriptions.available.subscriptions)
+
+  name               = "sysdig-diagnostic-setting"
+  target_resource_id = data.azurerm_subscriptions.available.subscriptions[count.index].id
+  # target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
