@@ -78,7 +78,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
   name                           = "sysdig-diagnostic-setting"
-  target_resource_id             = data.azurerm_subscription.current.id
+  target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
