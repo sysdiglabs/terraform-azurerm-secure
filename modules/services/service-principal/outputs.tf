@@ -26,3 +26,8 @@ output "subscription_tenant_id" {
   value       = data.azurerm_subscription.primary.tenant_id
   description = "Tenant ID of the Subscription"
 }
+
+output "subscription_alias" {
+  value = data.azurerm_subscription.primary.display_name
+  description = "Display name of the subscription"
+}

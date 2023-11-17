@@ -10,7 +10,7 @@ data "azurerm_subscription" "primary" {
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_sp" {
-  client_id = var.sysdig_application_id
+  client_id = var.sysdig_client_id
 }
 
 #---------------------------------------------------------------------------------------------
