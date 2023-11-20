@@ -14,8 +14,12 @@ data "azurerm_subscription" "sysdig_subscription" {
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
+data "azuread_client_config" "current" {}
+
 resource "azuread_service_principal" "sysdig_service_principal" {
   client_id = var.sysdig_client_id
+  owners    = [data.azuread_client_config.current.object_id]
+  use_existing = true
 }
 
 #---------------------------------------------------------------------------------------------
@@ -34,6 +38,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
+  auto_inflate_enabled = var.eventhub_namespace_auto_inflate_enabled
 }
 
 #---------------------------------------------------------------------------------------------

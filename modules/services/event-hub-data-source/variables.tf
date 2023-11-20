@@ -14,6 +14,12 @@ variable "subscription_id" {
   description = "Identifier of the subscription to be onboarded"
 }
 
+variable "management_group_ids" {
+  type        = list(string)
+  description = "IDs of the management groups to be onboarded (if it is the Tenant Root Group it will be the same as the tenant id)"
+  default     = []
+}
+
 variable "sysdig_client_id" {
   type        = string
   description = "Application ID of the enterprise application in the Sysdig tenant"
@@ -42,3 +48,8 @@ variable "namespace_sku" {
   default     = "Standard"
 }
 
+variable "eventhub_namespace_auto_inflate_enabled" {
+  description = "Is Auto Inflate enabled for the EventHub Namespace"
+  type        = bool
+  default     = false
+}

@@ -1,7 +1,21 @@
-data "azurerm_subscriptions" "available" {}
+data "azurerm_management_group" "onboarded_management_group" {
+  for_each = length(var.management_group_ids) > 0 ? toset(var.management_group_ids) : toset([var.tenant_id])
+  name     = each.value
+}
+
+locals {
+  all_mg_subscription_ids = flatten([
+    for mg in data.azurerm_management_group.onboarded_management_group : mg.all_subscription_ids
+  ])
+}
+
+data "azurerm_subscription" "onboarded_subscriptions" {
+  for_each = toset(local.all_mg_subscription_ids)
+  subscription_id = each.value
+}
 
 locals { 
-    enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscriptions.available.subscriptions : s if s.state == "Enabled"] : []
+    enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
 }
 
 #---------------------------------------------------------------------------------------------
