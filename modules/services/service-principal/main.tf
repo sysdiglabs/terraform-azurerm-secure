@@ -8,12 +8,15 @@ data "azurerm_subscription" "primary" {
 
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
-# TODO: Do a conditional create. Currently, data source in TF azurerm provider returns a not found
-#       error if azuread_service_principal doesn't exist. Hence, we need to explore using external
-#       Data Source or an alternative approach.
+#
+# If there is an existing service principal in the tenant, this will automatically import
+# and use it, ensuring we have just one service principal linked to the Sysdig application
+# in the customer tenant.
+# Note: Please refer to the caveats of use_existing attribute for this resource.
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_sp" {
-  client_id = var.sysdig_client_id
+  client_id    = var.sysdig_client_id
+  use_existing = true
 }
 
 #---------------------------------------------------------------------------------------------

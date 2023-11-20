@@ -1,10 +1,9 @@
 #---------------------------------------------------------------------------------------------
-# Fetch the root management group for customer tenant
-# By default, the root management group's display name is "Tenant root group"
+# Fetch the management group for customer tenant and onboard subscriptions under it
 #---------------------------------------------------------------------------------------------
-data "azurerm_management_group" "root" {
+data "azurerm_management_group" "sysdig_management_group" {
   count  = var.is_organizational ? 1 : 0
-  display_name = "Tenant Root Group"
+  display_name = var.management_group
 }
 
 #---------------------------------------------------------------------------------------------
@@ -13,7 +12,7 @@ data "azurerm_management_group" "root" {
 resource "azurerm_role_assignment" "sysdig_reader" {
   count  = var.is_organizational ? 1 : 0
 
-  scope                = data.azurerm_management_group.root.id
+  scope                = data.azurerm_management_group.sysdig_management_group.id
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
@@ -24,7 +23,7 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 resource "azurerm_role_assignment" "sysdig_k8s_reader" {
   count  = var.is_organizational ? 1 : 0
 
-  scope                = data.azurerm_management_group.root.id
+  scope                = data.azurerm_management_group.sysdig_management_group.id
   role_definition_name = "Azure Kubernetes Service Cluster User Role"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
@@ -35,7 +34,7 @@ resource "azurerm_role_assignment" "sysdig_k8s_reader" {
 resource "azurerm_role_assignment" "sysdig_vm_user" {
   count  = var.is_organizational ? 1 : 0
 
-  scope                = data.azurerm_management_group.root.id
+  scope                = data.azurerm_management_group.sysdig_management_group.id
   role_definition_name = "Virtual Machine User Login"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
