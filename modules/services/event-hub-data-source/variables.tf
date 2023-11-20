@@ -1,3 +1,9 @@
+variable "is_organizational" {
+  description = "Set this field to 'true' to deploy secure-for-cloud to all the tenant."
+  type        = bool
+  default     = false
+}
+
 variable "tenant_id" {
   type        = string
   description = "Identifier of the Azure tenant"
