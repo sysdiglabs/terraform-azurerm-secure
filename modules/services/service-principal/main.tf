@@ -13,10 +13,16 @@ data "azurerm_subscription" "primary" {
 # and use it, ensuring we have just one service principal linked to the Sysdig application
 # in the customer tenant.
 # Note: Please refer to the caveats of use_existing attribute for this resource.
+#
+# Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
+#       This is to safeguard against unintended deletes if the service principal is in use.
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_sp" {
   client_id    = var.sysdig_client_id
   use_existing = true
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 #---------------------------------------------------------------------------------------------
