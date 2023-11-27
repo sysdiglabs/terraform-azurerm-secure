@@ -26,6 +26,14 @@ resource "azuread_service_principal" "sysdig_sp" {
 }
 
 #---------------------------------------------------------------------------------------------
+# Assign "Directory Reader" AD role to Sysdig SP
+#---------------------------------------------------------------------------------------------
+resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
+  role_id             = "88d8e3e3-8f55-4a1e-953a-9b9898b8876b"
+  principal_object_id = azuread_service_principal.sysdig_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
 # Assign "Reader" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_reader" {
