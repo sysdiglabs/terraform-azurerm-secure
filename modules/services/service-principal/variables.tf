@@ -14,9 +14,8 @@ variable "is_organizational" {
   default     = false
 }
 
-# By default, this will be the root management group whose default display name is "Tenant root group"
-variable "management_group" {
-  description = "(Optional) Display name of the Azure Management Group. secure-for-cloud will be deployed to all the subscriptions under this management group."
-  type        = string
-  default     = "Tenant Root Group"
+variable "management_group_ids" {
+  description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
+  type        = set(string)
+  default     = []
 }
