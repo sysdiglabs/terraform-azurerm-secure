@@ -28,6 +28,8 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
+  capacity            = var.troughput_units
+  auto_inflate_enabled = var.auto_inflate_enabled
 }
 
 #---------------------------------------------------------------------------------------------

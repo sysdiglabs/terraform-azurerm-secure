@@ -18,15 +18,22 @@ variable "location" {
   description = "Location where Sysdig-related resources will be created"
 }
 
-variable "location" {
-  type        = string
-  description = "Location where Sysdig-related resources will be created"
-}
-
 variable "partition_count" {
   description = "The number of partitions in the Event Hub"
   type        = number
-  default     = 4
+  default     = 1
+}
+
+variable "troughput_units" {
+  description = "The number of throughput units to be allocated to the Event Hub"
+  type        = number
+  default     = 1
+}
+
+variable "auto_inflate_enabled" {
+  description = "Whether or not auto-inflate is enabled for the Event Hub"
+  type        = bool
+  default     = false
 }
 
 variable "message_retention_days" {
