@@ -10,6 +10,7 @@ data "azurerm_subscription" "sysdig_subscription" {
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_service_principal" {
   client_id = var.sysdig_client_id
+  use_existing = true
 }
 
 #---------------------------------------------------------------------------------------------
@@ -17,7 +18,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
   name     = "sysdig-resource-group"
-  location = var.location
+  location = var.region
 }
 
 #---------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
-  capacity            = var.troughput_units
+  capacity            = var.throughput_units
   auto_inflate_enabled = var.auto_inflate_enabled
 }
 

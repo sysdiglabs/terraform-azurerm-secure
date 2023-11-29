@@ -13,6 +13,7 @@ The following resources will be created in each instrumented account:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.45.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76.0 |
 
 ## Providers
@@ -20,7 +21,7 @@ The following resources will be created in each instrumented account:
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.45.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.80.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.76.0 |
 
 ## Modules
 
@@ -44,13 +45,15 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_location"></a> [location](#input\_location) | Location where Sysdig-related resources will be created | `string` | n/a | yes |
+| <a name="input_auto_inflate_enabled"></a> [auto\_inflate\_enabled](#input\_auto\_inflate\_enabled) | Whether or not auto-inflate is enabled for the Event Hub | `bool` | `false` | no |
 | <a name="input_message_retention_days"></a> [message\_retention\_days](#input\_message\_retention\_days) | Number of days during which messages will be retained in the Event Hub | `number` | `1` | no |
 | <a name="input_namespace_sku"></a> [namespace\_sku](#input\_namespace\_sku) | SKU (Plan) for the namespace that will be created | `string` | `"Standard"` | no |
-| <a name="input_partition_count"></a> [partition\_count](#input\_partition\_count) | The number of partitions in the Event Hub | `number` | `4` | no |
+| <a name="input_partition_count"></a> [partition\_count](#input\_partition\_count) | The number of partitions in the Event Hub | `number` | `1` | no |
+| <a name="input_region"></a> [region](#input\_region) | Datacenter where Sysdig-related resources will be created | `string` | n/a | yes |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Identifier of the subscription to be onboarded | `string` | n/a | yes |
 | <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | Application ID of the enterprise application in the Sysdig tenant | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Identifier of the Azure tenant | `string` | n/a | yes |
+| <a name="input_throughput_units"></a> [throughput\_units](#input\_throughput\_units) | The number of throughput units to be allocated to the Event Hub | `number` | `1` | no |
 
 ## Outputs
 

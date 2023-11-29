@@ -13,9 +13,9 @@ variable "sysdig_client_id" {
   description = "Application ID of the enterprise application in the Sysdig tenant"
 }
 
-variable "location" {
+variable "region" {
   type        = string
-  description = "Location where Sysdig-related resources will be created"
+  description = "Datacenter where Sysdig-related resources will be created"
 }
 
 variable "partition_count" {
@@ -24,7 +24,7 @@ variable "partition_count" {
   default     = 1
 }
 
-variable "troughput_units" {
+variable "throughput_units" {
   description = "The number of throughput units to be allocated to the Event Hub"
   type        = number
   default     = 1
@@ -33,7 +33,7 @@ variable "troughput_units" {
 variable "auto_inflate_enabled" {
   description = "Whether or not auto-inflate is enabled for the Event Hub"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "message_retention_days" {
