@@ -30,6 +30,12 @@ variable "throughput_units" {
   default     = 1
 }
 
+variable "maximum_throughput_units" {
+  description = "The maximum number of throughput units to be allocated to the Event Hub"
+  type        = number
+  default     = 20
+}
+
 variable "auto_inflate_enabled" {
   description = "Whether or not auto-inflate is enabled for the Event Hub"
   type        = bool

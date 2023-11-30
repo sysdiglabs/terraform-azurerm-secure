@@ -34,6 +34,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   sku                 = var.namespace_sku
   capacity            = var.throughput_units
   auto_inflate_enabled = var.auto_inflate_enabled
+  maximum_throughput_units = var.maximum_throughput_units
 }
 
 #---------------------------------------------------------------------------------------------
