@@ -11,6 +11,9 @@ data "azurerm_subscription" "sysdig_subscription" {
 resource "azuread_service_principal" "sysdig_service_principal" {
   client_id = var.sysdig_client_id
   use_existing = true
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 #---------------------------------------------------------------------------------------------
