@@ -9,8 +9,8 @@ variable "subscription_id" {
 }
 
 variable "sysdig_client_id" {
-  type        = string
-  description = "Application ID of the enterprise application in the Sysdig tenant"
+  type = string
+  description = "Service client ID in the Sysdig tenant"
 }
 
 variable "region" {
@@ -53,4 +53,3 @@ variable "namespace_sku" {
   description = "SKU (Plan) for the namespace that will be created"
   default     = "Standard"
 }
-
