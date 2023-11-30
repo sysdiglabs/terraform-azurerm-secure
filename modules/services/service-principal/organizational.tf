@@ -2,13 +2,14 @@
 # Fetch the management groups for customer tenant and onboard subscriptions under them
 #---------------------------------------------------------------------------------------------
 data "azurerm_management_group" "root_management_group" {
-  count  = var.is_organizational ? 1 : 0
+  count  = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
   display_name = "Tenant Root Group"
 }
 
 locals {
   # when empty, this will be the root management group whose default display name is "Tenant root group"
-  management_groups = var.is_organizational && length(var.management_group_ids) == 0 ? [data.azurerm_management_group.root_management_group[0].id] : toset(var.management_group_ids)
+  management_groups = var.is_organizational && length(var.management_group_ids) == 0 ? [data.azurerm_management_group.root_management_group[0].id] : toset(
+    [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups",m)])
 }
 
 #---------------------------------------------------------------------------------------------
