@@ -2,11 +2,14 @@
 
 This module will deploy a Service Principal in Azure for a single subscription, or for an Azure Tenant.
 
-The following resources will be created:
+If instrumenting an Azure subscription, the following resources will be created:
 - A Service Principal in your tenant, associated with the application ID of the service client in the Sysdig tenant.
-- Role assignments with associated role permissions to grant Sysdig read only permissions to secure your Azure subscription, or Azure Tenant.
+- Role assignments with associated role permissions to grant Sysdig read only permissions to secure your Azure subscription.
 
-If instrumenting an Azure Tenant, the role assignments will be created at the Root Management Group level by default for the Tenant, or at each of the
+If instrumenting an Azure Tenant, the following resources will be created:
+- A Service Principal in your tenant, associated with the application ID of the service client in the Sysdig tenant.
+- Role assignments with associated role permissions for Azure subscription provided as management account/subscription.
+- Role assignments with associated role permissions at the Root Management Group level by default for the Tenant, or at each of the
 instrumented Management Groups within the Tenant if provided.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
