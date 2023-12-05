@@ -37,8 +37,6 @@ resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
 # Assign "Reader" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_reader" {
-  count = var.is_organizational ? 0 : 1
-
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
@@ -48,8 +46,6 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 # Assign "Azure Kubernetes Service Cluster User Role" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_k8s_reader" {
-  count = var.is_organizational ? 0 : 1
-
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Azure Kubernetes Service Cluster User Role"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
@@ -59,8 +55,6 @@ resource "azurerm_role_assignment" "sysdig_k8s_reader" {
 # Assign "Virtual Machine User Login" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_user" {
-  count = var.is_organizational ? 0 : 1
-
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Virtual Machine User Login"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
