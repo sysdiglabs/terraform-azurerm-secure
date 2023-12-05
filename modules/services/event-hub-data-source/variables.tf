@@ -1,9 +1,3 @@
-variable "is_organizational" {
-  description = "Set this field to 'true' to deploy secure-for-cloud to all the tenant."
-  type        = bool
-  default     = false
-}
-
 variable "tenant_id" {
   type        = string
   description = "Identifier of the Azure tenant"
@@ -14,26 +8,38 @@ variable "subscription_id" {
   description = "Identifier of the subscription to be onboarded"
 }
 
-variable "management_group_ids" {
-  type        = list(string)
-  description = "IDs of the management groups to be onboarded (if it is the Tenant Root Group it will be the same as the tenant id)"
-  default     = []
-}
-
 variable "sysdig_client_id" {
-  type        = string
-  description = "Application ID of the enterprise application in the Sysdig tenant"
+  type = string
+  description = "Service client ID in the Sysdig tenant"
 }
 
-variable "location" {
+variable "region" {
   type        = string
-  description = "Location where Sysdig-related resources will be created"
+  description = "Datacenter where Sysdig-related resources will be created"
 }
 
 variable "partition_count" {
   description = "The number of partitions in the Event Hub"
   type        = number
-  default     = 4
+  default     = 1
+}
+
+variable "throughput_units" {
+  description = "The number of throughput units to be allocated to the Event Hub"
+  type        = number
+  default     = 1
+}
+
+variable "maximum_throughput_units" {
+  description = "The maximum number of throughput units to be allocated to the Event Hub"
+  type        = number
+  default     = 20
+}
+
+variable "auto_inflate_enabled" {
+  description = "Whether or not auto-inflate is enabled for the Event Hub"
+  type        = bool
+  default     = true
 }
 
 variable "message_retention_days" {
@@ -46,10 +52,4 @@ variable "namespace_sku" {
   type        = string
   description = "SKU (Plan) for the namespace that will be created"
   default     = "Standard"
-}
-
-variable "eventhub_namespace_auto_inflate_enabled" {
-  description = "Is Auto Inflate enabled for the EventHub Namespace"
-  type        = bool
-  default     = false
 }

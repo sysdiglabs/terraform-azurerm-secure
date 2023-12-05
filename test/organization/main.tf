@@ -20,6 +20,7 @@ module "organization-posture" {
   subscription_id       = "test-azure-provider"
   sysdig_client_id      = "<sysdig_application_client_id>"
   is_organizational     = true
+  management_group_ids  = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 }
 
 resource "sysdig_secure_cloud_auth_account" "azure_subscription_test" {
@@ -72,6 +73,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_subscription_test" {
 }
 
 resource "sysdig_secure_organization" "azure_organization_test" {
-  management_account_id = sysdig_secure_cloud_auth_account.azure_subscription_test.id
-  depends_on            = [module.organization-posture]
+  management_account_id   = sysdig_secure_cloud_auth_account.azure_subscription_test.id
+  depends_on              = [module.organization-posture]
+  organizational_unit_ids = ["mgmt-group-id1", "mgmt-group-id2"]
 }

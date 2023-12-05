@@ -1,13 +1,3 @@
-provider "azurerm" {
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-  features {}
-}
-
-provider "azuread" {
-  tenant_id = var.tenant_id
-}
-
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -18,12 +8,12 @@ data "azurerm_subscription" "sysdig_subscription" {
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
-data "azuread_client_config" "current" {}
-
 resource "azuread_service_principal" "sysdig_service_principal" {
   client_id = var.sysdig_client_id
-  owners    = [data.azuread_client_config.current.object_id]
   use_existing = true
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 #---------------------------------------------------------------------------------------------
@@ -31,7 +21,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
   name     = "sysdig-resource-group"
-  location = var.location
+  location = var.region
 }
 
 #---------------------------------------------------------------------------------------------
@@ -42,7 +32,9 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
-  auto_inflate_enabled = var.eventhub_namespace_auto_inflate_enabled
+  capacity            = var.throughput_units
+  auto_inflate_enabled = var.auto_inflate_enabled
+  maximum_throughput_units = var.maximum_throughput_units
 }
 
 #---------------------------------------------------------------------------------------------
@@ -91,11 +83,9 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 #---------------------------------------------------------------------------------------------
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
-resource "azurerm_monitor_diagnostic_setting" "sysdig_single_diagnostic_setting" {
-  count = var.is_organizational ? 0 : 1
-
-  name               = "sysdig-diagnostic-setting"
-  target_resource_id = data.azurerm_subscription.sysdig_subscription.id
+resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
+  name                           = "sysdig-diagnostic-setting"
+  target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
