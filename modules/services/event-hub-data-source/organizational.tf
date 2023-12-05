@@ -38,26 +38,6 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
   }
 
   enabled_log {
-    category = "ServiceHealth"
-  }
-
-  enabled_log {
-    category = "Alert"
-  }
-
-  enabled_log {
-    category = "Recommendation"
-  }
-
-  enabled_log {
     category = "Policy"
-  }
-
-  enabled_log {
-    category = "Autoscale"
-  }
-
-  enabled_log {
-    category = "ResourceHealth"
   }
 }
