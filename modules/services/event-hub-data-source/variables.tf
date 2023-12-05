@@ -21,7 +21,7 @@ variable "region" {
 variable "partition_count" {
   description = "The number of partitions in the Event Hub"
   type        = number
-  default     = 1
+  default     = 4
 }
 
 variable "throughput_units" {
