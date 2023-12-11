@@ -21,7 +21,7 @@ variable "region" {
 variable "partition_count" {
   description = "The number of partitions in the Event Hub"
   type        = number
-  default     = 1
+  default     = 4
 }
 
 variable "throughput_units" {
@@ -52,6 +52,42 @@ variable "namespace_sku" {
   type        = string
   description = "SKU (Plan) for the namespace that will be created"
   default     = "Standard"
+}
+
+variable "event_hub_namespace_name" {
+  type        = string
+  description = "Name of the Event Hub Namespace to be created"
+  default = "sysdig-event-hub-namespace"
+}
+
+variable "event_hub_name" {
+  type        = string
+  description = "Name of the Event Hub to be created"
+  default     = "sysdig-event-hub"
+}
+
+variable "resource_group_name" {
+  type = string
+  description = "Name of the resource group to be created"
+  default = "sysdig-resource-group"
+}
+
+variable "consumer_group_name" {
+  type = string
+  description = "Name of the consumer group to be created"
+  default = "sysdig-consumer-group" 
+}
+
+variable "eventhub_authorization_rule_name" {
+  type = string
+  description = "Name of the authorization rule to be created"
+  default = "sysdig-send-listen-rule"
+}
+
+variable "diagnostic_settings_name" {
+  type = string
+  description = "Name of the diagnostic settings to be created"
+  default = "sysdig-diagnostic-settings"
 }
 
 variable "is_organizational" {

@@ -20,7 +20,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 # Create a resource group for Sysdig resources
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
-  name     = "sysdig-resource-group"
+  name     = var.resource_group_name
   location = var.region
 }
 
@@ -28,7 +28,7 @@ resource "azurerm_resource_group" "sysdig_resource_group" {
 # Create an Event Hub Namespace for Sysdig
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
-  name                = "sysdig-event-hub-namespace"
+  name                = var.event_hub_namespace_name
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
@@ -41,7 +41,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
 # Create an Event Hub within the Sysdig Namespace
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub" "sysdig_event_hub" {
-  name                = "sysdig-event-hub"
+  name                = var.event_hub_name
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   partition_count     = var.partition_count
@@ -52,7 +52,7 @@ resource "azurerm_eventhub" "sysdig_event_hub" {
 # Create a Consumer Group within the Sysdig Event Hub
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
-  name                = "sysdig-consumer-group"
+  name                = var.consumer_group_name
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   eventhub_name       = azurerm_eventhub.sysdig_event_hub.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
@@ -62,7 +62,7 @@ resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
 # Create an Authorization Rule for the Sysdig Namespace
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace_authorization_rule" "sysdig_rule" {
-  name                = "sysdig-send-listen-rule"
+  name                = var.eventhub_authorization_rule_name
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
 
@@ -84,7 +84,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  name                           = "sysdig-diagnostic-setting"
+  name                           = var.diagnostic_settings_name
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
