@@ -1,8 +1,3 @@
-variable "tenant_id" {
-  type        = string
-  description = "Identifier of the Azure tenant"
-}
-
 variable "subscription_id" {
   type        = string
   description = "Identifier of the subscription to be onboarded"
