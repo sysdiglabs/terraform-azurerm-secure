@@ -26,7 +26,7 @@ locals {
 resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
   count = var.is_organizational ? length(local.enabled_subscriptions) : 0
 
-  name               = "sysdig-diagnostic-setting"
+  name               = var.diagnostic_settings_name
   target_resource_id = local.enabled_subscriptions[count.index].id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
