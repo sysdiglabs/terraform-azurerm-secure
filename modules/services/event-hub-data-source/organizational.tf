@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 data "azurerm_management_group" "onboarded_management_group" {
-  for_each = length(var.management_group_ids) > 0 ? toset(var.management_group_ids) : toset([data.azurerm_client_config.current.tenant_id])
+  for_each = var.is_organizational && length(var.management_group_ids) > 0 ? toset(var.management_group_ids) : toset([])
   name     = each.value
 }
 
@@ -12,7 +12,7 @@ locals {
 }
 
 data "azurerm_subscription" "onboarded_subscriptions" {
-  for_each = toset(local.all_mg_subscription_ids)
+  for_each = var.is_organizational && length(local.all_mg_subscription_ids) > 0 ? toset(local.all_mg_subscription_ids) : toset([])
   subscription_id = each.value
 }
 
