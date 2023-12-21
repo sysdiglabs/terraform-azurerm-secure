@@ -63,6 +63,7 @@ variable "event_hub_name" {
 variable "resource_group_name" {
   type = string
   description = "Name of the resource group to be created"
+  default = "sysdig-resource-group"
 }
 
 variable "consumer_group_name" {
@@ -80,6 +81,7 @@ variable "eventhub_authorization_rule_name" {
 variable "diagnostic_settings_name" {
   type = string
   description = "Name of the diagnostic settings to be created"
+  default = "sysdig-diagnostic-settings"
 }
 
 variable "is_organizational" {
