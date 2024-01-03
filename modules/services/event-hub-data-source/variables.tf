@@ -52,7 +52,6 @@ variable "namespace_sku" {
 variable "event_hub_namespace_name" {
   type        = string
   description = "Name of the Event Hub Namespace to be created"
-  default = "sysdig"
 }
 
 variable "event_hub_name" {

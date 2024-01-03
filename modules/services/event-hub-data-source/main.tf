@@ -28,7 +28,7 @@ resource "azurerm_resource_group" "sysdig_resource_group" {
 # Create an Event Hub Namespace for Sysdig
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
-  name                = "${var.event_hub_namespace_name}-${var.subscription_id}"
+  name                = var.event_hub_namespace_name
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
