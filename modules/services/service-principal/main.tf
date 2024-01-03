@@ -42,6 +42,7 @@ resource "azurerm_role_assignment" "sysdig_reader" {
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
 
+/*
 #---------------------------------------------------------------------------------------------
 # Assign "Azure Kubernetes Service Cluster User Role" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
@@ -59,3 +60,4 @@ resource "azurerm_role_assignment" "sysdig_vm_user" {
   role_definition_name = "Virtual Machine User Login"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
+*/

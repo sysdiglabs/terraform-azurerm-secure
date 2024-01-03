@@ -26,6 +26,7 @@ resource "azurerm_role_assignment" "sysdig_reader_for_tenant" {
 #---------------------------------------------------------------------------------------------
 # Assign "Azure Kubernetes Service Cluster User Role" role to Sysdig SP for customer tenant
 #---------------------------------------------------------------------------------------------
+/*
 resource "azurerm_role_assignment" "sysdig_k8s_reader_for_tenant" {
   for_each = var.is_organizational ? local.management_groups : []
 
@@ -43,4 +44,7 @@ resource "azurerm_role_assignment" "sysdig_vm_user_for_tenant" {
   scope                = each.key
   role_definition_name = "Virtual Machine User Login"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
+<<<<<<< HEAD
 }
+=======
+}*/
