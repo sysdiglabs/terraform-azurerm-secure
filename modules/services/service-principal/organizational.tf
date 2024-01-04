@@ -24,27 +24,34 @@ resource "azurerm_role_assignment" "sysdig_reader_for_tenant" {
 }
 
 #---------------------------------------------------------------------------------------------
-# Assign "Azure Kubernetes Service Cluster User Role" role to Sysdig SP for customer tenant
+# Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
-/*
-resource "azurerm_role_assignment" "sysdig_k8s_reader_for_tenant" {
+resource "azurerm_role_definition" "sysdig_cspm_role_for_tenant" {
   for_each = var.is_organizational ? local.management_groups : []
 
-  scope                = each.key
-  role_definition_name = "Azure Kubernetes Service Cluster User Role"
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
+  name        = "sysdig_cspm_role_for_tenant_${each.key}"
+  scope       = each.key
+  description = "Custom role for collecting Authsettings for CIS Benchmark"
+
+  permissions {
+    actions     = [
+      "Microsoft.Web/sites/config/list/action"
+    ]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    each.key,
+  ]
 }
 
 #---------------------------------------------------------------------------------------------
-# Assign "Virtual Machine User Login" role to Sysdig SP for customer tenant
+# Custom role assignment for collecting authsettings
 #---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_vm_user_for_tenant" {
+resource "azurerm_role_assignment" "sysdig_cspm_role_assignment_for_tenant" {
   for_each = var.is_organizational ? local.management_groups : []
 
   scope                = each.key
-  role_definition_name = "Virtual Machine User Login"
+  role_definition_id   = azurerm_role_definition.sysdig_cspm_role_for_tenant[each.key].role_definition_resource_id
   principal_id         = azuread_service_principal.sysdig_sp.object_id
-<<<<<<< HEAD
 }
-=======
-}*/
