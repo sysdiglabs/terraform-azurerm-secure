@@ -41,21 +41,31 @@ resource "azurerm_role_assignment" "sysdig_reader" {
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
+#---------------------------------------------------------------------------------------------
+# Create a Custom role for collecting authsettings
+#---------------------------------------------------------------------------------------------
+resource "azurerm_role_definition" "sysdig_cspm_role" {
+  name        = "sysdig-cspm-role"
+  scope       = data.azurerm_subscription.primary.id
+  description = "Custom role for collecting Authsettings for CIS Benchmark"
 
-#---------------------------------------------------------------------------------------------
-# Assign "Azure Kubernetes Service Cluster User Role" role to Sysdig SP for primary subscription
-#---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_k8s_reader" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Azure Kubernetes Service Cluster User Role"
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
+  permissions {
+    actions     = [
+      "Microsoft.Web/sites/config/list/action"
+    ]
+    not_actions = []
+  }
+
+  assignable_scopes = [
+    data.azurerm_subscription.primary.id,
+  ]
 }
 
 #---------------------------------------------------------------------------------------------
-# Assign "Virtual Machine User Login" role to Sysdig SP for primary subscription
+# Custom role assignment for collecting authsettings
 #---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_vm_user" {
+resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Virtual Machine User Login"
+  role_definition_id   = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
   principal_id         = azuread_service_principal.sysdig_sp.object_id
 }
