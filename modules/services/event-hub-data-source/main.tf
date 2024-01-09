@@ -5,6 +5,11 @@ data "azurerm_subscription" "sysdig_subscription" {
   subscription_id = var.subscription_id
 }
 
+# Generate a unique hash for the subscription ID
+locals {
+  subscription_hash = substr(md5(data.azurerm_client_config.current.subscription_id), 0, 8)
+}
+
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
@@ -28,7 +33,7 @@ resource "azurerm_resource_group" "sysdig_resource_group" {
 # Create an Event Hub Namespace for Sysdig
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
-  name                = var.event_hub_namespace_name
+  name                = "${var.event_hub_namespace_name}-${local.subscription_hash}"
   location            = azurerm_resource_group.sysdig_resource_group.location
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   sku                 = var.namespace_sku
