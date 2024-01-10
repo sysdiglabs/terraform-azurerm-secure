@@ -25,7 +25,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 # Create a resource group for Sysdig resources
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
-  name     = var.resource_group_name
+  name     = "${var.resource_group_name}-${local.subscription_hash}"
   location = var.region
 }
 
@@ -89,7 +89,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  name                           = var.diagnostic_settings_name
+  name                           = "${var.diagnostic_settings_name}-${local.subscription_hash}"
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
