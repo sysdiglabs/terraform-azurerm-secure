@@ -10,6 +10,17 @@ locals {
   subscription_hash = substr(md5(data.azurerm_client_config.current.subscription_id), 0, 8)
 }
 
+# A random resource is used to generate unique Event Hub names. 
+# This prevents conflicts when recreating an Event Hub Namespace with the same name. 
+# Azure caches the Event Hub name after deletion. 
+# If the namespace is recreated, Azure restores the existing Event Hub, causing a Terraform apply failure.
+resource "random_string" "random" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
+
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
@@ -46,7 +57,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
 # Create an Event Hub within the Sysdig Namespace
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub" "sysdig_event_hub" {
-  name                = var.event_hub_name
+  name                = "${var.event_hub_name}-${random_string.random.result}"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   resource_group_name = azurerm_resource_group.sysdig_resource_group.name
   partition_count     = var.partition_count
