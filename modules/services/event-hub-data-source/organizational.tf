@@ -5,9 +5,15 @@ data "azurerm_management_group" "onboarded_management_group" {
   name     = each.value
 }
 
+data "azurerm_management_group" "root_management_group" {
+  count  = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
+  display_name = "Tenant Root Group"
+}
+
 locals {
+  selected_management_group = length(data.azurerm_management_group.onboarded_management_group) > 0 ? values(data.azurerm_management_group.onboarded_management_group) : [data.azurerm_management_group.root_management_group[0]]
   all_mg_subscription_ids = flatten([
-    for mg in data.azurerm_management_group.onboarded_management_group : mg.all_subscription_ids
+    for mg in local.selected_management_group : mg.all_subscription_ids
   ])
 }
 
