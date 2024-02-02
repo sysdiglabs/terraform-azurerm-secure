@@ -45,12 +45,12 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
-  name        = "sysdig-cspm-role"
+  name        = "sysdig-cspm-role-${data.azurerm_subscription.primary.id}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
   permissions {
-    actions     = [
+    actions = [
       "Microsoft.Web/sites/config/list/action"
     ]
     not_actions = []
