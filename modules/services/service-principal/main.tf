@@ -45,7 +45,7 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
-  name        = "sysdig-cspm-role-${data.azurerm_subscription.primary.id}"
+  name        = "sysdig-cspm-role-${var.subscription_id}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
