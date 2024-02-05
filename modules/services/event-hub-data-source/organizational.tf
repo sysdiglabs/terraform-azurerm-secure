@@ -11,7 +11,7 @@ data "azurerm_management_group" "root_management_group" {
 }
 
 locals {
-  selected_management_group = length(data.azurerm_management_group.onboarded_management_group) > 0 ? values(data.azurerm_management_group.onboarded_management_group) : [data.azurerm_management_group.root_management_group[0]]
+  selected_management_group = var.is_organizational ? (length(data.azurerm_management_group.onboarded_management_group) > 0 ? values(data.azurerm_management_group.onboarded_management_group) : [data.azurerm_management_group.root_management_group[0]]) : []
   all_mg_subscription_ids = flatten([
     for mg in local.selected_management_group : mg.all_subscription_ids
   ])
