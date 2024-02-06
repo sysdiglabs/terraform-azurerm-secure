@@ -84,6 +84,12 @@ variable "diagnostic_settings_name" {
   default = "sysdig-diagnostic-settings"
 }
 
+variable "entra_diagnostic_settings_name" {
+  type = string
+  description = "Name of the Entra diagnostic settings to be created"
+  default = "sysdig-entra-diagnostic-settings"
+}
+
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool
