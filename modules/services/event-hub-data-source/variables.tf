@@ -101,3 +101,9 @@ variable "management_group_ids" {
   type        = set(string)
   default     = []
 }
+
+variable "enable_entra" {
+  description = "(Optional) Used to enable or disable Entra logs, defaults to true."
+  type        = bool
+  default     = true
+}
