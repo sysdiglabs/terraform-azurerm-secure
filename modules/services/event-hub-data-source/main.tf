@@ -1,3 +1,13 @@
+provider "azurerm" {
+  features { }
+  subscription_id = "0f332fa1-9777-424c-bebf-4a45894ad793"
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
+provider "azuread" {
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -127,8 +137,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "AuditLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -136,8 +145,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "SignInLogs"
     
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -145,8 +153,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "NonInteractiveUserSignInLogs"
   
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -154,8 +161,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "ServicePrincipalSignInLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -163,8 +169,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "ManagedIdentitySignInLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -172,8 +177,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "ProvisioningLogs"
   
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -181,8 +185,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "ADFSSignInLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -190,8 +193,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "RiskyUsers"
     
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -200,8 +202,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -209,8 +210,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "NetworkAccessTrafficLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -218,8 +218,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "RiskyServicePrincipals"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -227,8 +226,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "ServicePrincipalRiskEvents"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -236,8 +234,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "EnrichedOffice365AuditLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -245,8 +242,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "MicrosoftGraphActivityLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 
@@ -254,8 +250,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
     category = "RemoteNetworkHealthLogs"
 
     retention_policy {
-      enabled = true
-      days    = 1
+      enabled = false
     }
   }
 }
