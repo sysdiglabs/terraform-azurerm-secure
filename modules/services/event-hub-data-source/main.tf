@@ -1,3 +1,13 @@
+provider "azurerm" {
+  features { }
+  subscription_id = "0f332fa1-9777-424c-bebf-4a45894ad793"
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
+provider "azuread" {
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -119,7 +129,7 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
 }
 
 resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setting" {
-  name               = var.enable_entra ? var.entra_diagnostic_settings_name : null
+  name               = var.enable_entra ? "${var.entra_diagnostic_settings_name}-${local.subscription_hash}" : null
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
