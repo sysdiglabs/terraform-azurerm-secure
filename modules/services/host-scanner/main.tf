@@ -1,11 +1,12 @@
 provider "azurerm" {
-  alias           = "subscription"
+  features { }
+}
+
+data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
-  features {}
 }
 
 resource "azurerm_lighthouse_definition" "lighthouse_definition" {
-  provider           = azurerm.subscription
   name               = "Sysdig Agentless Host Scanner"
   description        = "Lighthouse definition for Sysdig Agentless Host Scanner"
   managing_tenant_id = var.sysdig_tenant_id
@@ -19,7 +20,7 @@ resource "azurerm_lighthouse_definition" "lighthouse_definition" {
 }
 
 resource "azurerm_lighthouse_assignment" "lighthouse_assignment" {
-  provider                 = azurerm.subscription
+  count = var.is_organizational ? 0 : 1
   scope                    = "/subscriptions/${var.subscription_id}"
   lighthouse_definition_id = azurerm_lighthouse_definition.lighthouse_definition.id
 }

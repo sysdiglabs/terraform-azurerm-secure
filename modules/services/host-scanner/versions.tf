@@ -6,9 +6,13 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.76.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 2.43.0"
+    }
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = ">= 1.18.2"
+      version = ">= 1.19.0"
     }
   }
 }
