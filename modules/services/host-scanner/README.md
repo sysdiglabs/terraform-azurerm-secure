@@ -54,10 +54,10 @@ No modules.
 
 ## Outputs
 
-| Name                                                                                                                             | Description |
-|----------------------------------------------------------------------------------------------------------------------------------|-------------|
-| <a name="lighthouse_definition_display_id"></a> [lighthouse\definition\_display\id](#output\_lighthouse\definition\_display\id)  | Display name of the Service Principal created |
-| <a name="output_subscription_alias"></a> [subscription\_alias](#output\_subscription\_alias)                                     | Display name of the subscription |
+| Name                                                                                                                             | Description                                                                            |
+|----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| <a name="lighthouse_definition_display_id"></a> [lighthouse\definition\_display\id](#output\_lighthouse\definition\_display\id)  | Display id of the Lighthouse definition created, associated with the service principal |
+| <a name="output_subscription_alias"></a> [subscription\_alias](#output\_subscription\_alias)                                     | Display name of the subscription                                                       |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
