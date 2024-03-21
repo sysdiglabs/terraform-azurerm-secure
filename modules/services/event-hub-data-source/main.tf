@@ -1,3 +1,13 @@
+provider "azurerm" {
+  features { }
+  subscription_id = "0f332fa1-9777-424c-bebf-4a45894ad793"
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
+provider "azuread" {
+  tenant_id       = "345e6a01-9a5e-4f1a-8955-39b6bb2dad7f"
+}
+
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
@@ -115,5 +125,132 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
 
   enabled_log {
     category = "Policy"
+  }
+}
+
+resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setting" {
+  name               = var.enable_entra ? "${var.entra_diagnostic_settings_name}-${local.subscription_hash}" : null
+  eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
+  eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
+
+  enabled_log {
+    category = "AuditLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "SignInLogs"
+    
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "NonInteractiveUserSignInLogs"
+  
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "ServicePrincipalSignInLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "ManagedIdentitySignInLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "ProvisioningLogs"
+  
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "ADFSSignInLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "RiskyUsers"
+    
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "UserRiskEvents"
+    
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "NetworkAccessTrafficLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "RiskyServicePrincipals"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "ServicePrincipalRiskEvents"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "EnrichedOffice365AuditLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "MicrosoftGraphActivityLogs"
+
+    retention_policy {
+      enabled = false
+    }
+  }
+
+  enabled_log {
+    category = "RemoteNetworkHealthLogs"
+
+    retention_policy {
+      enabled = false
+    }
   }
 }
