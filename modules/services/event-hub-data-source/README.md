@@ -56,7 +56,7 @@ No modules.
 | <a name="input_auto_inflate_enabled"></a> [auto\_inflate\_enabled](#input\_auto\_inflate\_enabled) | Whether or not auto-inflate is enabled for the Event Hub | `bool` | `true` | no |
 | <a name="input_consumer_group_name"></a> [consumer\_group\_name](#input\_consumer\_group\_name) | Name of the consumer group to be created | `string` | `"sysdig-consumer-group"` | no |
 | <a name="input_diagnostic_settings_name"></a> [diagnostic\_settings\_name](#input\_diagnostic\_settings\_name) | Name of the diagnostic settings to be created | `string` | `"sysdig-diagnostic-settings"` | no |
-| <a name="input_enable_entra"></a> [enable\_entra](#input\_enable\_entra) | (Optional) Used to enable or disable Entra logs, defaults to true. | `bool` | `true` | no |
+| <a name="input_enable_entra"></a> [enable\_entra](#input\_enable\_entra) | (Optional) Used to enable or disable Entra logs, defaults to false. | `bool` | `false` | no |
 | <a name="input_entra_diagnostic_settings_name"></a> [entra\_diagnostic\_settings\_name](#input\_entra\_diagnostic\_settings\_name) | Name of the Entra diagnostic settings to be created | `string` | `"sysdig-entra-diagnostic-settings"` | no |
 | <a name="input_event_hub_name"></a> [event\_hub\_name](#input\_event\_hub\_name) | Name of the Event Hub to be created | `string` | `"sysdig-event-hub"` | no |
 | <a name="input_event_hub_namespace_name"></a> [event\_hub\_namespace\_name](#input\_event\_hub\_namespace\_name) | Name of the Event Hub Namespace to be created | `string` | n/a | yes |
