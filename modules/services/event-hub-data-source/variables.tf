@@ -84,6 +84,12 @@ variable "diagnostic_settings_name" {
   default = "sysdig-diagnostic-settings"
 }
 
+variable "entra_diagnostic_settings_name" {
+  type = string
+  description = "Name of the Entra diagnostic settings to be created"
+  default = "sysdig-entra-diagnostic-settings"
+}
+
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool
@@ -94,4 +100,10 @@ variable "management_group_ids" {
   description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
   type        = set(string)
   default     = []
+}
+
+variable "enable_entra" {
+  description = "(Optional) Used to enable or disable Entra logs, defaults to false."
+  type        = bool
+  default     = false
 }
