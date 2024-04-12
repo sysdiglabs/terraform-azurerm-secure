@@ -129,7 +129,9 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
 }
 
 resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setting" {
-  name               = var.enable_entra ? "${var.entra_diagnostic_settings_name}-${local.subscription_hash}" : null
+  count = var.enable_entra ? 1 : 0
+
+  name               = "${var.entra_diagnostic_settings_name}-${local.subscription_hash}"
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
