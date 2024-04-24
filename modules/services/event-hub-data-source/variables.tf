@@ -103,7 +103,7 @@ variable "management_group_ids" {
 }
 
 variable "enable_entra" {
-  description = "(Optional) Used to enable or disable Entra logs, defaults to false."
+  description = "(Optional) Used to enable or disable Entra logs, defaults to true."
   type        = bool
-  default     = false
+  default     = true
 }
