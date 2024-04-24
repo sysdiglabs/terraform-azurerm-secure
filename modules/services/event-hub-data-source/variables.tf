@@ -102,8 +102,14 @@ variable "management_group_ids" {
   default     = []
 }
 
+variable "enable_platform_logs" {
+  description = "(Optional) Used to enable Platform logs, defaults to true."
+  type        = bool
+  default     = true
+}
+
 variable "enable_entra" {
-  description = "(Optional) Used to enable or disable Entra logs, defaults to true."
+  description = "(Optional) Used to enable Entra logs, defaults to true."
   type        = bool
   default     = true
 }
