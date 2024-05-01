@@ -66,7 +66,7 @@ variable "resource_group_name" {
   default     = "sysdig-resource-group"
 }
 
-variable "existing_resource_group" {
+variable "resource_group" {
   type        = string
   description = "Name of the existing resource group"
   default     = null
