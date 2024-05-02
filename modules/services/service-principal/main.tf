@@ -51,7 +51,8 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
 
   permissions {
     actions = [
-      "Microsoft.Web/sites/config/list/action"
+      "Microsoft.Web/sites/config/list/action",
+      "Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"
     ]
     not_actions = []
   }
@@ -65,7 +66,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
 # Custom role assignment for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_id   = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
+  scope              = data.azurerm_subscription.primary.id
+  role_definition_id = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
+  principal_id       = azuread_service_principal.sysdig_sp.object_id
 }
