@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 3.101.0"
+      version = ">= 3.76.0, <= 3.101.0" //to remove , <= 3.101.0 after a fix is released for SSPROD-41225
     }
     azuread = {
       source  = "hashicorp/azuread"
