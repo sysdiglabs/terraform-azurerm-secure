@@ -13,17 +13,6 @@ locals {
 }
 
 #---------------------------------------------------------------------------------------------
-# Assign "Reader" role to Sysdig SP for customer tenant
-#---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_reader_for_tenant" {
-  for_each = var.is_organizational ? local.management_groups : []
-
-  scope                = each.key
-  role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
-}
-
-#---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role_for_tenant" {

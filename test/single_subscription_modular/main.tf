@@ -23,14 +23,14 @@ provider "sysdig" {
 }
 
 module "onboarding" {
-  source           = "../modules/onboarding"
+  source           = "../../modules/onboarding"
   subscription_id  = "test-subscription"
   tenant_id        = "test-tenant"
   sysdig_client_id = "<sysdig_application_client_id>"
 }
 
 module "single-posture" {
-  source                   = "../modules/integrations/service-principal"
+  source                   = "../../modules/integrations/service-principal"
   subscription_id          = "test-subscription"
   sysdig_client_id         = "<sysdig_application_client_id>"
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id

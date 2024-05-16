@@ -34,14 +34,6 @@ resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
 }
 
 #---------------------------------------------------------------------------------------------
-# Assign "Reader" role to Sysdig SP for primary subscription
-#---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_reader" {
-  scope                = data.azurerm_subscription.primary.id
-  role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.sysdig_sp.object_id
-}
-#---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
@@ -93,7 +85,6 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
 
   depends_on = [
     azuread_directory_role_assignment.sysdig_ad_reader,
-    azurerm_role_assignment.sysdig_reader,
     azurerm_role_assignment.sysdig_cspm_role_assignment
   ]
 }
