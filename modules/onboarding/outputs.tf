@@ -1,6 +1,6 @@
 output "service_principal_display_name" {
   value       = azuread_service_principal.sysdig_onboarding_sp.display_name
-  description = "Display name of the Service Principal created for onboarding"
+  description = "Display name of the Service Principal created for Onboarding"
 }
 
 output "sysdig_secure_account_id" {

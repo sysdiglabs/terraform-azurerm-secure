@@ -6,11 +6,11 @@ The Onboarding module serves the following:
 - running organization scraping in the case of organizational onboarding within Azure Tenant.
 
 If instrumenting an Azure subscription, the following resources will be created:
-- A Service Principal in your tenant, associated with the application ID of the service client in the Sysdig tenant.
+- A Service Principal in your tenant, associated with the application ID of the Onboarding service client in the Sysdig tenant.
 - Role assignments with minimal set of permissions for Azure subscription, to grant Sysdig read only permissions for retrieving inventory.
 
 If instrumenting an Azure Tenant, the following resources will be created:
-- A Service Principal in your tenant, associated with the application ID of the service client in the Sysdig tenant.
+- A Service Principal in your tenant, associated with the application ID of the Onboarding service client in the Sysdig tenant.
 - Role assignments with minimal set of permissions for Azure subscription provided as management account/subscription, for retrieving inventory
 and running organization scraping.
 - Role assignments with minimal set of permissions at the Root Management Group level by default for the Tenant, or at each of the
@@ -54,7 +54,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | The identifier of the Azure Subscription in which to create secure-for-cloud onboarding resources | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\tenant\_id) | The identifier of the Azure Active Directory Tenant of which the subscription is part of | `string` | n/a | yes |
-| <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | The application ID of the service client in the Sysdig tenant. Onboarding Service principal will be created for this application client ID | `string` | n/a | yes |
+| <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | The application ID of the Onboarding service client in the Sysdig tenant. Onboarding Service principal will be created for this application client ID in customer tenant | `string` | n/a | yes |
 | <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | true/false whether secure-for-cloud should be deployed in an organizational setup (all subscriptions of tenant) or not (only on default azure provider subscription) | `bool` | `false` | no |
 | <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids) | List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups. | `set(string)` | `[]` | no |
 

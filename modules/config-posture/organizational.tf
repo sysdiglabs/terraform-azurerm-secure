@@ -42,5 +42,5 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment_for_tenant" {
 
   scope              = each.key
   role_definition_id = azurerm_role_definition.sysdig_cspm_role_for_tenant[each.key].role_definition_resource_id
-  principal_id       = azuread_service_principal.sysdig_sp.object_id
+  principal_id       = azuread_service_principal.sysdig_cspm_sp.object_id
 }

@@ -6,8 +6,8 @@ data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
 
-#---------------------------------------------------------------------------------------------
-# Create service principal in customer tenant
+#---------------------------------------------------------------------------------------------------
+# Create service principal in customer tenant, using the Sysdig Managed Application for Onboarding
 #
 # If there is an existing service principal in the tenant, this will automatically import
 # and use it, ensuring we have just one service principal linked to the Sysdig application
@@ -16,7 +16,7 @@ data "azurerm_subscription" "primary" {
 #
 # Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
 #       This is to safeguard against unintended deletes if the service principal is in use.
-#---------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_onboarding_sp" {
   client_id    = var.sysdig_client_id
   use_existing = true
@@ -36,7 +36,7 @@ resource "azurerm_role_assignment" "sysdig_onboarding_reader" {
 
 #---------------------------------------------------------------------------------------------
 # Call Sysdig Backend to create account with foundational onboarding
-# (ensure it is called after all above cloud resources are created)
+# (ensure it is called after all above cloud resources are created using explicit depends_on)
 #---------------------------------------------------------------------------------------------
 resource "sysdig_secure_cloud_auth_account" "azure_account" {
   enabled            = true
@@ -47,7 +47,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_account" {
 
   component {
     type                       = "COMPONENT_SERVICE_PRINCIPAL"
-    instance                   = "secure-foundational-onboarding"
+    instance                   = "secure-onboarding"
     service_principal_metadata = jsonencode({
       azure = {
         active_directory_service_principal = {

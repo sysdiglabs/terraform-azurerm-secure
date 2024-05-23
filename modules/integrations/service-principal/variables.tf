@@ -1,26 +1,14 @@
-variable "subscription_id" {
-  type        = string
-  description = "Subscription ID in which to create a trust relationship"
-}
-
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
-}
-
-variable "is_organizational" {
-  description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
-  type        = bool
-  default     = false
-}
-
-variable "management_group_ids" {
-  description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
-  type        = set(string)
-  default     = []
-}
-
 variable "sysdig_secure_account_id" {
   type        = string
   description = "ID of the Sysdig Cloud Account to add the integration to (incase of organization, ID of the Sysdig management account)"
+}
+
+variable "component_instance_name" {
+  type        = string
+  description = "Instance name of the Service Principal component to be created on the cloud account"
+}
+
+variable "service_principal_display_name" {
+  type        = string
+  description = "Display name of the existing Azure Service Principal to create the integration for"
 }
