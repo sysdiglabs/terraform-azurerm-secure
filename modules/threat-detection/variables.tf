@@ -4,7 +4,7 @@ variable "subscription_id" {
 }
 
 variable "sysdig_client_id" {
-  type = string
+  type        = string
   description = "Service client ID in the Sysdig tenant"
 }
 
@@ -61,33 +61,39 @@ variable "event_hub_name" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
   description = "Name of the resource group to be created"
-  default = "sysdig-resource-group"
+  default     = "sysdig-resource-group"
+}
+
+variable "resource_group" {
+  type        = string
+  description = "Name of the existing resource group"
+  default     = null
 }
 
 variable "consumer_group_name" {
-  type = string
+  type        = string
   description = "Name of the consumer group to be created"
-  default = "sysdig-consumer-group" 
+  default     = "sysdig-consumer-group"
 }
 
 variable "eventhub_authorization_rule_name" {
-  type = string
+  type        = string
   description = "Name of the authorization rule to be created"
-  default = "sysdig-send-listen-rule"
+  default     = "sysdig-send-listen-rule"
 }
 
 variable "diagnostic_settings_name" {
-  type = string
+  type        = string
   description = "Name of the diagnostic settings to be created"
-  default = "sysdig-diagnostic-settings"
+  default     = "sysdig-diagnostic-settings"
 }
 
 variable "entra_diagnostic_settings_name" {
-  type = string
+  type        = string
   description = "Name of the Entra diagnostic settings to be created"
-  default = "sysdig-entra-diagnostic-settings"
+  default     = "sysdig-entra-diagnostic-settings"
 }
 
 variable "is_organizational" {

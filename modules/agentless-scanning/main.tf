@@ -1,5 +1,5 @@
 provider "azurerm" {
-  features { }
+  features {}
 }
 
 data "azurerm_subscription" "primary" {
@@ -20,7 +20,7 @@ resource "azurerm_lighthouse_definition" "lighthouse_definition" {
 }
 
 resource "azurerm_lighthouse_assignment" "lighthouse_assignment" {
-  count = var.is_organizational ? 0 : 1
+  count                    = var.is_organizational ? 0 : 1
   scope                    = "/subscriptions/${var.subscription_id}"
   lighthouse_definition_id = azurerm_lighthouse_definition.lighthouse_definition.id
 }

@@ -74,6 +74,7 @@ The following resources will be created in each instrumented account:
 | <a name="input_partition_count"></a> [partition\_count](#input\_partition\_count) | The number of partitions in the Event Hub | `number` | `4` | no |
 | <a name="input_region"></a> [region](#input\_region) | Datacenter where Sysdig-related resources will be created | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group to be created | `string` | `"sysdig-resource-group"` | no |
+| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Name of the existing resource group | `string` | n/a | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Identifier of the subscription to be onboarded | `string` | n/a | yes |
 | <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | Service client ID in the Sysdig tenant | `string` | n/a | yes |
 | <a name="input_throughput_units"></a> [throughput\_units](#input\_throughput\_units) | The number of throughput units to be allocated to the Event Hub | `number` | `1` | no |
