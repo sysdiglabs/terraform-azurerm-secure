@@ -1,15 +1,15 @@
 variable "subscription_id" {
-  type = string
+  type        = string
   description = "Subscription ID in which to create a trust relationship"
 }
 
 variable "sysdig_tenant_id" {
-  type = string
+  type        = string
   description = "Sysdig Tenant ID"
 }
 
 variable "sysdig_service_principal_id" {
-  type = string
+  type        = string
   description = "Service Principal ID in the Sysdig tenant"
 }
 

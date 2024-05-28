@@ -4,7 +4,7 @@ provider "azurerm" {
 terraform {
   required_providers {
     sysdig = {
-      source = "sysdiglabs/sysdig"
+      source  = "sysdiglabs/sysdig"
       version = "~> 1.24.2"
     }
   }
@@ -16,19 +16,19 @@ provider "sysdig" {
 }
 
 module "organization-posture" {
-  source                = "../modules/services/service-principal"
-  subscription_id       = "test-azure-provider"
-  sysdig_client_id      = "<sysdig_application_client_id>"
-  is_organizational     = true
-  management_group_ids  = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
+  source               = "../modules/services/service-principal"
+  subscription_id      = "test-azure-provider"
+  sysdig_client_id     = "<sysdig_application_client_id>"
+  is_organizational    = true
+  management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 }
 
 resource "sysdig_secure_cloud_auth_account" "azure_subscription_test" {
-  enabled = true
-  provider_id = "test-azure-provider"
-  provider_type = "PROVIDER_AZURE"
+  enabled            = true
+  provider_id        = "test-azure-provider"
+  provider_type      = "PROVIDER_AZURE"
   provider_tenant_id = module.organization-posture.subscription_tenant_id
-  provider_alias = module.organization-posture.subscription_alias
+  provider_alias     = module.organization-posture.subscription_alias
 
   feature {
 

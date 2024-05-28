@@ -25,7 +25,7 @@ resource "random_string" "random" {
 # Create service principal in customer tenant
 #---------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_service_principal" {
-  client_id = var.sysdig_client_id
+  client_id    = var.sysdig_client_id
   use_existing = true
   lifecycle {
     prevent_destroy = true
@@ -33,9 +33,18 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 }
 
 #---------------------------------------------------------------------------------------------
+# Use an existing resource group for Sysdig resources
+#---------------------------------------------------------------------------------------------
+data "azurerm_resource_group" "existing" {
+  count = var.resource_group != null ? 1 : 0
+  name = var.resource_group
+}
+
+#---------------------------------------------------------------------------------------------
 # Create a resource group for Sysdig resources
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
+  count    = var.resource_group == null ? 1 : 0
   name     = "${var.resource_group_name}-${local.subscription_hash}"
   location = var.region
 }
@@ -44,12 +53,12 @@ resource "azurerm_resource_group" "sysdig_resource_group" {
 # Create an Event Hub Namespace for Sysdig
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
-  name                = "${var.event_hub_namespace_name}-${local.subscription_hash}"
-  location            = azurerm_resource_group.sysdig_resource_group.location
-  resource_group_name = azurerm_resource_group.sysdig_resource_group.name
-  sku                 = var.namespace_sku
-  capacity            = var.throughput_units
-  auto_inflate_enabled = var.auto_inflate_enabled
+  name                     = "${var.event_hub_namespace_name}-${local.subscription_hash}"
+  location                 = var.resource_group != null ? data.azurerm_resource_group.existing[0].location : azurerm_resource_group.sysdig_resource_group[0].location
+  resource_group_name      = var.resource_group != null ? data.azurerm_resource_group.existing[0].name : azurerm_resource_group.sysdig_resource_group[0].name
+  sku                      = var.namespace_sku
+  capacity                 = var.throughput_units
+  auto_inflate_enabled     = var.auto_inflate_enabled
   maximum_throughput_units = var.maximum_throughput_units
 }
 
@@ -59,7 +68,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
 resource "azurerm_eventhub" "sysdig_event_hub" {
   name                = "${var.event_hub_name}-${random_string.random.result}"
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
-  resource_group_name = azurerm_resource_group.sysdig_resource_group.name
+  resource_group_name = var.resource_group != null ? data.azurerm_resource_group.existing[0].name : azurerm_resource_group.sysdig_resource_group[0].name
   partition_count     = var.partition_count
   message_retention   = var.message_retention_days
 }
@@ -71,7 +80,7 @@ resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
   name                = var.consumer_group_name
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
   eventhub_name       = azurerm_eventhub.sysdig_event_hub.name
-  resource_group_name = azurerm_resource_group.sysdig_resource_group.name
+  resource_group_name = var.resource_group != null ? data.azurerm_resource_group.existing[0].name : azurerm_resource_group.sysdig_resource_group[0].name
 }
 
 #---------------------------------------------------------------------------------------------
@@ -80,7 +89,7 @@ resource "azurerm_eventhub_consumer_group" "sysdig_consumer_group" {
 resource "azurerm_eventhub_namespace_authorization_rule" "sysdig_rule" {
   name                = var.eventhub_authorization_rule_name
   namespace_name      = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
-  resource_group_name = azurerm_resource_group.sysdig_resource_group.name
+  resource_group_name = var.resource_group != null ? data.azurerm_resource_group.existing[0].name : azurerm_resource_group.sysdig_resource_group[0].name
 
   listen = true
   send   = true
@@ -121,7 +130,7 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
 resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setting" {
   count = var.enable_entra ? 1 : 0
 
-  name               = "${var.entra_diagnostic_settings_name}-${local.subscription_hash}"
+  name                           = "${var.entra_diagnostic_settings_name}-${local.subscription_hash}"
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
@@ -135,7 +144,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 
   enabled_log {
     category = "SignInLogs"
-    
+
     retention_policy {
       enabled = false
     }
@@ -143,7 +152,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 
   enabled_log {
     category = "NonInteractiveUserSignInLogs"
-  
+
     retention_policy {
       enabled = false
     }
@@ -167,7 +176,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 
   enabled_log {
     category = "ProvisioningLogs"
-  
+
     retention_policy {
       enabled = false
     }
@@ -183,7 +192,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 
   enabled_log {
     category = "RiskyUsers"
-    
+
     retention_policy {
       enabled = false
     }
@@ -191,7 +200,7 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 
   enabled_log {
     category = "UserRiskEvents"
-    
+
 
     retention_policy {
       enabled = false
