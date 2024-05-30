@@ -6,6 +6,14 @@ data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
 
+
+locals {
+  sysdig_cspm_role_default_permissions_actions = ["Microsoft.Web/sites/config/list/action"]
+  agentless_aks_connection_permissions_actions = var.agentless_aks_connection_enabled ? ["Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"] : []
+
+  sysdig_cspm_role_permissions_actions = tolist(setunion(local.sysdig_cspm_role_default_permissions_actions, local.agentless_aks_connection_permissions_actions))
+}
+
 #---------------------------------------------------------------------------------------------
 # Create service principal in customer tenant
 #
@@ -50,10 +58,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
   permissions {
-    actions = [
-      "Microsoft.Web/sites/config/list/action",
-      "Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"
-    ]
+    actions     = local.sysdig_cspm_role_permissions_actions
     not_actions = []
   }
 
