@@ -6,7 +6,7 @@ data "azurerm_management_group" "onboarded_management_group" {
 }
 
 data "azurerm_management_group" "root_management_group" {
-  count  = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
+  count        = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
   display_name = "Tenant Root Group"
 }
 
@@ -18,12 +18,12 @@ locals {
 }
 
 data "azurerm_subscription" "onboarded_subscriptions" {
-  for_each = var.is_organizational && length(local.all_mg_subscription_ids) > 0 ? toset(local.all_mg_subscription_ids) : toset([])
+  for_each        = var.is_organizational && length(local.all_mg_subscription_ids) > 0 ? toset(local.all_mg_subscription_ids) : toset([])
   subscription_id = each.value
 }
 
-locals { 
-    enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
+locals {
+  enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
 }
 
 #---------------------------------------------------------------------------------------------
@@ -32,8 +32,8 @@ locals {
 resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
   count = var.is_organizational ? length(local.enabled_subscriptions) : 0
 
-  name               = "${var.diagnostic_settings_name}-${local.subscription_hash}"
-  target_resource_id = local.enabled_subscriptions[count.index].id
+  name                           = "${var.diagnostic_settings_name}-${local.subscription_hash}"
+  target_resource_id             = local.enabled_subscriptions[count.index].id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
