@@ -62,15 +62,26 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   principal_id       = azuread_service_principal.sysdig_cspm_sp.object_id
 }
 
-#---------------------------------------------------------------------------------------------
-# Call to service-principal integration module to add it to the Sysdig Cloud Account
+#--------------------------------------------------------------------------------------------------------------
+# Call Sysdig Backend to add the service-principal integration for Config Posture to the Sysdig Cloud Account
 #
 # Note (optional): To ensure this gets called after all cloud resources are created, add
 # explicit dependency using depends_on
-#---------------------------------------------------------------------------------------------
-module "service-principal" {
-  source                         = "../integrations/service-principal"
-  sysdig_secure_account_id       = var.sysdig_secure_account_id
-  component_instance_name        = "secure-posture"
-  service_principal_display_name = azuread_service_principal.sysdig_cspm_sp.display_name
+#--------------------------------------------------------------------------------------------------------------
+resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" {
+  account_id                 = var.sysdig_secure_account_id
+  type                       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance                   = "secure-posture"
+  service_principal_metadata = jsonencode({
+    azure = {
+      active_directory_service_principal = {
+        account_enabled           = true
+        display_name              = azuread_service_principal.sysdig_cspm_sp.display_name
+        id                        = azuread_service_principal.sysdig_cspm_sp.id
+        app_display_name          = azuread_service_principal.sysdig_cspm_sp.display_name
+        app_id                    = azuread_service_principal.sysdig_cspm_sp.client_id
+        app_owner_organization_id = azuread_service_principal.sysdig_cspm_sp.application_tenant_id
+      }
+    }
+  })
 }

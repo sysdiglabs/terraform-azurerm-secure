@@ -24,3 +24,22 @@ resource "azurerm_lighthouse_assignment" "lighthouse_assignment" {
   scope                    = "/subscriptions/${var.subscription_id}"
   lighthouse_definition_id = azurerm_lighthouse_definition.lighthouse_definition.id
 }
+
+#-----------------------------------------------------------------------------------------------------------------
+# Call Sysdig Backend to add the service-principal integration for Agentless Scanning to the Sysdig Cloud Account
+#
+# Note (optional): To ensure this gets called after all cloud resources are created, add
+# explicit dependency using depends_on
+#-----------------------------------------------------------------------------------------------------------------
+resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" {
+  account_id                 = var.sysdig_secure_account_id
+  type                       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance                   = "secure-scanning"
+  service_principal_metadata = jsonencode({
+    azure = {
+      active_directory_service_principal = {
+        id = "Azure Lighthouse"
+      }
+    }
+  })
+}

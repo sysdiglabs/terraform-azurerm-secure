@@ -3,22 +3,19 @@
 # installing additional Sysdig features.
 #---------------------------------------------------------------------------------------------
 
-module "threat-detection" {
-  source                   = "../../../modules/threat-detection"
+module "event-hub" {
+  source                   = "../../../modules/integrations/event-hub"
   subscription_id          = "test-subscription"
   region                   = "West US"
-  sysdig_client_id         = "<sysdig_application_client_id>"
-  event_hub_namespace_name = "sysdig-secure-events-abcd"
-  resource_group_name      = "sysdig-secure-events-abcd"
-  diagnostic_settings_name = "sysdig-secure-events-abcd"
+  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
-  is_organizational        = true
-  management_group_ids     = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
+  is_organizational        = module.onboarding.is_organizational
+  management_group_ids     = module.onboarding.management_group_ids
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "threat_detection" {
   account_id = module.onboarding.sysdig_secure_account_id
   type       = "FEATURE_SECURE_THREAT_DETECTION"
   enabled    = true
-  components = [module.threat-detection.event_hub_component_id]
+  components = [module.event-hub.event_hub_component_id]
 }

@@ -26,7 +26,7 @@ module "onboarding" {
   source               = "../../../modules/onboarding"
   subscription_id      = "test-subscription"
   tenant_id            = "test-tenant"
-  sysdig_client_id     = "<sysdig_application_client_id>"
+  sysdig_client_id     = "<sysdig_application_client_id>" // TODO: to be removed
   is_organizational    = true
   management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 }
@@ -34,10 +34,10 @@ module "onboarding" {
 module "config-posture" {
   source                   = "../../../modules/config-posture"
   subscription_id          = "test-subscription"
-  sysdig_client_id         = "<sysdig_application_client_id>"
+  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
-  is_organizational        = true
-  management_group_ids     = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
+  is_organizational        = module.onboarding.is_organizational
+  management_group_ids     = module.onboarding.management_group_ids
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {

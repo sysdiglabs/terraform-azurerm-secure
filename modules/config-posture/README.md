@@ -12,6 +12,8 @@ If instrumenting an Azure Tenant, the following resources will be created:
 - Role assignments with associated role permissions at the Root Management Group level by default for the Tenant, or at each of the
 instrumented Management Groups within the Tenant if provided.
 
+This module will also deploy a Service Principal Component in Sysdig Backend for onboarded Sysdig Cloud Account.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -48,6 +50,7 @@ instrumented Management Groups within the Tenant if provided.
 | [azurerm_role_assignment.sysdig_vm_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.sysdig_k8s_reader_for_tenant](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.sysdig_vm_user_for_tenant](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [sysdig_secure_cloud_auth_account_component.azure_service_principal](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/resources/secure_cloud_auth_account_component) | resource |
 | [azurerm_subscription.primary](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_management_group.root_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 
@@ -65,8 +68,8 @@ instrumented Management Groups within the Tenant if provided.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_principal_display_name"></a> [service\_principal\_display\_name](#output\_service\_principal\_display\_name) | Display name of the Config Posture Service Principal created |
-| <a name="output_service_principal_component_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Component identifier of Config Posture Service Principal created in Sysdig Backend |
+| <a name="output_service_principal_display_name"></a> [service\_principal\_display\_name](#output\_service\_principal\_display\_name) | Display name of the Service Principal created used for Config Posture |
+| <a name="output_service_principal_component_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Component identifier of Service Principal created in Sysdig Backend for Config Posture |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors

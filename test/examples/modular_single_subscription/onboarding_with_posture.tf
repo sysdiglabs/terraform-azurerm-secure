@@ -26,13 +26,13 @@ module "onboarding" {
   source           = "../../../modules/onboarding"
   subscription_id  = "test-subscription"
   tenant_id        = "test-tenant"
-  sysdig_client_id = "<sysdig_application_client_id>"
+  sysdig_client_id = "<sysdig_application_client_id>" // TODO: to be removed
 }
 
 module "config-posture" {
   source                   = "../../../modules/config-posture"
   subscription_id          = "test-subscription"
-  sysdig_client_id         = "<sysdig_application_client_id>"
+  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
 }
 
