@@ -3,11 +3,6 @@ variable "subscription_id" {
   description = "Identifier of the subscription to be onboarded"
 }
 
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
-}
-
 variable "region" {
   type        = string
   description = "Datacenter where Sysdig-related resources will be created"

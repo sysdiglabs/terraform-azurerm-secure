@@ -5,9 +5,7 @@
 
 module "agentless-scanning" {
   source                      = "../../../modules/agentless-scanning"
-  subscription_id             = "test-subscription"
-  sysdig_tenant_id            = "<sysdig_application_tenant_id>" // TODO: to be removed
-  sysdig_service_principal_id = "<sysdig_application_sp_id>" // TODO: to be removed
+  subscription_id             = module.onboarding.subscription_id
   sysdig_secure_account_id    = module.onboarding.sysdig_secure_account_id
 }
 

@@ -5,6 +5,10 @@ data "azurerm_subscription" "sysdig_subscription" {
   subscription_id = var.subscription_id
 }
 
+data "sysdig_secure_trusted_azure_app" "threat_detection" {
+	name = "threat_detection"
+}
+
 # Generate a unique hash for the subscription ID
 locals {
   subscription_hash = substr(md5(data.azurerm_client_config.current.subscription_id), 0, 8)
@@ -34,7 +38,8 @@ resource "random_string" "random" {
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #--------------------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_event_hub_sp" {
-  client_id    = var.sysdig_client_id
+  // XXX: use real value in client_id below till values yaml are available for consumption
+  client_id    = data.sysdig_secure_trusted_azure_app.threat_detection.application_id
   use_existing = true
   lifecycle {
     prevent_destroy = true

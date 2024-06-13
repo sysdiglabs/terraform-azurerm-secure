@@ -8,11 +8,6 @@ variable "tenant_id" {
   description = "Tenant ID of which the subscription is part of"
 }
 
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
-}
-
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool

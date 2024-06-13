@@ -12,7 +12,7 @@ terraform {
   required_providers {
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = "~> 1.24.2"
+      version = "~> 1.28.0"
     }
   }
 }
@@ -26,15 +26,13 @@ module "onboarding" {
   source               = "../../../modules/onboarding"
   subscription_id      = "test-subscription"
   tenant_id            = "test-tenant"
-  sysdig_client_id     = "<sysdig_application_client_id>" // TODO: to be removed
   is_organizational    = true
   management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 }
 
 module "config-posture" {
   source                   = "../../../modules/config-posture"
-  subscription_id          = "test-subscription"
-  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
+  subscription_id          = module.onboarding.subscription_id
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
   management_group_ids     = module.onboarding.management_group_ids

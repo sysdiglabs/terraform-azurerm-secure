@@ -18,7 +18,7 @@ This module will also deploy an Event Hub Component in Sysdig Backend for onboar
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.45.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 1.24.2 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 1.28.0 |
 
 ## Providers
 
@@ -53,6 +53,7 @@ No modules.
 | [azurerm_management_group.root_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 | [azurerm_subscription.onboarded_subscriptions](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_subscription.sysdig_subscription](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [sysdig_secure_trusted_azure_app.threat_detection](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/data-sources/secure_trusted_azure_app) | data source |
 
 ## Inputs
 
@@ -76,7 +77,6 @@ No modules.
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group to be created | `string` | `"sysdig-resource-group"` | no |
 | <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Name of the existing resource group | `string` | n/a | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Identifier of the subscription to be onboarded | `string` | n/a | yes |
-| <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | Service client ID in the Sysdig tenant | `string` | n/a | yes |
 | <a name="input_throughput_units"></a> [throughput\_units](#input\_throughput\_units) | The number of throughput units to be allocated to the Event Hub | `number` | `1` | no |
 | <a name="input_sysdig_secure_account_id"></a> [sysdig\_secure\_account\_id](#input\_sysdig\_secure\_account\_id) | ID of the Sysdig Cloud Account to enable Event Hub integration for (incase of organization, ID of the Sysdig management account) | `string` | n/a | yes |
 
@@ -84,7 +84,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_principal_display_name"></a> [service\_principal\_display\_name](#output\_service\_principal\_display\_name) | Display name of the Service Principal created used for Event Hub integration |
 | <a name="output_event_hub_component_id"></a> [event\_hub\_component\_id](#output\_event\_hub\_component\_id) | Component identifier of Event Hub integration created in Sysdig Backend for Log Ingestion |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

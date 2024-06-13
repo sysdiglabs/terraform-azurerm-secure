@@ -3,11 +3,6 @@ variable "subscription_id" {
   description = "Subscription ID in which to create resources for secure-for-cloud"
 }
 
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID of Config Posture in the Sysdig tenant"
-}
-
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool

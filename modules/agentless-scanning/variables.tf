@@ -3,16 +3,6 @@ variable "subscription_id" {
   description = "Subscription ID in which to create a trust relationship"
 }
 
-variable "sysdig_tenant_id" {
-  type        = string
-  description = "Sysdig Tenant ID"
-}
-
-variable "sysdig_service_principal_id" {
-  type        = string
-  description = "Service Principal ID in the Sysdig tenant"
-}
-
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool

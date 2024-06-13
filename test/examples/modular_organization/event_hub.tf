@@ -5,9 +5,8 @@
 
 module "event-hub" {
   source                   = "../../../modules/integrations/event-hub"
-  subscription_id          = "test-subscription"
+  subscription_id          = module.onboarding.subscription_id
   region                   = "West US"
-  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
   management_group_ids     = module.onboarding.management_group_ids

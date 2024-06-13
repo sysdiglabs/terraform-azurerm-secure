@@ -6,6 +6,10 @@ data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
 
+data "sysdig_secure_trusted_azure_app" "onboarding" {
+	name = "onboarding"
+}
+
 #---------------------------------------------------------------------------------------------------
 # Create service principal in customer tenant, using the Sysdig Managed Application for Onboarding
 #
@@ -18,7 +22,8 @@ data "azurerm_subscription" "primary" {
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #----------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_onboarding_sp" {
-  client_id    = var.sysdig_client_id
+  // XXX: use real value in client_id below till values yaml are available for consumption
+  client_id    = data.sysdig_secure_trusted_azure_app.onboarding.application_id
   use_existing = true
   lifecycle {
     prevent_destroy = true

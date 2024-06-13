@@ -12,7 +12,7 @@ terraform {
   required_providers {
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = "~> 1.24.2"
+      version = "~> 1.28.0"
     }
   }
 }
@@ -26,13 +26,11 @@ module "onboarding" {
   source           = "../../../modules/onboarding"
   subscription_id  = "test-subscription"
   tenant_id        = "test-tenant"
-  sysdig_client_id = "<sysdig_application_client_id>" // TODO: to be removed
 }
 
 module "config-posture" {
   source                   = "../../../modules/config-posture"
-  subscription_id          = "test-subscription"
-  sysdig_client_id         = "<sysdig_application_client_id>" // TODO: to be removed
+  subscription_id          = module.onboarding.subscription_id
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
 }
 
