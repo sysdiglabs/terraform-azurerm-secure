@@ -2,6 +2,8 @@
 
 Terraform module that deploys the Sysdig Secure for Cloud stack in Azure.
 
+With Modular Onboarding, introducing the following design and install structure for `terraform-azurerm-secure`:
+
 * **[Onboarding]**: It onboards an Azure subscription or Tenant for the first time to Sysdig Secure for Cloud, and collects
 inventory and organizational hierarchy in the given tenant. Managed through `onboarding` module. <br/>
 
@@ -52,6 +54,10 @@ For example, to onboard a single Azure subscription, with CSPM enabled, with mod
 For contributing to existing modules or adding new modules, below are some of the best practices recommended :-
 * Module names referred and used in deployment snippets should be consistent with those in their source path.
 * A module can fall into one of two categories - feature module or an integrations module.
+* Every user-facing deployment snippet will,
+  - at the top level first call the feature module or integrations module from this repo. These modules deploy corresponding cloud resources and Sysdig component resources.
+  - the corresponding feature resource will be added as the last block and enabled from the module installed component resource reference.
+  See sample deployment snippets in `test/examples` for more.
 * integrations modules are shared and could enable multiple features. Hence, one should be careful with changes to them.
 * Module naming follows the pattern with "-" , resource and variable naming follows the pattern with "_".
 
