@@ -1,20 +1,26 @@
 # Azure Onboarding Module
 
-This module will deploy an Onboarding Service Principal resource in Azure for a single subscription, or for an Azure Tenant.
-The Onboarding module serves the following:
+This module will deploy Foundational Onboarding resources in Azure for a single subscription, or for an Azure Tenant.
+The Foundational Onboarding module serves the following functions:
 - retrieving inventory for single subscription, or for all subscriptions within Azure Tenant.
 - running organization scraping in the case of organizational onboarding within Azure Tenant.
 
 If instrumenting an Azure subscription, the following resources will be created:
-- A Service Principal in your tenant, associated with the application ID of the Onboarding service client in the Sysdig tenant.
+- A Service Principal in your tenant, associated with the application ID of the Onboarding service client / app registration in the Sysdig tenant.
 - Role assignments with minimal set of permissions for Azure subscription, to grant Sysdig read only permissions for retrieving inventory.
+- A cloud account in the Sysdig Backend, associated with the Azure subscription and with the required component to serve the foundational functions.
 
 If instrumenting an Azure Tenant, the following resources will be created:
-- A Service Principal in your tenant, associated with the application ID of the Onboarding service client in the Sysdig tenant.
+- A Service Principal in your tenant, associated with the application ID of the Onboarding service client / app registration in the Sysdig tenant.
 - Role assignments with minimal set of permissions for Azure subscription provided as management account/subscription, for retrieving inventory
 and running organization scraping.
 - Role assignments with minimal set of permissions at the Root Management Group level by default for the Tenant, or at each of the
 instrumented Management Groups within the Tenant if provided, for retrieving inventory.
+- A cloud account in the Sysdig Backend, associated with the Azure subscription and with the required component to serve the foundational functions. 
+- A cloud organization in the Sysdig Backend, associated with the Azure Tenant to fetch the organization structure to install Sysdig Secure for Cloud on.
+
+Note:
+- The outputs from the foundational module, such as `sysdig_secure_account_id` are needed as inputs to the other features/integrations modules for subsequent modular installs.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
