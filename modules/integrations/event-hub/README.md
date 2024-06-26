@@ -24,9 +24,10 @@ This module will also deploy an Event Hub Component in Sysdig Backend for onboar
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.47.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.94.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.45.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.76.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 1.28.0 |
 
 ## Modules
 
@@ -51,6 +52,7 @@ No modules.
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_management_group.onboarded_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 | [azurerm_management_group.root_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
+| [azurerm_resource_group.existing](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.onboarded_subscriptions](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_subscription.sysdig_subscription](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [sysdig_secure_trusted_azure_app.threat_detection](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/data-sources/secure_trusted_azure_app) | data source |
@@ -74,11 +76,11 @@ No modules.
 | <a name="input_namespace_sku"></a> [namespace\_sku](#input\_namespace\_sku) | SKU (Plan) for the namespace that will be created | `string` | `"Standard"` | no |
 | <a name="input_partition_count"></a> [partition\_count](#input\_partition\_count) | The number of partitions in the Event Hub | `number` | `4` | no |
 | <a name="input_region"></a> [region](#input\_region) | Datacenter where Sysdig-related resources will be created | `string` | n/a | yes |
+| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Name of the existing resource group | `string` | `null` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group to be created | `string` | `"sysdig-resource-group"` | no |
-| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Name of the existing resource group | `string` | n/a | no |
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Identifier of the subscription to be onboarded | `string` | n/a | yes |
-| <a name="input_throughput_units"></a> [throughput\_units](#input\_throughput\_units) | The number of throughput units to be allocated to the Event Hub | `number` | `1` | no |
 | <a name="input_sysdig_secure_account_id"></a> [sysdig\_secure\_account\_id](#input\_sysdig\_secure\_account\_id) | ID of the Sysdig Cloud Account to enable Event Hub integration for (incase of organization, ID of the Sysdig management account) | `string` | n/a | yes |
+| <a name="input_throughput_units"></a> [throughput\_units](#input\_throughput\_units) | The number of throughput units to be allocated to the Event Hub | `number` | `1` | no |
 
 ## Outputs
 
