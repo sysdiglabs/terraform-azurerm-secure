@@ -10,6 +10,13 @@ data "sysdig_secure_trusted_azure_app" "config_posture" {
 	name = "config_posture"
 }
 
+locals {
+  sysdig_cspm_role_default_permissions_actions = ["Microsoft.Web/sites/config/list/action"]
+  agentless_aks_connection_permissions_actions = var.agentless_aks_connection_enabled ? ["Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"] : []
+
+  sysdig_cspm_role_permissions_actions = tolist(setunion(local.sysdig_cspm_role_default_permissions_actions, local.agentless_aks_connection_permissions_actions))
+}
+
 #--------------------------------------------------------------------------------------------------------------
 # Create service principal in customer tenant, using the Sysdig Managed Application for Config Posture (CSPM)
 #
@@ -22,7 +29,6 @@ data "sysdig_secure_trusted_azure_app" "config_posture" {
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #--------------------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_cspm_sp" {
-  // XXX: use real value in client_id below till values yaml are available for consumption
   client_id    = data.sysdig_secure_trusted_azure_app.config_posture.application_id
   use_existing = true
   lifecycle {
@@ -39,6 +45,15 @@ resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
 }
 
 #---------------------------------------------------------------------------------------------
+# Assign "Reader" role to Sysdig SP for primary subscription
+#---------------------------------------------------------------------------------------------
+resource "azurerm_role_assignment" "sysdig_reader" {
+  scope                = data.azurerm_subscription.primary.id
+  role_definition_name = "Reader"
+  principal_id         = azuread_service_principal.sysdig_cspm_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
@@ -47,9 +62,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
   permissions {
-    actions     = [
-      "Microsoft.Web/sites/config/list/action"
-    ]
+    actions     = local.sysdig_cspm_role_permissions_actions
     not_actions = []
   }
 

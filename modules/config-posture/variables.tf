@@ -19,3 +19,9 @@ variable "sysdig_secure_account_id" {
   type        = string
   description = "ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)"
 }
+
+variable "agentless_aks_connection_enabled" {
+  type        = bool
+  description = "Enable the Agentless AKS connection to the K8s clusters within the cloud. This allows admin access. Read more about why this is needed in the official docs."
+  default     = false
+}
