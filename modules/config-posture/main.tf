@@ -1,7 +1,6 @@
-provider "azurerm" {
-  features {}
-}
-
+#---------------------------------------------------------------------------------------------
+# Fetch the subscription data
+#---------------------------------------------------------------------------------------------
 data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
@@ -31,9 +30,6 @@ locals {
 resource "azuread_service_principal" "sysdig_cspm_sp" {
   client_id    = data.sysdig_secure_trusted_azure_app.config_posture.application_id
   use_existing = true
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 #---------------------------------------------------------------------------------------------
@@ -102,4 +98,14 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
+
+  depends_on = [
+    azuread_directory_role_assignment.sysdig_ad_reader,
+    azurerm_role_assignment.sysdig_reader,
+    azurerm_role_assignment.sysdig_cspm_role_assignment,
+
+    # conditional based on org onboarding
+    azurerm_role_assignment.sysdig_reader_for_tenant,
+    azurerm_role_assignment.sysdig_cspm_role_assignment_for_tenant
+  ]
 }

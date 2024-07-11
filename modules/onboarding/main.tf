@@ -22,12 +22,8 @@ data "sysdig_secure_trusted_azure_app" "onboarding" {
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #----------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_onboarding_sp" {
-  // XXX: use real value in client_id below till values yaml are available for consumption
   client_id    = data.sysdig_secure_trusted_azure_app.onboarding.application_id
   use_existing = true
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 #-------------------------------------------------------------------------------------------------

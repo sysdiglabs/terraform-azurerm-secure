@@ -38,12 +38,8 @@ resource "random_string" "random" {
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #--------------------------------------------------------------------------------------------------------------
 resource "azuread_service_principal" "sysdig_event_hub_sp" {
-  // XXX: use real value in client_id below till values yaml are available for consumption
   client_id    = data.sysdig_secure_trusted_azure_app.threat_detection.application_id
   use_existing = true
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 #---------------------------------------------------------------------------------------------
@@ -290,4 +286,15 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
       }
     }
   })
+
+  depends_on = [
+    azurerm_role_assignment.sysdig_data_receiver,
+    azurerm_monitor_diagnostic_setting.sysdig_diagnostic_setting,
+
+    # conditional based on if entra enabled
+    azurerm_monitor_aad_diagnostic_setting.sysdig_entra_diagnostic_setting,
+
+    # conditional based on org onboarding
+    azurerm_monitor_diagnostic_setting.sysdig_org_diagnostic_setting
+  ]
 }

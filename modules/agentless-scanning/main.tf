@@ -1,7 +1,6 @@
-provider "azurerm" {
-  features {}
-}
-
+#---------------------------------------------------------------------------------------------
+# Fetch the subscription data
+#---------------------------------------------------------------------------------------------
 data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
@@ -45,4 +44,11 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
+
+  depends_on = [
+    azurerm_lighthouse_assignment.lighthouse_assignment,
+
+    # conditional based on org onboarding
+    azurerm_lighthouse_assignment.lighthouse_assignment_for_tenant
+  ]
 }
