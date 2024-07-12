@@ -286,15 +286,4 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
       }
     }
   })
-
-  depends_on = [
-    azurerm_role_assignment.sysdig_data_receiver,
-    azurerm_monitor_diagnostic_setting.sysdig_diagnostic_setting,
-
-    # conditional based on if entra enabled
-    azurerm_monitor_aad_diagnostic_setting.sysdig_entra_diagnostic_setting,
-
-    # conditional based on org onboarding
-    azurerm_monitor_diagnostic_setting.sysdig_org_diagnostic_setting
-  ]
 }

@@ -98,14 +98,4 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
-
-  depends_on = [
-    azuread_directory_role_assignment.sysdig_ad_reader,
-    azurerm_role_assignment.sysdig_reader,
-    azurerm_role_assignment.sysdig_cspm_role_assignment,
-
-    # conditional based on org onboarding
-    azurerm_role_assignment.sysdig_reader_for_tenant,
-    azurerm_role_assignment.sysdig_cspm_role_assignment_for_tenant
-  ]
 }
