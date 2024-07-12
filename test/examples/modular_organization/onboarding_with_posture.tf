@@ -43,4 +43,5 @@ resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
   type       = "FEATURE_SECURE_CONFIG_POSTURE"
   enabled    = true
   components = [module.config-posture.service_principal_component_id]
+  depends_on = [ module.config-posture ]
 }
