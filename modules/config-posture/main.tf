@@ -98,5 +98,4 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
-
 }
