@@ -284,6 +284,16 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
         event_hub_namespace = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
         consumer_group      = azurerm_eventhub_consumer_group.sysdig_consumer_group.name
       }
+      service_principal = {
+        active_directory_service_principal = {
+          account_enabled           = true
+          display_name              = azuread_service_principal.sysdig_event_hub_sp.display_name
+          id                        = azuread_service_principal.sysdig_event_hub_sp.id
+          app_display_name          = azuread_service_principal.sysdig_event_hub_sp.display_name
+          app_id                    = azuread_service_principal.sysdig_event_hub_sp.client_id
+          app_owner_organization_id = azuread_service_principal.sysdig_event_hub_sp.application_tenant_id
+        }
+      }
     }
   })
 }

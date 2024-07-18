@@ -18,7 +18,7 @@ This module will also deploy an Event Hub Component in Sysdig Backend for onboar
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.45.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 1.28.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 1.28.5 |
 
 ## Providers
 
@@ -27,7 +27,7 @@ This module will also deploy an Event Hub Component in Sysdig Backend for onboar
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.45.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.76.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
-| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 1.28.0 |
+| <a name="provider_sysdig"></a> [sysdig](#provider\_sysdig) | >= 1.28.5 |
 
 ## Modules
 
