@@ -104,9 +104,16 @@ variable "management_group_ids" {
   default     = []
 }
 
-variable "enable_entra" {
-  description = "(Optional) Used to enable or disable Entra logs."
+variable "enable_entra_single_subscription" {
+  description = "(Optional) Used to enable or disable Entra logs for single subscription, defaults to false."
   type        = bool
+  default     = false
+}
+
+variable "enable_entra_organization" {
+  description = "(Optional) Used to enable or disable Entra logs for organizations, defaults to true."
+  type        = bool
+  default     = true
 }
 
 variable "sysdig_secure_account_id" {
