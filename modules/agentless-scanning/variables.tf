@@ -3,11 +3,6 @@ variable "subscription_id" {
   description = "Subscription ID in which to create a trust relationship"
 }
 
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
-}
-
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool
@@ -20,8 +15,7 @@ variable "management_group_ids" {
   default     = []
 }
 
-variable "agentless_aks_connection_enabled" {
-  type        = bool
-  description = "Enable the Agentless AKS connection to the K8s clusters within the cloud. This allows admin access. Read more about why this is needed in the official docs."
-  default     = false
+variable "sysdig_secure_account_id" {
+  type        = string
+  description = "ID of the Sysdig Cloud Account to enable Agentless Scanning for (incase of organization, ID of the Sysdig management account)"
 }

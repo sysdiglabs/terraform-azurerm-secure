@@ -1,11 +1,11 @@
 variable "subscription_id" {
   type        = string
-  description = "Subscription ID in which to create a trust relationship"
+  description = "Subscription ID in which to create secure-for-cloud onboarding resources"
 }
 
-variable "sysdig_client_id" {
+variable "tenant_id" {
   type        = string
-  description = "Service client ID in the Sysdig tenant"
+  description = "Tenant ID of which the subscription is part of"
 }
 
 variable "is_organizational" {
@@ -18,10 +18,4 @@ variable "management_group_ids" {
   description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
   type        = set(string)
   default     = []
-}
-
-variable "agentless_aks_connection_enabled" {
-  type        = bool
-  description = "Enable the Agentless AKS connection to the K8s clusters within the cloud. This allows admin access. Read more about why this is needed in the official docs."
-  default     = false
 }

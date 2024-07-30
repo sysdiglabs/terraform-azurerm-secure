@@ -1,11 +1,6 @@
 variable "subscription_id" {
   type        = string
-  description = "Subscription ID in which to create a trust relationship"
-}
-
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
+  description = "Subscription ID in which to create resources for secure-for-cloud"
 }
 
 variable "is_organizational" {
@@ -18,6 +13,11 @@ variable "management_group_ids" {
   description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
   type        = set(string)
   default     = []
+}
+
+variable "sysdig_secure_account_id" {
+  type        = string
+  description = "ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)"
 }
 
 variable "agentless_aks_connection_enabled" {

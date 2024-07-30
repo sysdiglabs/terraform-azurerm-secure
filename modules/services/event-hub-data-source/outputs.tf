@@ -8,11 +8,11 @@ output "event_hub_namespace" {
   description = "Name of the newly created Event Hub Namespace"
 }
 output "consumer_group_name" {
-    value       = azurerm_eventhub_consumer_group.sysdig_consumer_group.name
-    description = "Name of the newly created Event Hub Consumer Group"
+  value       = azurerm_eventhub_consumer_group.sysdig_consumer_group.name
+  description = "Name of the newly created Event Hub Consumer Group"
 }
 
 output "subscription_alias" {
-  value = data.azurerm_subscription.sysdig_subscription.display_name
+  value       = data.azurerm_subscription.sysdig_subscription.display_name
   description = "Display name of the subscription"
 }

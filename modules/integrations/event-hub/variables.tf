@@ -3,11 +3,6 @@ variable "subscription_id" {
   description = "Identifier of the subscription to be onboarded"
 }
 
-variable "sysdig_client_id" {
-  type        = string
-  description = "Service client ID in the Sysdig tenant"
-}
-
 variable "region" {
   type        = string
   description = "Datacenter where Sysdig-related resources will be created"
@@ -52,6 +47,7 @@ variable "namespace_sku" {
 variable "event_hub_namespace_name" {
   type        = string
   description = "Name of the Event Hub Namespace to be created"
+  default     = "sysdig-event-hub-namespace"
 }
 
 variable "event_hub_name" {
@@ -112,4 +108,9 @@ variable "enable_entra" {
   description = "(Optional) Used to enable or disable Entra logs, defaults to true."
   type        = bool
   default     = true
+}
+
+variable "sysdig_secure_account_id" {
+  type        = string
+  description = "ID of the Sysdig Cloud Account to enable Event Hub integration for (incase of organization, ID of the Sysdig management account)"
 }

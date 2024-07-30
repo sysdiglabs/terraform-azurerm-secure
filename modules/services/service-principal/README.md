@@ -55,6 +55,7 @@ No modules.
 | <a name="input_sysdig_client_id"></a> [sysdig\_client\_id](#input\_sysdig\_client\_id) | The application ID of the service client in the Sysdig tenant. Service principal will be created for this application client ID | `string` | n/a | yes |
 | <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | true/false whether secure-for-cloud should be deployed in an organizational setup (all subscriptions of tenant) or not (only on default azure provider subscription) | `bool` | `false` | no |
 | <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids) | List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups. | `set(string)` | `[]` | no |
+| <a name="agentless_aks_connection_enabled"></a> [agentless\_aks\_connection\_enabled](#input\_agentless\_aks\_connection\_enabled) | true/false whether secure-for-cloud should be deployed with access to the Azure AKS clusters | `bool` | `false` | no |
 
 ## Outputs
 

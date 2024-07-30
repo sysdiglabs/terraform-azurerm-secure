@@ -5,14 +5,18 @@ data "azurerm_subscription" "sysdig_subscription" {
   subscription_id = var.subscription_id
 }
 
+data "sysdig_secure_trusted_azure_app" "threat_detection" {
+	name = "threat_detection"
+}
+
 # Generate a unique hash for the subscription ID
 locals {
   subscription_hash = substr(md5(data.azurerm_client_config.current.subscription_id), 0, 8)
 }
 
-# A random resource is used to generate unique Event Hub names. 
-# This prevents conflicts when recreating an Event Hub Namespace with the same name. 
-# Azure caches the Event Hub name after deletion. 
+# A random resource is used to generate unique Event Hub names.
+# This prevents conflicts when recreating an Event Hub Namespace with the same name.
+# Azure caches the Event Hub name after deletion.
 # If the namespace is recreated, Azure restores the existing Event Hub, causing a Terraform apply failure.
 resource "random_string" "random" {
   length  = 4
@@ -21,15 +25,21 @@ resource "random_string" "random" {
 }
 
 
-#---------------------------------------------------------------------------------------------
-# Create service principal in customer tenant
-#---------------------------------------------------------------------------------------------
-resource "azuread_service_principal" "sysdig_service_principal" {
-  client_id    = var.sysdig_client_id
+#--------------------------------------------------------------------------------------------------------------
+# Create service principal in customer tenant, using the Sysdig Managed Application for Threat Detection (CDR)
+# used for event hub integration.
+#
+# If there is an existing service principal in the tenant, this will automatically import
+# and use it, ensuring we have just one service principal linked to the Sysdig application
+# in the customer tenant.
+# Note: Please refer to the caveats of use_existing attribute for this resource.
+#
+# Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
+#       This is to safeguard against unintended deletes if the service principal is in use.
+#--------------------------------------------------------------------------------------------------------------
+resource "azuread_service_principal" "sysdig_event_hub_sp" {
+  client_id    = data.sysdig_secure_trusted_azure_app.threat_detection.application_id
   use_existing = true
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 #---------------------------------------------------------------------------------------------
@@ -37,7 +47,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 #---------------------------------------------------------------------------------------------
 data "azurerm_resource_group" "existing" {
   count = var.resource_group != null ? 1 : 0
-  name = var.resource_group
+  name  = var.resource_group
 }
 
 #---------------------------------------------------------------------------------------------
@@ -45,7 +55,7 @@ data "azurerm_resource_group" "existing" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_resource_group" "sysdig_resource_group" {
   count    = var.resource_group == null ? 1 : 0
-  name     = "${var.resource_group_name}-${local.subscription_hash}"
+  name     = "${var.resource_group_name}-${random_string.random.result}-${local.subscription_hash}"
   location = var.region
 }
 
@@ -53,7 +63,7 @@ resource "azurerm_resource_group" "sysdig_resource_group" {
 # Create an Event Hub Namespace for Sysdig
 #---------------------------------------------------------------------------------------------
 resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
-  name                     = "${var.event_hub_namespace_name}-${local.subscription_hash}"
+  name                     = "${var.event_hub_namespace_name}-${random_string.random.result}-${local.subscription_hash}"
   location                 = var.resource_group != null ? data.azurerm_resource_group.existing[0].location : azurerm_resource_group.sysdig_resource_group[0].location
   resource_group_name      = var.resource_group != null ? data.azurerm_resource_group.existing[0].name : azurerm_resource_group.sysdig_resource_group[0].name
   sku                      = var.namespace_sku
@@ -61,6 +71,7 @@ resource "azurerm_eventhub_namespace" "sysdig_event_hub_namespace" {
   auto_inflate_enabled     = var.auto_inflate_enabled
   maximum_throughput_units = var.maximum_throughput_units
 }
+
 
 #---------------------------------------------------------------------------------------------
 # Create an Event Hub within the Sysdig Namespace
@@ -102,16 +113,14 @@ resource "azurerm_eventhub_namespace_authorization_rule" "sysdig_rule" {
 resource "azurerm_role_assignment" "sysdig_data_receiver" {
   scope                = azurerm_eventhub_namespace.sysdig_event_hub_namespace.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = azuread_service_principal.sysdig_service_principal.object_id
+  principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
 }
 
 #---------------------------------------------------------------------------------------------
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  count = var.is_organizational ? 0 : 1
-
-  name                           = "${var.diagnostic_settings_name}-${local.subscription_hash}"
+  name                           = "${var.diagnostic_settings_name}-${random_string.random.result}-${local.subscription_hash}"
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
@@ -256,4 +265,35 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
       enabled = false
     }
   }
+}
+
+#---------------------------------------------------------------------------------------------
+# Call Sysdig Backend to add the event-hub integration to the Sysdig Cloud Account
+#
+# Note (optional): To ensure this gets called after all cloud resources are created, add
+# explicit dependency using depends_on
+#---------------------------------------------------------------------------------------------
+resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
+  account_id                 = var.sysdig_secure_account_id
+  type                       = "COMPONENT_EVENT_BRIDGE"
+  instance                   = "secure-runtime"
+  event_bridge_metadata = jsonencode({
+    azure = {
+      event_hub_metadata = {
+        event_hub_name      = azurerm_eventhub.sysdig_event_hub.name
+        event_hub_namespace = azurerm_eventhub_namespace.sysdig_event_hub_namespace.name
+        consumer_group      = azurerm_eventhub_consumer_group.sysdig_consumer_group.name
+      }
+      service_principal = {
+        active_directory_service_principal = {
+          account_enabled           = true
+          display_name              = azuread_service_principal.sysdig_event_hub_sp.display_name
+          id                        = azuread_service_principal.sysdig_event_hub_sp.id
+          app_display_name          = azuread_service_principal.sysdig_event_hub_sp.display_name
+          app_id                    = azuread_service_principal.sysdig_event_hub_sp.client_id
+          app_owner_organization_id = azuread_service_principal.sysdig_event_hub_sp.application_tenant_id
+        }
+      }
+    }
+  })
 }

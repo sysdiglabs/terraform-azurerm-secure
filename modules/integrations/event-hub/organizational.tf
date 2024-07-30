@@ -22,7 +22,7 @@ data "azurerm_subscription" "onboarded_subscriptions" {
   subscription_id = each.value
 }
 
-locals {
+locals { 
   enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
 }
 
