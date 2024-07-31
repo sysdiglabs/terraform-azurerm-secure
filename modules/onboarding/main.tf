@@ -49,6 +49,7 @@ resource "sysdig_secure_cloud_auth_account" "azure_account" {
   component {
     type                       = "COMPONENT_SERVICE_PRINCIPAL"
     instance                   = "secure-onboarding"
+    version                    = "v0.1.0"
     service_principal_metadata = jsonencode({
       azure = {
         active_directory_service_principal = {
