@@ -40,6 +40,7 @@ resource "random_string" "random" {
 resource "azuread_service_principal" "sysdig_event_hub_sp" {
   client_id    = data.sysdig_secure_trusted_azure_app.threat_detection.application_id
   use_existing = true
+  notes        = "Service Principal linked to the Sysdig Secure CNAPP - CDR module"
 }
 
 #---------------------------------------------------------------------------------------------
