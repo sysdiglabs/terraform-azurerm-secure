@@ -24,6 +24,7 @@ data "sysdig_secure_trusted_azure_app" "onboarding" {
 resource "azuread_service_principal" "sysdig_onboarding_sp" {
   client_id    = data.sysdig_secure_trusted_azure_app.onboarding.application_id
   use_existing = true
+  notes        = "Service Principal linked to the Sysdig Secure CNAPP - Onboarding module"
 }
 
 #-------------------------------------------------------------------------------------------------

@@ -30,6 +30,7 @@ locals {
 resource "azuread_service_principal" "sysdig_cspm_sp" {
   client_id    = data.sysdig_secure_trusted_azure_app.config_posture.application_id
   use_existing = true
+  notes        = "Service Principal linked to the Sysdig Secure CNAPP - CSPM module"
 }
 
 #---------------------------------------------------------------------------------------------
