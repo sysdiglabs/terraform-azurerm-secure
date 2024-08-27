@@ -114,3 +114,15 @@ variable "sysdig_secure_account_id" {
   type        = string
   description = "ID of the Sysdig Cloud Account to enable Event Hub integration for (incase of organization, ID of the Sysdig management account)"
 }
+
+variable "enabled_platform_logs" {
+  description = "List of platform logs to enable. Options are: 'Administrative', 'Policy', 'Security'."
+  type        = list(string)
+  default     = ["Administrative", "Security", "Policy"]
+}
+
+variable "enabled_entra_logs" {
+  description = "List of Entra logs to enable"
+  type        = list(string)
+  default     = []
+}
