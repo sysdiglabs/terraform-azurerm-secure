@@ -13,8 +13,8 @@ data "azurerm_management_group" "management_groups" {
 }
 
 locals {
-  subscriptions = toset(var.is_organizational && length(var.management_group_ids) == 0 ? data.azurerm_management_group.root_management_group[0].subscription_ids :
-  flatten([for m in data.azurerm_management_group.management_groups : m.subscription_ids]))
+  subscriptions = toset(var.is_organizational && length(var.management_group_ids) == 0 ? data.azurerm_management_group.root_management_group[0].all_subscription_ids :
+  flatten([for m in data.azurerm_management_group.management_groups : m.all_subscription_ids]))
 }
 
 resource "azurerm_lighthouse_assignment" "lighthouse_assignment_for_tenant" {
