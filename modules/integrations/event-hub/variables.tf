@@ -124,5 +124,5 @@ variable "enabled_platform_logs" {
 variable "enabled_entra_logs" {
   description = "List of Entra logs to enable"
   type        = list(string)
-  default     = []
+  default     = ["AuditLogs","SignInLogs","NonInteractiveUserSignInLogs","ServicePrincipalSignInLogs","ManagedIdentitySignInLogs","ProvisioningLogs","ADFSSignInLogs","RiskyUsers","UserRiskEvents","NetworkAccessTrafficLogs","RiskyServicePrincipals","ServicePrincipalRiskEvents","EnrichedOffice365AuditLogs","MicrosoftGraphActivityLogs","RemoteNetworkHealthLogs"]
 }
