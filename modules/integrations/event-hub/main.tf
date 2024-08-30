@@ -185,20 +185,3 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
     }
   })
 }
-
-# M2
-resource "azurerm_monitor_diagnostic_setting" "sysdig_custom_diagnostics" {
-  for_each                       = var.diagnostic_settings
-
-  name                           = "sysdig-diagnostic-settings-${substr(md5(each.key), 0, 8)}-${random_string.random.result}-${local.subscription_hash}"
-  target_resource_id             = each.key
-  eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
-  eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
-
-  dynamic "enabled_log" {
-    for_each = each.value
-    content {
-      category = enabled_log.value
-    }
-  }
-}

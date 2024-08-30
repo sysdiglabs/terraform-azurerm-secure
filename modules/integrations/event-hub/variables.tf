@@ -126,9 +126,3 @@ variable "enabled_entra_logs" {
   type        = list(string)
   default     = ["AuditLogs","SignInLogs","NonInteractiveUserSignInLogs","ServicePrincipalSignInLogs","ManagedIdentitySignInLogs","ProvisioningLogs","ADFSSignInLogs","RiskyUsers","UserRiskEvents","NetworkAccessTrafficLogs","RiskyServicePrincipals","ServicePrincipalRiskEvents","EnrichedOffice365AuditLogs","MicrosoftGraphActivityLogs","RemoteNetworkHealthLogs"]
 }
-
-variable "diagnostic_settings" {
-  type = map(list(string))
-  description = "Map of resource IDs to the list of logs to enable"
-  default = {}
-}
