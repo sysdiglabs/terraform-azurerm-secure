@@ -121,151 +121,36 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  count = var.is_organizational ? 0 : 1 
-  
+  count = length(var.enabled_platform_logs) > 0 ? 1 : 0
+
   name                           = "${var.diagnostic_settings_name}-${random_string.random.result}-${local.subscription_hash}"
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
-  enabled_log {
-    category = "Administrative"
-  }
-
-  enabled_log {
-    category = "Security"
-  }
-
-  enabled_log {
-    category = "Policy"
+  dynamic "enabled_log" {
+    for_each = var.enabled_platform_logs
+    content {
+      category = enabled_log.value
+    }
   }
 }
 
 resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setting" {
-  count = var.enable_entra ? 1 : 0
+  count = var.enable_entra && length(var.enabled_entra_logs) > 0 ? 1 : 0
 
   name                           = "${var.entra_diagnostic_settings_name}-${local.subscription_hash}"
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
-  enabled_log {
-    category = "AuditLogs"
+  dynamic "enabled_log" {
+    for_each = var.enabled_entra_logs
+    content {
+      category = enabled_log.value
 
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "SignInLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "NonInteractiveUserSignInLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "ServicePrincipalSignInLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "ManagedIdentitySignInLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "ProvisioningLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "ADFSSignInLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "RiskyUsers"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "UserRiskEvents"
-
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "NetworkAccessTrafficLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "RiskyServicePrincipals"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "ServicePrincipalRiskEvents"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "EnrichedOffice365AuditLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "MicrosoftGraphActivityLogs"
-
-    retention_policy {
-      enabled = false
-    }
-  }
-
-  enabled_log {
-    category = "RemoteNetworkHealthLogs"
-
-    retention_policy {
-      enabled = false
+      retention_policy {
+        enabled = false
+      }
     }
   }
 }
