@@ -2,3 +2,6 @@
 
 # Forensics
 /modules/integrations/ @sysdiglabs/team-forensics
+
+# Agentless VM
+/modules/agentless-scanning/ @sysdiglabs/team-agentless
