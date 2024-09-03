@@ -11,7 +11,7 @@ Provides unified threat-detection, compliance, forensics and analysis through th
 
 * **[CSPM](https://docs.sysdig.com/en/docs/sysdig-secure/posture/)**: It evaluates periodically your cloud configuration, using Cloud Custodian, against some benchmarks and returns the results and remediation you need to fix. Managed through `config-posture` module. <br/>
 
-* **[CDR (Cloud Detection and Response)]**: It sends periodically activity logs to Sysdig by directing those to a dedicated Event Hub which will be queried by the Sysdig backend to retrieve the data for log ingestion. Enabled via `event-hub` integrations module. <br/>
+* **[CDR (Cloud Detection and Response)](https://docs.sysdig.com/en/docs/sysdig-secure/threats/activity/events-feed/)**: It sends periodically activity logs to Sysdig by directing those to a dedicated Event Hub which will be queried by the Sysdig backend to retrieve the data for log ingestion. Enabled via `event-hub` integrations module. <br/>
 
 * **[Vulnerability Management Agentless Host Scanning](https://docs.sysdig.com/en/docs/sysdig-secure/vulnerabilities/)**: It uses disk snapshots to provide highly accurate views of vulnerability risk, access to public exploits, and risk management.  Managed through `agentless-scanning` module. <br/>
 
