@@ -121,7 +121,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  count = length(var.enabled_platform_logs) > 0 ? 1 : 0
+  count = length(var.enabled_platform_logs) > 0 && !var.is_organizational ? 1 : 0
 
   name                           = "${var.diagnostic_settings_name}-${random_string.random.result}-${local.subscription_hash}"
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id
