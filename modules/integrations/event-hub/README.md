@@ -85,9 +85,12 @@ No modules.
 | <a name="input_enabled_entra_logs"></a> [enabled\_entra\_logs](#input\_enabled\_entra\_logs)                                             | List of Entra logs to enable                                                                          | `list(string)` | `["AuditLogs","SignInLogs","NonInteractiveUserSignInLogs","ServicePrincipalSignInLogs","ManagedIdentitySignInLogs","ProvisioningLogs","ADFSSignInLogs","RiskyUsers","UserRiskEvents","NetworkAccessTrafficLogs","RiskyServicePrincipals","ServicePrincipalRiskEvents","EnrichedOffice365AuditLogs","MicrosoftGraphActivityLogs","RemoteNetworkHealthLogs"]` | no |
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_event_hub_component_id"></a> [event\_hub\_component\_id](#output\_event\_hub\_component\_id) | Component identifier of Event Hub integration created in Sysdig Backend for Log Ingestion |
+| Name                                                                                                                  | Description |
+|-----------------------------------------------------------------------------------------------------------------------|-------------|
+| <a name="output_event_hub_component_id"></a> [event\_hub\_component\_id](#output\_event\_hub\_component\_id)          | Component identifier of Event Hub integration created in Sysdig Backend for Log Ingestion |
+| <a name="output_event_hub_name"></a> [event\_hub\_name](#output\_event\_hub\_name)                          | Event Hub integration created for Sysdig Log Ingestion |
+| <a name="output_sysdig_authorization_id"></a> [sysdig\_authorization\_id](#output\_sysdig\_authorization\_id)         | Identifier of Authorization Rule for the Sysdig Namespace |
+| <a name="output_unique_deployment_id"></a> [unique\_deployment\_id](#output\_unique\_deployment\_id) | Identifier of Deployment that gets added to provisioned resources |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
