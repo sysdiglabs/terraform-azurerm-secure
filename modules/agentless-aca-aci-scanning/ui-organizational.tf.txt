@@ -1,0 +1,5 @@
+module "agentless-aca-aci-scanning" {
+  source = "sysdiglabs/secure/azurerm//modules/agentless-aca-aci-scanning"
+  is_organizational = [module.onboarding.is_organizational]
+  management_group_ids = [module.onboarding.management_group_ids]
+}
