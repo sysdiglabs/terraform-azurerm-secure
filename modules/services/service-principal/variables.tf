@@ -25,3 +25,9 @@ variable "agentless_aks_connection_enabled" {
   description = "Enable the Agentless AKS connection to the K8s clusters within the cloud. This allows admin access. Read more about why this is needed in the official docs."
   default     = false
 }
+
+variable "agentless_azure_functions_enabled" {
+  type        = bool
+  description = "Setting this field to true enables Azure functions to be scanned."
+  default     = false
+}

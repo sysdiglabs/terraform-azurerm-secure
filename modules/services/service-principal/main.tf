@@ -6,8 +6,13 @@ data "azurerm_subscription" "primary" {
 locals {
   sysdig_cspm_role_default_permissions_actions = ["Microsoft.Web/sites/config/list/action"]
   agentless_aks_connection_permissions_actions = var.agentless_aks_connection_enabled ? ["Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"] : []
+  agentless_workload_permissions = var.agentless_azure_functions_enabled ? [
+    "Microsoft.Web/sites/config/list/Action",
+    "microsoft.web/sites/config/appsettings/read",
+    "Microsoft.Web/sites/publish/Action"
+  ] : []
 
-  sysdig_cspm_role_permissions_actions = tolist(setunion(local.sysdig_cspm_role_default_permissions_actions, local.agentless_aks_connection_permissions_actions))
+  sysdig_cspm_role_permissions_actions = tolist(setunion(local.sysdig_cspm_role_default_permissions_actions, local.agentless_aks_connection_permissions_actions, local.agentless_workload_permissions))
 }
 
 #---------------------------------------------------------------------------------------------
@@ -27,7 +32,7 @@ resource "azuread_service_principal" "sysdig_sp" {
   lifecycle {
     prevent_destroy = true
   }
-  notes        = "Service Principal linked to the Sysdig Secure CNAPP"
+  notes = "Service Principal linked to the Sysdig Secure CNAPP"
 }
 
 #---------------------------------------------------------------------------------------------
@@ -70,5 +75,25 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
 resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
+  principal_id       = azuread_service_principal.sysdig_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
+# Custom role assignment for Azure functions
+#---------------------------------------------------------------------------------------------
+resource "azurerm_role_assignment" "sysdig_file_reader_role_assignment" {
+  count              = var.agentless_azure_functions_enabled ? 1 : 0
+  scope              = data.azurerm_subscription.primary.id
+  role_definition_id = "b8eda974-7b85-4f76-af95-65846b26df6d"
+  principal_id       = azuread_service_principal.sysdig_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
+# Custom role assignment for Azure functions
+#---------------------------------------------------------------------------------------------
+resource "azurerm_role_assignment" "sysdig_blob_reader_role_assignment" {
+  count              = var.agentless_azure_functions_enabled ? 1 : 0
+  scope              = data.azurerm_subscription.primary.id
+  role_definition_id = "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1"
   principal_id       = azuread_service_principal.sysdig_sp.object_id
 }
