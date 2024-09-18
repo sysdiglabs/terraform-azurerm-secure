@@ -1,4 +1,4 @@
-# Azure Service Prinicpal Module
+# Agentless Azure Functions
 
 This module will grant Sysdig permissions necessary for the Agentless solution to scan Azure functions.
 
