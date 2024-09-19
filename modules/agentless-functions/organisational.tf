@@ -49,7 +49,7 @@ resource "azurerm_role_assignment" "sysdig_file_reader_role_assignment_for_tenan
   for_each = var.is_organizational ? local.management_groups : []
 
   scope              = each.key
-  role_definition_id = azurerm_role_definition.storage_file_reader.role_definition_id
+  role_definition_id = data.azurerm_role_definition.storage_file_reader.role_definition_id
   principal_id       = data.azuread_service_principal.sysdig_sp.object_id
 }
 
@@ -61,7 +61,7 @@ resource "azurerm_role_assignment" "sysdig_blob_reader_role_assignment_for_tenan
   for_each = var.is_organizational ? local.management_groups : []
 
   scope              = each.key
-  role_definition_id = azurerm_role_definition.storage_blob_reader.role_definition_id
+  role_definition_id = data.azurerm_role_definition.storage_blob_reader.role_definition_id
   principal_id       = data.azuread_service_principal.sysdig_sp.object_id
 }
 
