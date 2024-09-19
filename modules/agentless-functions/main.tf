@@ -15,6 +15,14 @@ data "azuread_service_principal" "sysdig_sp" {
   object_id = var.service_principal_id
 }
 
+data "azurerm_role_definition" "storage_file_reader" {
+  name = "Storage File Data Privileged Reader"
+}
+
+data "azurerm_role_definition" "storage_blob_reader" {
+  name = "Storage Blob Data Reader"
+}
+
 #---------------------------------------------------------------------------------------------
 # Create a custom role for accessing function app config
 #---------------------------------------------------------------------------------------------
@@ -46,7 +54,7 @@ resource "azurerm_role_assignment" "func_app_config_role_assignment" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_file_reader_role_assignment" {
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = "b8eda974-7b85-4f76-af95-65846b26df6d"
+  role_definition_id = azurerm_role_definition.storage_file_reader.role_definition_id
   principal_id       = data.azuread_service_principal.sysdig_sp.object_id
 }
 
@@ -56,7 +64,7 @@ resource "azurerm_role_assignment" "sysdig_file_reader_role_assignment" {
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_blob_reader_role_assignment" {
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = "2a2b9908-6ea1-4ae2-8e65-a410df84e7d1"
+  role_definition_id = azurerm_role_definition.storage_blob_reader.role_definition_id
   principal_id       = data.azuread_service_principal.sysdig_sp.object_id
 }
 
