@@ -12,18 +12,6 @@ locals {
     [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups",m)])
 }
 
-#---------------------------------------------------------------------------------------------
-# Call Sysdig Backend to create organization with foundational onboarding
-# (ensure it is called after all above cloud resources are created)
-#---------------------------------------------------------------------------------------------
-resource "sysdig_secure_organization" "azure_organization" {
-  count = var.is_organizational ? 1 : 0
-
-  management_account_id   = sysdig_secure_cloud_auth_account.azure_account.id
-  organizational_unit_ids = var.management_group_ids
-  depends_on              = [azurerm_role_assignment.sysdig_vm_workload_scanning_acrpull_for_tenant, sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant, sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant, sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant]
-}
-
 
 #---------------------------------------------------------------------------------------------
 # Create a custom role for accessing function app config
@@ -87,4 +75,36 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role
   scope              = each.key
   role_definition_id = data.azurerm_role_definition.storage_blob_reader.role_definition_id
   principal_id       = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
+# Add Component to Cloud Auth Account for VM Workload Scanning
+# (ensure it is called after all above cloud resources are created using explicit depends_on)
+#---------------------------------------------------------------------------------------------
+
+resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_component" {
+  count = var.is_organizational ? 1 : 0
+
+  account_id                 = var.sysdig_secure_account_id
+  type                       = "COMPONENT_VM_WORKLOAD_SCANNING"
+  instance                   = "secure-vm-workload-scanning"
+  service_principal_metadata = jsonencode({
+    azure = {
+      active_directory_service_principal = {
+        account_enabled           = true
+        display_name              = azuread_service_principal.sysdig_vm_workload_scanning_sp.display_name
+        id                        = azuread_service_principal.sysdig_vm_workload_scanning_sp.id
+        app_display_name          = azuread_service_principal.sysdig_vm_workload_scanning_sp.display_name
+        app_id                    = azuread_service_principal.sysdig_vm_workload_scanning_sp.client_id
+        app_owner_organization_id = azuread_service_principal.sysdig_vm_workload_scanning_sp.application_tenant_id
+      }
+    }
+  })
+
+  depends_on = [
+    sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_acrpull_for_tenant
+  ]
 }
