@@ -8,11 +8,6 @@ variable "subscription_id" {
   description = "Subscription ID in which to create secure-for-cloud onboarding resources"
 }
 
-variable "tenant_id" {
-  type        = string
-  description = "Tenant ID of which the subscription is part of"
-}
-
 variable "is_organizational" {
   description = "(Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant."
   type        = bool
