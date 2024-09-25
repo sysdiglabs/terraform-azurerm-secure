@@ -108,8 +108,6 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_assignme
 #---------------------------------------------------------------------------------------------
 
 resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_component" {
-  count = var.is_organizational ? 0 : 1
-
   account_id                 = var.sysdig_secure_account_id
   type                       = "COMPONENT_VM_WORKLOAD_SCANNING"
   instance                   = "secure-vm-workload-scanning"
@@ -130,6 +128,10 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
     sysdig_vm_workload_scanning_func_app_config_role_assignment,
     sysdig_vm_workload_scanning_file_reader_role_assignment,
     sysdig_vm_workload_scanning_blob_reader_role_assignment,
-    sysdig_vm_workload_scanning_acrpull_assignment
+    sysdig_vm_workload_scanning_acrpull_assignment,
+    sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant,
+    sysdig_vm_workload_scanning_acrpull_for_tenant
   ]
 }
