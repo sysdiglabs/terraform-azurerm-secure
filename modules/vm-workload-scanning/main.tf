@@ -109,7 +109,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_assignme
 
 resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_component" {
   account_id                 = var.sysdig_secure_account_id
-  type                       = "COMPONENT_VM_WORKLOAD_SCANNING"
+  type                       = "COMPONENT_SERVICE_PRINCIPAL"
   instance                   = "secure-vm-workload-scanning"
   service_principal_metadata = jsonencode({
     azure = {
