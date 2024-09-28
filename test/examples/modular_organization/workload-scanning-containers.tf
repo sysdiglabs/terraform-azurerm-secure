@@ -13,7 +13,7 @@ module "vm-workload-scanning" {
 
 resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-aca-aci" {
   account_id = module.onboarding.sysdig_secure_account_id
-  type       = "FEATURE_SECURE_VM_WORKLOAD_SCANNING_MANAGED_CONTAINERS"
+  type       = "FEATURE_SECURE_WORKLOAD_SCANNING_CONTAINERS"
   enabled    = true
   components = [module.vm-workload-scanning.service_principal_component_id]
   depends_on = [ module.vm-workload-scanning ]
