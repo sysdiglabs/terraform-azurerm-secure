@@ -176,7 +176,7 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
         active_directory_service_principal = {
           account_enabled           = true
           display_name              = azuread_service_principal.sysdig_event_hub_sp.display_name
-          id                        = azuread_service_principal.sysdig_event_hub_sp.id
+          id                        = azuread_service_principal.sysdig_event_hub_sp.object_id
           app_display_name          = azuread_service_principal.sysdig_event_hub_sp.display_name
           app_id                    = azuread_service_principal.sysdig_event_hub_sp.client_id
           app_owner_organization_id = azuread_service_principal.sysdig_event_hub_sp.application_tenant_id
