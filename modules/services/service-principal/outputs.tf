@@ -8,7 +8,7 @@ output "service_principal_client_id" {
   description = "Client ID of the Service Principal created"
 }
 output "service_principal_id" {
-  value       = azuread_service_principal.sysdig_sp.id
+  value       = azuread_service_principal.sysdig_sp.object_id
   description = "Service Principal ID on the customer tenant"
 }
 

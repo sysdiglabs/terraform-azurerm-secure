@@ -92,7 +92,7 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       active_directory_service_principal = {
         account_enabled           = true
         display_name              = azuread_service_principal.sysdig_cspm_sp.display_name
-        id                        = azuread_service_principal.sysdig_cspm_sp.id
+        id                        = azuread_service_principal.sysdig_cspm_sp.object_id
         app_display_name          = azuread_service_principal.sysdig_cspm_sp.display_name
         app_id                    = azuread_service_principal.sysdig_cspm_sp.client_id
         app_owner_organization_id = azuread_service_principal.sysdig_cspm_sp.application_tenant_id
