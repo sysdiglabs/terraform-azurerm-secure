@@ -65,7 +65,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
   count = var.is_organizational ? 0 : 1
 
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role.role_definition_resource_id
+  role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role[0].role_definition_resource_id
   principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
 }
 
@@ -125,13 +125,13 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
   })
 
   depends_on = [
-    sysdig_vm_workload_scanning_func_app_config_role_assignment,
-    sysdig_vm_workload_scanning_file_reader_role_assignment,
-    sysdig_vm_workload_scanning_blob_reader_role_assignment,
-    sysdig_vm_workload_scanning_acrpull_assignment,
-    sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant,
-    sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant,
-    sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant,
-    sysdig_vm_workload_scanning_acrpull_for_tenant
+    azurerm_role_assignment.sysdig_vm_workload_scanning_func_app_config_role_assignment,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_file_reader_role_assignment,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_blob_reader_role_assignment,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_acrpull_assignment,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant,
+    azurerm_role_assignment.sysdig_vm_workload_scanning_acrpull_for_tenant
   ]
 }
