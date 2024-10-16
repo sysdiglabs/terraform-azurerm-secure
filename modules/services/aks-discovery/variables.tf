@@ -1,3 +1,8 @@
+variable "sysdig_secure_account_id" {
+  type        = string
+  description = "ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)"
+}
+
 variable "subscription_id" {
   type        = string
   description = "Subscription ID in which to create secure-for-cloud onboarding resources"
