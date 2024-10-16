@@ -15,11 +15,6 @@ variable "management_group_ids" {
   default     = []
 }
 
-variable "cspm_application_id" {
-  description = "Application ID of the Sysdig Secure CSPM Azure App"
-  type = string
-}
-
 variable "sysdig_cspm_sp_object_id" {
   description = "Object ID of the CSPM SP within the client's infra"
   type = string
