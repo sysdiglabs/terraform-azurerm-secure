@@ -1,6 +1,6 @@
 variable "sysdig_secure_account_id" {
   type        = string
-  description = "Sysdig Secure Account ID within cloudAuth"
+  description = "ID of the Sysdig Cloud Account to enable VM Workload Scanning with optional AKS discovery"
 }
 
 variable "subscription_id" {
