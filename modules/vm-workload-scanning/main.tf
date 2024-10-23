@@ -1,3 +1,15 @@
+module "aks_discovery" {
+  count = var.aks_discovery_permission_grant ? 1 : 0
+
+  source = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning/aks-discovery"
+
+  sysdig_secure_account_id = var.sysdig_secure_account_id
+  subscription_id = var.subscription_id
+  is_organizational = var.is_organizational
+  management_group_ids = var.management_group_ids
+  sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
+}
+
 data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
@@ -121,10 +133,13 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
         app_id                    = azuread_service_principal.sysdig_vm_workload_scanning_sp.client_id
         app_owner_organization_id = azuread_service_principal.sysdig_vm_workload_scanning_sp.application_tenant_id
       }
+
+      aks_discovery_permission_grant = var.aks_discovery_permission_grant
     }
   })
 
   depends_on = [
+    module.aks_discovery,
     azurerm_role_assignment.sysdig_vm_workload_scanning_func_app_config_role_assignment,
     azurerm_role_assignment.sysdig_vm_workload_scanning_file_reader_role_assignment,
     azurerm_role_assignment.sysdig_vm_workload_scanning_blob_reader_role_assignment,

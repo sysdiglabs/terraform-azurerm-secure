@@ -1,6 +1,6 @@
 variable "sysdig_secure_account_id" {
   type        = string
-  description = "ID of the Sysdig Cloud Account to enable VM Workload Scanning with optional AKS discovery"
+  description = "ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)"
 }
 
 variable "subscription_id" {
@@ -18,12 +18,6 @@ variable "management_group_ids" {
   description = "(Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups."
   type        = set(string)
   default     = []
-}
-
-variable "aks_discovery_permission_grant" {
-    description = "(Optional) Set this field to 'true' to grant AKS discovery permissions to the secure-posture service principal."
-    type        = bool
-    default     = false
 }
 
 variable "sysdig_cspm_sp_object_id" {
