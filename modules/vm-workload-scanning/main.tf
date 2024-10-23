@@ -7,7 +7,11 @@ module "aks_discovery" {
   subscription_id = var.subscription_id
   is_organizational = var.is_organizational
   management_group_ids = var.management_group_ids
+
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
+  sysdig_cspm_sp_application_tenant_id = var.sysdig_cspm_sp_application_tenant_id
+  sysdig_cspm_sp_display_name = var.sysdig_cspm_sp_display_name
+  sysdig_cspm_sp_client_id = var.sysdig_cspm_sp_client_id
 }
 
 data "azurerm_subscription" "primary" {

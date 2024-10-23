@@ -9,3 +9,21 @@ output "sysdig_cspm_sp_object_id" {
   description = "Object ID of the CSPM SP within the client's infra"
   depends_on = [azuread_service_principal.sysdig_cspm_sp]
 }
+
+output "sysdig_cspm_sp_display_name" {
+  value = azuread_service_principal.sysdig_cspm_sp.display_name
+  description = "Display name of the CSPM SP within the client's infra"
+  depends_on = [azuread_service_principal.sysdig_cspm_sp]
+}
+
+output "sysdig_cspm_sp_client_id" {
+  value = azuread_service_principal.sysdig_cspm_sp.client_id
+  description = "Client ID of the CSPM SP within the client's infra"
+  depends_on = [azuread_service_principal.sysdig_cspm_sp]
+}
+
+output "sysdig_cspm_sp_application_tenant_id" {
+  value = azuread_service_principal.sysdig_cspm_sp.application_tenant_id
+  description = "Application Tenant ID of the CSPM SP within the client's infra"
+  depends_on = [azuread_service_principal.sysdig_cspm_sp]
+}

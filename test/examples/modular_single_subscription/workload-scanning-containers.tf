@@ -9,6 +9,13 @@ module "vm-workload-scanning" {
   sysdig_secure_account_id    = module.onboarding.sysdig_secure_account_id
   is_organizational           = module.onboarding.is_organizational
   management_group_ids        = module.onboarding.management_group_ids
+
+  sysdig_cspm_sp_object_id = module.config-posture.sysdig_cspm_sp_object_id
+  sysdig_cspm_sp_application_tenant_id = module.config-posture.sysdig_cspm_sp_application_tenant_id
+  sysdig_cspm_sp_display_name = module.config-posture.sysdig_cspm_sp_display_name
+  sysdig_cspm_sp_client_id = module.config-posture.sysdig_cspm_sp_client_id
+
+  aks_discovery_permission_grant = true
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-aca-aci" {
