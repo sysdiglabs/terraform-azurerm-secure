@@ -68,6 +68,10 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_service_principal_component_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Component identifier of Service Principal created in Sysdig Backend for Config Posture |
+| <a name="sysdig_cspm_sp_object_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Object ID of the CSPM SP within the client's infra |
+| <a name="sysdig_cspm_sp_display_name"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Display name of the CSPM SP within the client's infra |
+| <a name="sysdig_cspm_sp_client_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Client ID of the CSPM SP within the client's infra |
+| <a name="sysdig_cspm_sp_application_tenant_id"></a> [service\_principal\_component\_id](#output\_service\_principal\_component\_id) | Application Tenant ID of the CSPM SP within the client's infra |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Authors
