@@ -139,7 +139,7 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
   })
 
   depends_on = [
-    aks_discovery,
+    module.aks_discovery,
     azurerm_role_assignment.sysdig_vm_workload_scanning_func_app_config_role_assignment,
     azurerm_role_assignment.sysdig_vm_workload_scanning_file_reader_role_assignment,
     azurerm_role_assignment.sysdig_vm_workload_scanning_blob_reader_role_assignment,
