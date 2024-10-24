@@ -20,28 +20,19 @@ variable "management_group_ids" {
   default     = []
 }
 
-variable "aks_discovery_permission_grant" {
+variable "aks_enabled" {
     description = "(Optional) Set this field to 'true' to grant AKS discovery permissions to the secure-posture service principal."
     type        = bool
     default     = false
 }
 
+variable "functions_enabled" {
+  description = "(Optional) Set this field to 'true' to grant Functions Storage permissions to the secure-vm-workload-scanning service principal."
+  type        = bool
+  default     = false
+}
+
 variable "sysdig_cspm_sp_object_id" {
     description = "Object ID of the CSPM SP within the client's infra"
     type = string
-}
-
-variable "sysdig_cspm_sp_display_name" {
-  description = "Display name of the CSPM SP within the client's infra"
-  type = string
-}
-
-variable "sysdig_cspm_sp_client_id" {
-  description = "Client ID of the CSPM SP within the client's infra"
-  type = string
-}
-
-variable "sysdig_cspm_sp_application_tenant_id" {
-  description = "Application Tenant ID of the CSPM SP within the client's infra"
-  type = string
 }

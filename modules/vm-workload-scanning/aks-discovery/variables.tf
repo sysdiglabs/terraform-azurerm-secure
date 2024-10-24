@@ -24,18 +24,3 @@ variable "sysdig_cspm_sp_object_id" {
   description = "Object ID of the CSPM SP within the client's infra"
   type = string
 }
-
-variable "sysdig_cspm_sp_display_name" {
-  description = "Display name of the CSPM SP within the client's infra"
-  type = string
-}
-
-variable "sysdig_cspm_sp_client_id" {
-  description = "Client ID of the CSPM SP within the client's infra"
-  type = string
-}
-
-variable "sysdig_cspm_sp_application_tenant_id" {
-  description = "Application Tenant ID of the CSPM SP within the client's infra"
-  type = string
-}

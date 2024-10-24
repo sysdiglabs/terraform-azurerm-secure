@@ -1,5 +1,5 @@
 module "aks_discovery" {
-  count = var.aks_discovery_permission_grant ? 1 : 0
+  count = var.aks_enabled ? 1 : 0
 
   source = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning/aks-discovery"
 
@@ -9,9 +9,6 @@ module "aks_discovery" {
   management_group_ids = var.management_group_ids
 
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
-  sysdig_cspm_sp_application_tenant_id = var.sysdig_cspm_sp_application_tenant_id
-  sysdig_cspm_sp_display_name = var.sysdig_cspm_sp_display_name
-  sysdig_cspm_sp_client_id = var.sysdig_cspm_sp_client_id
 }
 
 data "azurerm_subscription" "primary" {
@@ -52,15 +49,19 @@ locals {
 }
 
 data "azurerm_role_definition" "storage_file_reader" {
+  count = var.functions_enabled ? 1 : 0
+
   name = "Storage File Data Privileged Reader"
 }
 
 data "azurerm_role_definition" "storage_blob_reader" {
+  count = var.functions_enabled ? 1 : 0
+
   name = "Storage Blob Data Reader"
 }
 
 resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_role" {
-  count = var.is_organizational ? 0 : 1
+  count = var.is_organizational ? 0 : (var.functions_enabled ? 1 : 0)
 
   name        = "sysdig-vm-workload-scanning-workload-function-app-reader-role-${var.subscription_id}"
   scope       = data.azurerm_subscription.primary.id
@@ -78,7 +79,7 @@ resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_
 # Assign custom permissions to Sysdig Vm Agentless Workload SP for Accessing AppConfig and Determining where Azure Functions Code is located
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_role_assignment" {
-  count = var.is_organizational ? 0 : 1
+  count = var.is_organizational ? 0 : (var.functions_enabled ? 1 : 0)
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role[0].role_definition_resource_id
@@ -89,10 +90,10 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
 # Assign "Storage File Data Privileged Reader" role to Sysdig Vm Agentless Workload SP for Accessing Azure Functions Code
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role_assignment" {
-  count = var.is_organizational ? 0 : 1
+  count = var.is_organizational ? 0 : (var.functions_enabled ? 1 : 0)
 
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = data.azurerm_role_definition.storage_file_reader.role_definition_id
+  role_definition_id = data.azurerm_role_definition.storage_file_reader[0].role_definition_id
   principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
 }
 
@@ -100,10 +101,10 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role
 # Assign "Storage Blob Data Reader" role to Sysdig Vm Agentless Workload SP for Accessing Azure Functions Code
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role_assignment" {
-  count = var.is_organizational ? 0 : 1
+  count = var.is_organizational ? 0 : (var.functions_enabled ? 1 : 0)
 
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = data.azurerm_role_definition.storage_blob_reader.role_definition_id
+  role_definition_id = data.azurerm_role_definition.storage_blob_reader[0].role_definition_id
   principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
 }
 
@@ -138,7 +139,7 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
         app_owner_organization_id = azuread_service_principal.sysdig_vm_workload_scanning_sp.application_tenant_id
       }
 
-      aks_discovery_permission_grant = var.aks_discovery_permission_grant
+      aks_discovery_permission_grant = var.aks_enabled
     }
   })
 

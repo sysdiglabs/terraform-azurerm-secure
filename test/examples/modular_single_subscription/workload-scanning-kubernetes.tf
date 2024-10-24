@@ -12,13 +12,13 @@ module "vm-workload-scanning" {
 
   sysdig_cspm_sp_object_id = module.config-posture.sysdig_cspm_sp_object_id
 
-  aks_enabled = false
+  aks_enabled = true
   functions_enabled = false
 }
 
-resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-aca-aci" {
+resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-kubernetes" {
   account_id = module.onboarding.sysdig_secure_account_id
-  type       = "FEATURE_SECURE_WORKLOAD_SCANNING_CONTAINERS"
+  type       = "FEATURE_SECURE_WORKLOAD_SCANNING_KUBERNETES"
   enabled    = true
   components = [module.vm-workload-scanning.service_principal_component_id]
   depends_on = [ module.vm-workload-scanning ]
