@@ -43,13 +43,13 @@ No modules.
 
 ## Inputs
 
-| Name | Description                                                                                                                                                                       | Type | Default | Required |
-|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------|:--------:|
+| Name                                                                                                             | Description                                                                                                                                                                       | Type | Default | Required |
+|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------|:--------:|
 | <a name="input_sysdig_secure_account_id"></a> [sysdig\_secure\_account\_id](#input\_sysdig\_secure\_account\_id) | ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)                                                   | `string` | n/a | yes |
-| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | Subscription ID in which to create secure-for-cloud onboarding resources                                                                       | `string` | n/a |   yes    |
-| <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | (Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant | `bool` | `false` |    no    |
-| <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids) | (Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups                                                 | `set(string)` | `[]` |    no    |
-| <a name="sysdig_cspm_sp_object_id"></a> [sysdig\_cspm\_sp\_object\_id](#output\_service\_principal\_component\_id)                          | Object ID of the CSPM SP within the client's infra                                                                                                                                 | `string`      | n/a     |   yes    |
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id)                                | Subscription ID in which to create secure-for-cloud onboarding resources                                                                       | `string` | n/a |   yes    |
+| <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational)                          | (Optional) Set this field to 'true' to deploy secure-for-cloud to an Azure Tenant | `bool` | `false` |    no    |
+| <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids)               | (Optional) List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups                                                 | `set(string)` | `[]` |    no    |
+| <a name="sysdig_cspm_sp_object_id"></a> [sysdig\_cspm\_sp\_object\_id](#input\_sysdig\_cspm\_sp\_object\_id)     | Object ID of the CSPM SP within the client's infra                                                                                                                                 | `string`      | n/a     |   yes    |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

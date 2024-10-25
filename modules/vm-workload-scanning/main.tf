@@ -138,8 +138,6 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
         app_id                    = azuread_service_principal.sysdig_vm_workload_scanning_sp.client_id
         app_owner_organization_id = azuread_service_principal.sysdig_vm_workload_scanning_sp.application_tenant_id
       }
-
-      aks_discovery_permission_grant = var.aks_enabled
     }
   })
 
