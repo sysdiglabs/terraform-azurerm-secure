@@ -7,7 +7,6 @@ module "vm-workload-scanning" {
   source                      = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning"
   subscription_id             = module.onboarding.subscription_id
   sysdig_secure_account_id    = module.onboarding.sysdig_secure_account_id
-  is_organizational           = module.onboarding.is_organizational
 
   sysdig_cspm_sp_object_id = module.config-posture.sysdig_cspm_sp_object_id
 
