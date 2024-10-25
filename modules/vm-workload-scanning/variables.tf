@@ -20,13 +20,19 @@ variable "management_group_ids" {
   default     = []
 }
 
-variable "aks_discovery_permission_grant" {
+variable "aks_enabled" {
     description = "(Optional) Set this field to 'true' to grant AKS discovery permissions to the secure-posture service principal."
     type        = bool
     default     = false
 }
 
+variable "functions_enabled" {
+  description = "(Optional) Set this field to 'true' to grant Functions Storage permissions to the secure-vm-workload-scanning service principal."
+  type        = bool
+  default     = false
+}
+
 variable "sysdig_cspm_sp_object_id" {
-  description = "Object ID of the CSPM SP within the client's infra"
-  type = string
+    description = "Object ID of the CSPM SP within the client's infra"
+    type = string
 }
