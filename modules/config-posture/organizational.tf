@@ -29,7 +29,7 @@ resource "azurerm_role_assignment" "sysdig_reader_for_tenant" {
 resource "azurerm_role_definition" "sysdig_cspm_role_for_tenant" {
   for_each = var.is_organizational ? local.management_groups : []
 
-  name        = "sysdig_cspm_role_for_tenant_${each.key}"
+  name        = "sysdig_cspm_role_for_tenant_${local.secure_account_hash}_${each.key}"
   scope       = each.key
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 

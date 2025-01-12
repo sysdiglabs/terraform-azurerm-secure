@@ -14,6 +14,8 @@ locals {
   agentless_aks_connection_permissions_actions = var.agentless_aks_connection_enabled ? ["Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action"] : []
 
   sysdig_cspm_role_permissions_actions = tolist(setunion(local.sysdig_cspm_role_default_permissions_actions, local.agentless_aks_connection_permissions_actions))
+
+  secure_account_hash = substr(md5(var.sysdig_secure_account_id), 0, 8)
 }
 
 #--------------------------------------------------------------------------------------------------------------
@@ -54,7 +56,7 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
-  name        = "sysdig-cspm-role-${var.subscription_id}"
+  name        = "sysdig-cspm-role-${var.subscription_id}-${local.secure_account_hash}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
