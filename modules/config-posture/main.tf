@@ -45,6 +45,7 @@ resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
 # Assign "Reader" role to Sysdig SP for primary subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_reader" {
+  count                = var.is_organizational ? 0 : 1
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Reader"
   principal_id         = azuread_service_principal.sysdig_cspm_sp.object_id
@@ -54,6 +55,7 @@ resource "azurerm_role_assignment" "sysdig_reader" {
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
+  count       = var.is_organizational ? 0 : 1
   name        = "sysdig-cspm-role-${var.subscription_id}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
@@ -72,8 +74,9 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
 # Custom role assignment for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
+  count              = var.is_organizational ? 0 : 1
   scope              = data.azurerm_subscription.primary.id
-  role_definition_id = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
+  role_definition_id = azurerm_role_definition.sysdig_cspm_role[0].role_definition_resource_id
   principal_id       = azuread_service_principal.sysdig_cspm_sp.object_id
 }
 
