@@ -118,6 +118,15 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 }
 
 #---------------------------------------------------------------------------------------------
+# Assign "Monitoring Reader" role to Sysdig SP for reading Event Hub metrics for validation
+#---------------------------------------------------------------------------------------------
+resource "azurerm_role_assignment" "sysdig_metrics_reader" {
+  scope                = azurerm_eventhub_namespace.sysdig_event_hub_namespace.id
+  role_definition_name = "Monitoring Reader"
+  principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
+}
+
+#---------------------------------------------------------------------------------------------
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
