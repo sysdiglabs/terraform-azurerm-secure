@@ -129,7 +129,7 @@ resource "azurerm_role_assignment" "sysdig_subscription_reader" {
 #---------------------------------------------------------------------------------------------
 # Assign "Monitoring Reader" role to Sysdig SP at subscription level to check resource health
 #---------------------------------------------------------------------------------------------
-resource "azurerm_role_assignment" "sysdig_subscription_reader" {
+resource "azurerm_role_assignment" "sysdig_subscription_monitoring_reader" {
   scope                = data.azurerm_subscription.sysdig_subscription.id
   role_definition_name = "Monitoring Reader"
   principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
