@@ -17,8 +17,21 @@ locals {
   flatten([for m in data.azurerm_management_group.management_groups : m.all_subscription_ids]))
 }
 
+data "azurerm_subscription" "all_subscriptions" {
+  for_each = toset(local.subscriptions)
+  subscription_id = each.value
+}
+
+# Filter only the enabled subscriptions
+locals {
+  enabled_subscription_ids = [
+    for s in data.azurerm_subscription.all_subscriptions :
+    s.subscription_id if s.state == "Enabled"
+  ]
+}
+
 resource "azurerm_lighthouse_assignment" "lighthouse_assignment_for_tenant" {
-  for_each = var.is_organizational ? toset(local.subscriptions) : toset([])
+  for_each = var.is_organizational ? toset(local.enabled_subscription_ids) : toset([])
 
   scope                    = "/subscriptions/${each.value}"
   lighthouse_definition_id = azurerm_lighthouse_definition.lighthouse_definition.id
