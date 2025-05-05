@@ -126,3 +126,9 @@ variable "enabled_entra_logs" {
   type        = list(string)
   default     = ["AuditLogs","SignInLogs","NonInteractiveUserSignInLogs","ServicePrincipalSignInLogs","ManagedIdentitySignInLogs","ProvisioningLogs","ADFSSignInLogs","RiskyUsers","UserRiskEvents","NetworkAccessTrafficLogs","RiskyServicePrincipals","ServicePrincipalRiskEvents","EnrichedOffice365AuditLogs","MicrosoftGraphActivityLogs","RemoteNetworkHealthLogs"]
 }
+
+variable "event_hub_service_principal" {
+  description = "(Optional) Service Principal to be used for event hub. If not provided, a new one will be created."
+  type        = string
+  default     = ""
+}

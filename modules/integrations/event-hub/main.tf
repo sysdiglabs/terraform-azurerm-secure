@@ -37,7 +37,13 @@ resource "random_string" "random" {
 # Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #--------------------------------------------------------------------------------------------------------------
+data "azuread_service_principal" "sysdig_event_hub_sp" {
+  count     = var.event_hub_service_principal != "" ? 1 : 0
+  object_id = var.event_hub_service_principal
+}
+
 resource "azuread_service_principal" "sysdig_event_hub_sp" {
+  count        = var.event_hub_service_principal != "" ? 0 : 1
   client_id    = data.sysdig_secure_trusted_azure_app.threat_detection.application_id
   use_existing = true
   notes        = "Service Principal linked to the Sysdig Secure CNAPP - CDR module"
@@ -114,7 +120,7 @@ resource "azurerm_eventhub_namespace_authorization_rule" "sysdig_rule" {
 resource "azurerm_role_assignment" "sysdig_data_receiver" {
   scope                = azurerm_eventhub_namespace.sysdig_event_hub_namespace.id
   role_definition_name = "Azure Event Hubs Data Receiver"
-  principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
+  principal_id         = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].object_id : azuread_service_principal.sysdig_event_hub_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -123,7 +129,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 resource "azurerm_role_assignment" "sysdig_subscription_reader" {
   scope                = data.azurerm_subscription.sysdig_subscription.id
   role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
+  principal_id         = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].object_id : azuread_service_principal.sysdig_event_hub_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -132,7 +138,7 @@ resource "azurerm_role_assignment" "sysdig_subscription_reader" {
 resource "azurerm_role_assignment" "sysdig_subscription_monitoring_reader" {
   scope                = data.azurerm_subscription.sysdig_subscription.id
   role_definition_name = "Monitoring Reader"
-  principal_id         = azuread_service_principal.sysdig_event_hub_sp.object_id
+  principal_id         = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].object_id : azuread_service_principal.sysdig_event_hub_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -193,11 +199,11 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
       service_principal = {
         active_directory_service_principal = {
           account_enabled           = true
-          display_name              = azuread_service_principal.sysdig_event_hub_sp.display_name
-          id                        = azuread_service_principal.sysdig_event_hub_sp.object_id
-          app_display_name          = azuread_service_principal.sysdig_event_hub_sp.display_name
-          app_id                    = azuread_service_principal.sysdig_event_hub_sp.client_id
-          app_owner_organization_id = azuread_service_principal.sysdig_event_hub_sp.application_tenant_id
+          display_name              = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].display_name : azuread_service_principal.sysdig_event_hub_sp[0].display_name
+          id                        = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].object_id : azuread_service_principal.sysdig_event_hub_sp[0].object_id
+          app_display_name          = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].display_name : azuread_service_principal.sysdig_event_hub_sp[0].display_name
+          app_id                    = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].client_id : azuread_service_principal.sysdig_event_hub_sp[0].client_id
+          app_owner_organization_id = var.event_hub_service_principal != "" ? data.azuread_service_principal.sysdig_event_hub_sp[0].application_tenant_id : azuread_service_principal.sysdig_event_hub_sp[0].application_tenant_id
         }
       }
     }

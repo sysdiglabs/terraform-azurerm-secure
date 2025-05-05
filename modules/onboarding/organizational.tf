@@ -20,7 +20,7 @@ resource "azurerm_role_assignment" "sysdig_onboarding_reader_for_tenant" {
 
   scope                = each.key
   role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.sysdig_onboarding_sp.object_id
+  principal_id         = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].object_id : azuread_service_principal.sysdig_onboarding_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------

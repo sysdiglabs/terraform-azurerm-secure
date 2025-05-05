@@ -36,3 +36,9 @@ variable "sysdig_cspm_sp_object_id" {
     description = "Object ID of the CSPM SP within the client's infra"
     type = string
 }
+
+variable "vm_workload_scanning_service_principal" {
+  description = "(Optional) Service Principal to be used for vm workload scanning. If not provided, a new one will be created."
+  type        = string
+  default     = ""
+}
