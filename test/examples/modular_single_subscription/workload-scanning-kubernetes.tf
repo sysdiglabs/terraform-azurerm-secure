@@ -12,6 +12,10 @@ module "vm-workload-scanning" {
 
   aks_enabled = true
   functions_enabled = false
+
+  # Optional: pre-existing SP pointing to Sysdig VM Workload Scanning Application ID
+  # vm_workload_scanning_service_principal = "vm-workload-scanning-service-principal-id"
+
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-kubernetes" {

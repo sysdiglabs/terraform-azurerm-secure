@@ -8,6 +8,9 @@ module "event-hub" {
   subscription_id          = module.onboarding.subscription_id
   region                   = "West US"
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
+
+  # Optional: pre-existing SP pointing to Sysdig thread detection App ID
+  # event_hub_service_principal = "event-hub-service-principal-id"
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "threat_detection" {
