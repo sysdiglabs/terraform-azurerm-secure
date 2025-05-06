@@ -43,10 +43,10 @@ resource "azuread_service_principal" "sysdig_cspm_sp" {
 # Assign "Directory Reader" AD role to Sysdig SP
 #---------------------------------------------------------------------------------------------
 
-// TODO: Question, is this needed when CSPM SP is passed?
 resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
+  count        = var.config_posture_service_principal != "" ? 0 : 1
   role_id             = "88d8e3e3-8f55-4a1e-953a-9b9898b8876b" // template ID of Directory Reader AD role
-  principal_object_id = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
+  principal_object_id = azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------

@@ -12,6 +12,18 @@ If instrumenting an Azure Tenant, the following resources will be created:
 - Role assignments with associated role permissions at the Root Management Group level by default for the Tenant, or at each of the
 instrumented Management Groups within the Tenant if provided.
 
+**Important**. If using a pre-existing Service Principal is needed, creating a service principal associated with the Sysdig Config Posture Application ID is required:
+- The Sysdig Config Posture Application ID can be found as part of the output of the `sysdig_secure_trusted_azure_app` data source created in this module. Also, it can be retrieved by hitting the Sysdig onboarding API using the `sysdig_secure_api_token` provided within the Sysdig UI > Settings > Sysdig Secure API Token, the API curl command uses the `app=config_posture` query parameter:
+    ```bash
+    curl --location 'https://<sysdig-secure>/api/secure/onboarding/v2/trustedAzureApp?app=config_posture' \
+    --header 'Authorization: Bearer <token>'
+    ```
+- From the previous call, use the `applicationId` field from the response to create the Service Principal in your Azure Tenant.
+- Assign the [Directory Reader role](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference#directory-readers) to the Service Principal created in your Azure Tenant. This is a required permission, the role template ID for this role is `88d8e3e3-8f55-4a1e-953a-9b9898b8876b`.
+- Provide the Service Principal ID as input to the `config_posture_service_principal` variable in this module. This will
+  skip the creation of a new Service Principal and use the one provided instead.
+- Contact Sysdig Support if you need assistance with this process.
+
 This module will also deploy a Service Principal Component in Sysdig Backend for onboarded Sysdig Cloud Account.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

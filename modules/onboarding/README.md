@@ -19,6 +19,17 @@ instrumented Management Groups within the Tenant if provided, for retrieving inv
 - A cloud account in the Sysdig Backend, associated with the Azure subscription and with the required component to serve the foundational functions. 
 - A cloud organization in the Sysdig Backend, associated with the Azure Tenant to fetch the organization structure to install Sysdig Secure for Cloud on.
 
+**Important**. If using a pre-existing Service Principal is needed, creating a service principal associated with the Sysdig Onboarding Application ID is required:
+- The Sysdig Onboarding Application ID can be found as part of the output of the `sysdig_secure_trusted_azure_app` data source created in this module. Also, it can be retrieved by hitting the Sysdig onboarding API using the `sysdig_secure_api_token` provided within the Sysdig UI > Settings > Sysdig Secure API Token, the API curl command uses the `app=onboarding` query parameter:
+    ```bash
+    curl --location 'https://<sysdig-secure>/api/secure/onboarding/v2/trustedAzureApp?app=onboarding' \
+    --header 'Authorization: Bearer <token>'
+    ```
+- From the previous call, use the `applicationId` field from the response to create the Service Principal in your Azure Tenant.
+- Provide the Service Principal ID as input to the `onboarding_service_principal` variable in this module. This will
+  skip the creation of a new Service Principal and use the one provided instead.
+- Contact Sysdig Support if you need assistance with this process.
+
 Note:
 - The outputs from the foundational module, such as `sysdig_secure_account_id` are needed as inputs to the other features/integrations modules for subsequent modular installs.
 

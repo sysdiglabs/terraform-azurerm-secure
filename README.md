@@ -26,6 +26,8 @@ for the respective Sysdig features. They manage both, onboarding a single Azure 
 
 `onboarding`, `config-posture` and `agentless-scanning` are independent feature modules.
 
+A Service Principal is created per each independent module due to permission scoping, if you want to use a pre-existing one instead of creating a new one, refer to each module's README file.
+
 ### Integrations
 
 The modules under `integrations` are feature agnostic modules which deploy and manage all the required Cloud resources and Sysdig resources
@@ -34,6 +36,8 @@ for shared Sysdig integrations. That is to say, one or more Sysdig features can 
 These modules manage both, onboarding a single Azure Subscription or an Azure Tenant to Sysdig Secure for Cloud.
 
 `event-hub` is an integration module.
+
+A Service Principal is created per each independent integration module due to permission scoping, if you want to use a pre-existing one instead of creating a new one, refer to each module's README file.
 
 ## Examples and usage
 
