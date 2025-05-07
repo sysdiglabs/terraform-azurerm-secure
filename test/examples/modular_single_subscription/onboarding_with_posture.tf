@@ -12,7 +12,7 @@ terraform {
   required_providers {
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = "~> 1.28.5"
+      version = "~> 1.48"
     }
   }
 }
@@ -32,6 +32,9 @@ module "config-posture" {
   source                   = "../../../modules/config-posture"
   subscription_id          = module.onboarding.subscription_id
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
+
+  # Optional: pre-existing SP pointing to Sysdig CSPM App ID
+  # config_posture_service_principal = "config-posture-service-principal-id"
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {

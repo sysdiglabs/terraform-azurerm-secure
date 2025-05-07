@@ -10,6 +10,9 @@ module "event-hub" {
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
   management_group_ids     = module.onboarding.management_group_ids
+
+  # Optional: pre-existing SP pointing to Sysdig thread detection App ID
+  # event_hub_service_principal = "event-hub-service-principal-id"
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "threat_detection" {

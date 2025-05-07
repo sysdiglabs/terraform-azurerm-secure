@@ -27,7 +27,13 @@ locals {
 # Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #--------------------------------------------------------------------------------------------------------------
+data "azuread_service_principal" "sysdig_cspm_sp" {
+  count     = var.config_posture_service_principal != "" ? 1 : 0
+  object_id = var.config_posture_service_principal
+}
+
 resource "azuread_service_principal" "sysdig_cspm_sp" {
+  count        = var.config_posture_service_principal != "" ? 0 : 1
   client_id    = data.sysdig_secure_trusted_azure_app.config_posture.application_id
   use_existing = true
   notes        = "Service Principal linked to the Sysdig Secure CNAPP - CSPM module"
@@ -36,9 +42,11 @@ resource "azuread_service_principal" "sysdig_cspm_sp" {
 #---------------------------------------------------------------------------------------------
 # Assign "Directory Reader" AD role to Sysdig SP
 #---------------------------------------------------------------------------------------------
+
 resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
+  count        = var.config_posture_service_principal != "" ? 0 : 1
   role_id             = "88d8e3e3-8f55-4a1e-953a-9b9898b8876b" // template ID of Directory Reader AD role
-  principal_object_id = azuread_service_principal.sysdig_cspm_sp.object_id
+  principal_object_id = azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -47,7 +55,7 @@ resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
 resource "azurerm_role_assignment" "sysdig_reader" {
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "Reader"
-  principal_id         = azuread_service_principal.sysdig_cspm_sp.object_id
+  principal_id         = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -74,7 +82,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
 resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.sysdig_cspm_role.role_definition_resource_id
-  principal_id       = azuread_service_principal.sysdig_cspm_sp.object_id
+  principal_id       = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
 #--------------------------------------------------------------------------------------------------------------
@@ -91,11 +99,11 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
     azure = {
       active_directory_service_principal = {
         account_enabled           = true
-        display_name              = azuread_service_principal.sysdig_cspm_sp.display_name
-        id                        = azuread_service_principal.sysdig_cspm_sp.object_id
-        app_display_name          = azuread_service_principal.sysdig_cspm_sp.display_name
-        app_id                    = azuread_service_principal.sysdig_cspm_sp.client_id
-        app_owner_organization_id = azuread_service_principal.sysdig_cspm_sp.application_tenant_id
+        display_name              = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].display_name : azuread_service_principal.sysdig_cspm_sp[0].display_name
+        id                        = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
+        app_display_name          = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].display_name : azuread_service_principal.sysdig_cspm_sp[0].display_name
+        app_id                    = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].client_id : azuread_service_principal.sysdig_cspm_sp[0].client_id
+        app_owner_organization_id = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].application_tenant_id : azuread_service_principal.sysdig_cspm_sp[0].application_tenant_id
       }
     }
   })

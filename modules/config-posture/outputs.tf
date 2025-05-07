@@ -5,7 +5,7 @@ output "service_principal_component_id" {
 }
 
 output "sysdig_cspm_sp_object_id" {
-  value = azuread_service_principal.sysdig_cspm_sp.object_id
+  value = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
   description = "Object ID of the CSPM SP within the client's infra"
   depends_on = [azuread_service_principal.sysdig_cspm_sp]
 }

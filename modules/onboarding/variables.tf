@@ -19,3 +19,9 @@ variable "management_group_ids" {
   type        = set(string)
   default     = []
 }
+
+variable "onboarding_service_principal" {
+  description = "(Optional) Service Principal to be used for onboarding. If not provided, a new one will be created."
+  type        = string
+  default     = ""
+}

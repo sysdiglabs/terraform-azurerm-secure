@@ -19,6 +19,17 @@ instrumented Management Groups within the Tenant if provided, for retrieving inv
 - A cloud account in the Sysdig Backend, associated with the Azure subscription and with the required component to serve the foundational functions. 
 - A cloud organization in the Sysdig Backend, associated with the Azure Tenant to fetch the organization structure to install Sysdig Secure for Cloud on.
 
+**Important**. If using a pre-existing Service Principal is needed, creating a service principal associated with the Sysdig Onboarding Application ID is required:
+- The Sysdig Onboarding Application ID can be found as part of the output of the `sysdig_secure_trusted_azure_app` data source created in this module. Also, it can be retrieved by hitting the Sysdig onboarding API using the `sysdig_secure_api_token` provided within the Sysdig UI > Settings > Sysdig Secure API Token, the API curl command uses the `app=onboarding` query parameter:
+    ```bash
+    curl --location 'https://<sysdig-secure>/api/secure/onboarding/v2/trustedAzureApp?app=onboarding' \
+    --header 'Authorization: Bearer <token>'
+    ```
+- From the previous call, use the `applicationId` field from the response to create the Service Principal in your Azure Tenant.
+- Provide the Service Principal ID as input to the `onboarding_service_principal` variable in this module. This will
+  skip the creation of a new Service Principal and use the one provided instead.
+- Contact Sysdig Support if you need assistance with this process.
+
 Note:
 - The outputs from the foundational module, such as `sysdig_secure_account_id` are needed as inputs to the other features/integrations modules for subsequent modular installs.
 
@@ -57,12 +68,13 @@ No modules.
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | The identifier of the Azure Subscription in which to create secure-for-cloud onboarding resources | `string` | n/a | yes |
-| <a name="input_tenant_id"></a> [tenant\_id](#input\tenant\_id) | The identifier of the Azure Active Directory Tenant of which the subscription is part of | `string` | n/a | yes |
-| <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational) | true/false whether secure-for-cloud should be deployed in an organizational setup (all subscriptions of tenant) or not (only on default azure provider subscription) | `bool` | `false` | no |
-| <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids) | List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups. | `set(string)` | `[]` | no |
+| Name                                                                                                                       | Description                                                                                                                                                                 | Type          | Default | Required |
+|----------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|---------|:--------:|
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id)                                          | The identifier of the Azure Subscription in which to create secure-for-cloud onboarding resources                                                                           | `string`      | n/a     |   yes    |
+| <a name="input_tenant_id"></a> [tenant\_id](#input\tenant\_id)                                                             | The identifier of the Azure Active Directory Tenant of which the subscription is part of                                                                                    | `string`      | n/a     |   yes    |
+| <a name="input_is_organizational"></a> [is\_organizational](#input\_is\_organizational)                                    | true/false whether secure-for-cloud should be deployed in an organizational setup (all subscriptions of tenant) or not (only on default azure provider subscription)        | `bool`        | `false` |    no    |
+| <a name="input_management_group_ids"></a> [management\_group\_ids](#input\_management\_group\_ids)                         | List of Azure Management Group IDs. secure-for-cloud will be deployed to all the subscriptions under these management groups.                                               | `set(string)` | `[]`    |    no    |
+| <a name="input_onboarding_service_principal"></a> [onboarding\_service\_principal](#input\_onboarding\_service\_principal) | (Optional) Service Principal to be used for onboarding, this SP needs to be associated to the Sysdig Onboarding Application ID. If not provided, a new one will be created. | `string`      | `""`    |    no    |
 
 ## Outputs
 

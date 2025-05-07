@@ -39,7 +39,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_for_tena
 
   scope                = each.key
   role_definition_name = "AcrPull"
-  principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
 
   scope              = each.key
   role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role_for_tenant[each.key].role_definition_resource_id
-  principal_id       = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role
 
   scope              = each.key
   role_definition_id = data.azurerm_role_definition.storage_file_reader[0].role_definition_id
-  principal_id       = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -74,5 +74,5 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role
 
   scope              = each.key
   role_definition_id = data.azurerm_role_definition.storage_blob_reader[0].role_definition_id
-  principal_id       = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }

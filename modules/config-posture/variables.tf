@@ -25,3 +25,9 @@ variable "agentless_aks_connection_enabled" {
   description = "Enable the Agentless AKS connection to the K8s clusters within the cloud. This allows admin access. Read more about why this is needed in the official docs."
   default     = false
 }
+
+variable "config_posture_service_principal" {
+  description = "(Optional) Service Principal to be used for CSPM. If not provided, a new one will be created."
+  type        = string
+  default     = ""
+}

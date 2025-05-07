@@ -30,7 +30,13 @@ data "sysdig_secure_trusted_azure_app" "vm_workload_scanning" {
 # Note: Once created, this cannot be deleted via Terraform. It can be manually deleted from Azure.
 #       This is to safeguard against unintended deletes if the service principal is in use.
 #----------------------------------------------------------------------------------------------------
+data "azuread_service_principal" "sysdig_vm_workload_scanning_sp" {
+  count     = var.vm_workload_scanning_service_principal != "" ? 1 : 0
+  object_id = var.vm_workload_scanning_service_principal
+}
+
 resource "azuread_service_principal" "sysdig_vm_workload_scanning_sp" {
+  count        = var.vm_workload_scanning_service_principal != "" ? 0 : 1
   client_id    = data.sysdig_secure_trusted_azure_app.vm_workload_scanning.application_id
   use_existing = true
   notes        = "Service Principal linked to the Sysdig Secure CNAPP - VM Agentless Workload module"
@@ -83,7 +89,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role[0].role_definition_resource_id
-  principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -94,7 +100,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = data.azurerm_role_definition.storage_file_reader[0].role_definition_id
-  principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -105,7 +111,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = data.azurerm_role_definition.storage_blob_reader[0].role_definition_id
-  principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #-------------------------------------------------------------------------------------------------
@@ -116,7 +122,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_assignme
 
   scope                = data.azurerm_subscription.primary.id
   role_definition_name = "AcrPull"
-  principal_id         = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
+  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -132,11 +138,11 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_c
     azure = {
       active_directory_service_principal = {
         account_enabled           = true
-        display_name              = azuread_service_principal.sysdig_vm_workload_scanning_sp.display_name
-        id                        = azuread_service_principal.sysdig_vm_workload_scanning_sp.object_id
-        app_display_name          = azuread_service_principal.sysdig_vm_workload_scanning_sp.display_name
-        app_id                    = azuread_service_principal.sysdig_vm_workload_scanning_sp.client_id
-        app_owner_organization_id = azuread_service_principal.sysdig_vm_workload_scanning_sp.application_tenant_id
+        display_name              = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].display_name : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].display_name
+        id                        = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
+        app_display_name          = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].display_name : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].display_name
+        app_id                    = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].client_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].client_id
+        app_owner_organization_id = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].application_tenant_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].application_tenant_id
       }
     }
   })

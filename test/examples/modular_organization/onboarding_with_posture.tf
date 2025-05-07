@@ -12,7 +12,7 @@ terraform {
   required_providers {
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = "~> 1.28.5"
+      version = "~> 1.48"
     }
   }
 }
@@ -28,6 +28,9 @@ module "onboarding" {
   tenant_id            = "test-tenant"
   is_organizational    = true
   management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
+
+  # Optional: pre-existing SP pointing to Sysdig Onboarding App ID
+  onboarding_service_principal = "onboarding-service-principal-id"
 }
 
 module "config-posture" {
@@ -36,6 +39,9 @@ module "config-posture" {
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
   management_group_ids     = module.onboarding.management_group_ids
+
+  # Optional: pre-existing SP pointing to Sysdig CSPM App ID
+  # config_posture_service_principal = "config-posture-service-principal-id"
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
