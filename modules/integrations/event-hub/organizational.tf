@@ -37,15 +37,10 @@ resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
-  enabled_log {
-    category = "Administrative"
-  }
-
-  enabled_log {
-    category = "Security"
-  }
-
-  enabled_log {
-    category = "Policy"
+  dynamic "enabled_log" {
+    for_each = var.enabled_platform_logs
+    content {
+      category = enabled_log.value
+    }
   }
 }
