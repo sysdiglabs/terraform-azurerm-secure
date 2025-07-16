@@ -13,6 +13,12 @@ module "event-hub" {
 
   # Optional: pre-existing SP pointing to Sysdig thread detection App ID
   # event_hub_service_principal = "event-hub-service-principal-id"
+
+  # Include/Exclude specific parameters from onboarding module
+  include_management_groups = module.onboarding.include_management_groups
+  exclude_management_groups = module.onboarding.exclude_management_groups
+  include_subscriptions = module.onboarding.include_subscriptions
+  exclude_subscriptions = module.onboarding.exclude_subscriptions
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "threat_detection" {

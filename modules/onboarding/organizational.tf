@@ -31,6 +31,16 @@ resource "sysdig_secure_organization" "azure_organization" {
   count = var.is_organizational ? 1 : 0
 
   management_account_id   = sysdig_secure_cloud_auth_account.azure_account.id
-  organizational_unit_ids = var.management_group_ids
+  organizational_unit_ids        = local.check_old_management_group_ids_param ? var.management_group_ids : []
+  organization_root_id           = var.tenant_id
+  included_organizational_groups = local.check_old_management_group_ids_param ? [] : var.include_management_groups
+  excluded_organizational_groups = local.check_old_management_group_ids_param ? [] : var.exclude_management_groups
+  included_cloud_accounts        = local.check_old_management_group_ids_param ? [] : var.include_subscriptions
+  excluded_cloud_accounts        = local.check_old_management_group_ids_param ? [] : var.exclude_subscriptions
+  automatic_onboarding           = var.enable_automatic_onboarding
   depends_on              = [azurerm_role_assignment.sysdig_onboarding_reader_for_tenant]
+
+  lifecycle {
+    ignore_changes = [automatic_onboarding]
+  }
 }

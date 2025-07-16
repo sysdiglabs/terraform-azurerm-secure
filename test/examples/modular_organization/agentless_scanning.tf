@@ -9,6 +9,12 @@ module "agentless-scanning" {
   sysdig_secure_account_id    = module.onboarding.sysdig_secure_account_id
   is_organizational           = module.onboarding.is_organizational
   management_group_ids        = module.onboarding.management_group_ids
+
+  # Include/Exclude specific parameters from onboarding module
+  include_management_groups = module.onboarding.include_management_groups
+  exclude_management_groups = module.onboarding.exclude_management_groups
+  include_subscriptions = module.onboarding.include_subscriptions
+  exclude_subscriptions = module.onboarding.exclude_subscriptions
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "agentless_scanning" {
