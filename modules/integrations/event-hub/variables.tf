@@ -138,25 +138,25 @@ variable "event_hub_service_principal" {
 }
 
 variable "include_management_groups" {
-  description = "(Optional) management groups to include for organization in the format '<management_group_idt>' i.e: management_group_id_1"
+  description = "(Optional) management groups to include for organization in the format '<management_group_id>' i.e: management_group_id_1"
   type = set(string)
   default = []
 }
 
 variable "exclude_management_groups" {
-  description = "(Optional) management groups to exclude for organization in the format '<management_group_idt>' i.e: management_group_id_1"
+  description = "(Optional) management groups to exclude for organization in the format '<management_group_id>' i.e: management_group_id_1"
   type = set(string)
   default = []
 }
 
 variable "include_subscriptions" {
-  description = "(Optional) subscription id to include for organization i.e: 12345678-1234-1234-1234-123456789abc"
+  description = "(Optional) subscription ids to include for organization i.e: 12345678-1234-1234-1234-123456789abc"
   type = set(string)
   default = []
 }
 
 variable "exclude_subscriptions" {
-  description = "(Optional) subscription id to exclude for organization i.e: 12345678-1234-1234-1234-123456789abc"
+  description = "(Optional) subscription ids to exclude for organization i.e: 12345678-1234-1234-1234-123456789abc"
   type = set(string)
   default = []
 }
