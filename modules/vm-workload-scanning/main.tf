@@ -9,6 +9,11 @@ module "aks_discovery" {
   management_group_ids = var.management_group_ids
 
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
+
+  include_management_groups = var.include_management_groups
+  exclude_management_groups = var.exclude_management_groups
+  include_subscriptions = var.include_subscriptions
+  exclude_subscriptions = var.exclude_subscriptions
 }
 
 data "azurerm_subscription" "primary" {

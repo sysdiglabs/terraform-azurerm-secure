@@ -2,7 +2,7 @@
 # Fetch the management groups for customer tenant and onboard subscriptions under them
 #---------------------------------------------------------------------------------------------
 data "azurerm_management_group" "root_management_group" {
-  count        = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
+  count        = var.is_organizational ? 1 : 0
   display_name = "Tenant Root Group"
 }
 
@@ -16,7 +16,7 @@ locals {
 # Assign "Reader" role to Sysdig Onboarding SP for customer tenant, for retrieving inventory
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_onboarding_reader_for_tenant" {
-  for_each = var.is_organizational ? local.management_groups : []
+  for_each = var.is_organizational ? (local.check_old_management_group_ids_param ? local.management_groups : local.scopes_for_resources) : []
 
   scope                = each.key
   role_definition_name = "Reader"
