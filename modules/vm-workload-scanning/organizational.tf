@@ -9,7 +9,7 @@ data "azurerm_management_group" "root_management_group" {
 locals {
   # when empty, this will be the root management group whose default display name is "Tenant root group"
   management_groups = var.is_organizational && length(var.management_group_ids) == 0 ? [data.azurerm_management_group.root_management_group[0].id] : toset(
-    [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups",m)])
+  [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups", m)])
 }
 
 # A random resource is used to generate unique key names.

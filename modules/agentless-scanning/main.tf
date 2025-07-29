@@ -34,9 +34,9 @@ resource "azurerm_lighthouse_assignment" "lighthouse_assignment" {
 # explicit dependency using depends_on
 #-----------------------------------------------------------------------------------------------------------------
 resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" {
-  account_id                 = var.sysdig_secure_account_id
-  type                       = "COMPONENT_SERVICE_PRINCIPAL"
-  instance                   = "secure-scanning"
+  account_id = var.sysdig_secure_account_id
+  type       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance   = "secure-scanning"
   service_principal_metadata = jsonencode({
     azure = {
       active_directory_service_principal = {

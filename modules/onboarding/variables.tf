@@ -20,8 +20,8 @@ variable "management_group_ids" {
     When set, restrict onboarding to a set of Azure Management Groups identifiers whose child management groups and subscriptions are to be onboarded.
     Default: onboard all management groups.
     EOF
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }
 
 variable "onboarding_service_principal" {

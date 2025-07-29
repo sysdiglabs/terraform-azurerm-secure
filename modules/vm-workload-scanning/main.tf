@@ -4,16 +4,16 @@ module "aks_discovery" {
   source = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning/aks-discovery"
 
   sysdig_secure_account_id = var.sysdig_secure_account_id
-  subscription_id = var.subscription_id
-  is_organizational = var.is_organizational
-  management_group_ids = var.management_group_ids
+  subscription_id          = var.subscription_id
+  is_organizational        = var.is_organizational
+  management_group_ids     = var.management_group_ids
 
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
 
   include_management_groups = var.include_management_groups
   exclude_management_groups = var.exclude_management_groups
-  include_subscriptions = var.include_subscriptions
-  exclude_subscriptions = var.exclude_subscriptions
+  include_subscriptions     = var.include_subscriptions
+  exclude_subscriptions     = var.exclude_subscriptions
 }
 
 data "azurerm_subscription" "primary" {
@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role[0].role_definition_resource_id
-  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = data.azurerm_role_definition.storage_file_reader[0].role_definition_id
-  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #---------------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role
 
   scope              = data.azurerm_subscription.primary.id
   role_definition_id = data.azurerm_role_definition.storage_blob_reader[0].role_definition_id
-  principal_id         = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
+  principal_id       = var.vm_workload_scanning_service_principal != "" ? data.azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id : azuread_service_principal.sysdig_vm_workload_scanning_sp[0].object_id
 }
 
 #-------------------------------------------------------------------------------------------------
@@ -136,9 +136,9 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_assignme
 #---------------------------------------------------------------------------------------------
 
 resource "sysdig_secure_cloud_auth_account_component" "azure_workload_scanning_component" {
-  account_id                 = var.sysdig_secure_account_id
-  type                       = "COMPONENT_SERVICE_PRINCIPAL"
-  instance                   = "secure-vm-workload-scanning"
+  account_id = var.sysdig_secure_account_id
+  type       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance   = "secure-vm-workload-scanning"
   service_principal_metadata = jsonencode({
     azure = {
       active_directory_service_principal = {

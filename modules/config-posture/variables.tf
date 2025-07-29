@@ -15,8 +15,8 @@ variable "management_group_ids" {
     When set, restrict onboarding to a set of Azure Management Groups identifiers whose child management groups and subscriptions are to be onboarded.
     Default: onboard all management groups.
     EOF
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }
 
 variable "sysdig_secure_account_id" {
@@ -39,24 +39,24 @@ variable "config_posture_service_principal" {
 
 variable "include_management_groups" {
   description = "(Optional) management groups to include for organization in the format '<management_group_id>' i.e: management_group_id_1"
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }
 
 variable "exclude_management_groups" {
   description = "(Optional) management groups to exclude for organization in the format '<management_group_id>' i.e: management_group_id_1"
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }
 
 variable "include_subscriptions" {
   description = "(Optional) subscription ids to include for organization i.e: 12345678-1234-1234-1234-123456789abc"
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }
 
 variable "exclude_subscriptions" {
   description = "(Optional) subscription ids to exclude for organization i.e: 12345678-1234-1234-1234-123456789abc"
-  type = set(string)
-  default = []
+  type        = set(string)
+  default     = []
 }

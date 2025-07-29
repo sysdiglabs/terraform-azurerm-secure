@@ -6,7 +6,7 @@ data "azurerm_subscription" "sysdig_subscription" {
 }
 
 data "sysdig_secure_trusted_azure_app" "threat_detection" {
-	name = "threat_detection"
+  name = "threat_detection"
 }
 
 # Generate a unique hash for the subscription ID
@@ -186,9 +186,9 @@ resource "azurerm_monitor_aad_diagnostic_setting" "sysdig_entra_diagnostic_setti
 # explicit dependency using depends_on
 #---------------------------------------------------------------------------------------------
 resource "sysdig_secure_cloud_auth_account_component" "azure_event_hub" {
-  account_id                 = var.sysdig_secure_account_id
-  type                       = "COMPONENT_EVENT_BRIDGE"
-  instance                   = "secure-runtime"
+  account_id = var.sysdig_secure_account_id
+  type       = "COMPONENT_EVENT_BRIDGE"
+  instance   = "secure-runtime"
   event_bridge_metadata = jsonencode({
     azure = {
       event_hub_metadata = {

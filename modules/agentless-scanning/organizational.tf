@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------------------------
 # If no management group is present, then the root management group is used to onboard all the subscriptions
 data "azurerm_management_group" "root_management_group" {
-  count        = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
+  count        = var.is_organizational ? 1 : 0
   display_name = "Tenant Root Group"
 }
 
@@ -12,13 +12,8 @@ data "azurerm_management_group" "management_groups" {
   name     = each.value
 }
 
-locals {
-  subscriptions = toset(var.is_organizational && length(var.management_group_ids) == 0 ? data.azurerm_management_group.root_management_group[0].all_subscription_ids :
-  flatten([for m in data.azurerm_management_group.management_groups : m.all_subscription_ids]))
-}
-
 data "azurerm_subscription" "all_subscriptions" {
-  for_each = toset(local.subscriptions)
+  for_each        = toset(local.all_mg_subscription_ids)
   subscription_id = each.value
 }
 

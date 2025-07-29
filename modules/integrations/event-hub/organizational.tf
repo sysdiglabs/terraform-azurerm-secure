@@ -6,28 +6,23 @@ data "azurerm_management_group" "onboarded_management_group" {
 }
 
 data "azurerm_management_group" "root_management_group" {
-  count        = var.is_organizational && length(var.management_group_ids) == 0 ? 1 : 0
+  count        = var.is_organizational ? 1 : 0
   display_name = "Tenant Root Group"
 }
 
-locals {
-  selected_management_group = var.is_organizational ? (length(data.azurerm_management_group.onboarded_management_group) > 0 ? values(data.azurerm_management_group.onboarded_management_group) : [data.azurerm_management_group.root_management_group[0]]) : []
-  all_mg_subscription_ids = flatten([
-    for mg in local.selected_management_group : mg.all_subscription_ids
-  ])
-}
+
 
 data "azurerm_subscription" "onboarded_subscriptions" {
   for_each        = var.is_organizational && length(local.all_mg_subscription_ids) > 0 ? toset(local.all_mg_subscription_ids) : toset([])
   subscription_id = each.value
 }
 
-locals { 
+locals {
   enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
 }
 
 #---------------------------------------------------------------------------------------------
-# Create diagnostic settings for the tenant
+# create diagnostic settings for the tenant
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
   count = var.is_organizational ? length(local.enabled_subscriptions) : 0
