@@ -12,6 +12,14 @@ locals {
   [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups", m)])
 }
 
+# A random resource is used to generate unique key names.
+# This prevents conflicts when creating a CSPM role for tenant/MGs with the same name.
+resource "random_string" "random" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 #---------------------------------------------------------------------------------------------
 # Assign "Reader" role to Sysdig SP for customer tenant
 #---------------------------------------------------------------------------------------------
@@ -31,7 +39,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role_for_tenant" {
     local.check_old_management_group_ids_param ? local.management_groups : local.scopes_for_resources
   ) : []
 
-  name        = "sysdig_cspm_role_for_tenant_${each.key}"
+  name        = "sysdig_cspm_role_for_tenant_${random_string.random.result}_${each.key}"
   scope       = each.key
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 

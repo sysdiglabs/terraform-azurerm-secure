@@ -12,6 +12,13 @@ locals {
     [for m in var.management_group_ids : format("%s/%s", "/providers/Microsoft.Management/managementGroups",m)])
 }
 
+# A random resource is used to generate unique key names.
+# This prevents conflicts when creating a Workload scanning role for tenant/MGs with the same name.
+resource "random_string" "random" {
+  length  = 4
+  special = false
+  upper   = false
+}
 
 #---------------------------------------------------------------------------------------------
 # Create a custom role for accessing function app config
@@ -21,7 +28,7 @@ resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_
     local.check_old_management_group_ids_param ? local.management_groups : local.scopes_for_resources
   ) : []
 
-  name        = "sysdig-vm-workload-scanning-function-app-reader-role-for-tenant-${each.key}"
+  name        = "sysdig-vm-workload-scanning-function-app-reader-role-for-tenant-${random_string.random.result}-${each.key}"
   scope       = each.key
   description = "Custom role for reading function app configuration"
   permissions {
