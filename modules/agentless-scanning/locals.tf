@@ -11,7 +11,7 @@ locals {
   check_old_management_group_ids_param = var.is_organizational && length(var.management_group_ids) > 0
 
   # legacy mode: use management_group_ids if provided
-  selected_management_group = var.is_organizational ? (length(data.azurerm_management_group.management_groups) > 0 ? values(data.azurerm_management_group.management_groups) : [data.azurerm_management_group.root_management_group[0]]) : []
+  selected_management_group = var.is_organizational && local.check_old_management_group_ids_param ? (length(data.azurerm_management_group.management_groups) > 0 ? values(data.azurerm_management_group.management_groups) : [data.azurerm_management_group.root_management_group[0]]) : []
 
   # legacy mode: get all subscriptions from selected management groups
   legacy_all_mg_subscription_ids = flatten([
