@@ -85,6 +85,12 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   principal_id       = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
+# add some timing
+resource "time_sleep" "wait_for_apply_permissions" {
+  depends_on = [azurerm_role_assignment.sysdig_cspm_role_assignment]
+  create_duration = "30s"
+}
+
 #--------------------------------------------------------------------------------------------------------------
 # Call Sysdig Backend to add the service-principal integration for Config Posture to the Sysdig Cloud Account
 #
@@ -107,4 +113,5 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
+  depends_on = [time_sleep.wait_for_apply_permissions]
 }
