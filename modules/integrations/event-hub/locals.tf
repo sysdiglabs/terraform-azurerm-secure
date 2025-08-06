@@ -48,12 +48,13 @@ locals {
     )
   ) : []
 
-  # combine all subscription ids based on mode
-  all_mg_subscription_ids = concat(
+  # combine all subscription ids based on mode and add var.subscription_id if not already present
+  all_mg_subscription_ids = distinct(concat(
     local.legacy_all_mg_subscription_ids,
     local.new_all_subscription_ids,
-    local.default_all_mg_subscription_ids
-  )
+    local.default_all_mg_subscription_ids,
+    [var.subscription_id]
+  ))
 }
 
 check "validate_org_configuration_params" {
