@@ -17,3 +17,24 @@ output "management_group_ids" {
   value       = var.management_group_ids
   description = "List of Azure Management Group IDs on which secure-for-cloud is deployed"
 }
+
+output "include_management_groups" {
+  description = "management_groups to include for organization"
+  value       = var.include_management_groups
+}
+
+output "exclude_management_groups" {
+  description = "management_groups to exclude for organization"
+  value       = var.exclude_management_groups
+}
+
+output "include_subscriptions" {
+  description = "subscriptions to include for organization"
+  value       = var.include_subscriptions
+}
+
+output "exclude_subscriptions" {
+  description = "subscriptions to exclude for organization"
+  value       = var.exclude_subscriptions
+}
+

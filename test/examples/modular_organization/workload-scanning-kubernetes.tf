@@ -18,6 +18,11 @@ module "vm-workload-scanning" {
   # Optional: pre-existing SP pointing to Sysdig VM Workload Scanning Application ID
   # vm_workload_scanning_service_principal = "vm-workload-scanning-service-principal-id"
 
+  # Include/Exclude specific parameters from onboarding module
+  include_management_groups = module.onboarding.include_management_groups
+  exclude_management_groups = module.onboarding.exclude_management_groups
+  include_subscriptions = module.onboarding.include_subscriptions
+  exclude_subscriptions = module.onboarding.exclude_subscriptions
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "vm-workload-scanning-kubernetes" {

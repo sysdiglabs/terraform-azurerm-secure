@@ -6,7 +6,7 @@ data "azurerm_subscription" "primary" {
 }
 
 data "sysdig_secure_trusted_azure_app" "config_posture" {
-	name = "config_posture"
+  name = "config_posture"
 }
 
 locals {
@@ -44,7 +44,7 @@ resource "azuread_service_principal" "sysdig_cspm_sp" {
 #---------------------------------------------------------------------------------------------
 
 resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
-  count        = var.config_posture_service_principal != "" ? 0 : 1
+  count               = var.config_posture_service_principal != "" ? 0 : 1
   role_id             = "88d8e3e3-8f55-4a1e-953a-9b9898b8876b" // template ID of Directory Reader AD role
   principal_object_id = azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
@@ -85,6 +85,12 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
   principal_id       = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
+# add some timing
+resource "time_sleep" "wait_for_apply_permissions" {
+  depends_on = [azurerm_role_assignment.sysdig_cspm_role_assignment]
+  create_duration = "30s"
+}
+
 #--------------------------------------------------------------------------------------------------------------
 # Call Sysdig Backend to add the service-principal integration for Config Posture to the Sysdig Cloud Account
 #
@@ -92,9 +98,9 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
 # explicit dependency using depends_on
 #--------------------------------------------------------------------------------------------------------------
 resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" {
-  account_id                 = var.sysdig_secure_account_id
-  type                       = "COMPONENT_SERVICE_PRINCIPAL"
-  instance                   = "secure-posture"
+  account_id = var.sysdig_secure_account_id
+  type       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance   = "secure-posture"
   service_principal_metadata = jsonencode({
     azure = {
       active_directory_service_principal = {
@@ -107,4 +113,5 @@ resource "sysdig_secure_cloud_auth_account_component" "azure_service_principal" 
       }
     }
   })
+  depends_on = [time_sleep.wait_for_apply_permissions]
 }

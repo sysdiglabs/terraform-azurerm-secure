@@ -1,20 +1,20 @@
 variable "sysdig_authorization_id" {
-  type = string
+  type        = string
   description = "Identifier of Authorization Rule for the Sysdig Namespace"
 }
 
 variable "event_hub_name" {
-  type = string
+  type        = string
   description = "Event Hub integration created for Sysdig Log Ingestion"
 }
 
 variable "diagnostic_settings" {
-  type = map(list(string))
+  type        = map(list(string))
   description = "Map of resource IDs to the list of logs to enable"
-  default = {}
+  default     = {}
 }
 
 variable "deployment_identifier" {
-  type = string
+  type        = string
   description = "Identifier of Deployment that gets added to provisioned resources"
 }

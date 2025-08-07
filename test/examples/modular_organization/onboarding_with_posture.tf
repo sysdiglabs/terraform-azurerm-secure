@@ -31,6 +31,15 @@ module "onboarding" {
 
   # Optional: pre-existing SP pointing to Sysdig Onboarding App ID
   onboarding_service_principal = "onboarding-service-principal-id"
+
+  # Include/Exclude specific parameters
+  include_management_groups = []
+  exclude_management_groups = []
+  include_subscriptions = []
+  exclude_subscriptions = []
+
+  # optionally pass automatic onboarding for orgs (defaults to false)
+  enable_automatic_onboarding = false
 }
 
 module "config-posture" {
@@ -42,6 +51,12 @@ module "config-posture" {
 
   # Optional: pre-existing SP pointing to Sysdig CSPM App ID
   # config_posture_service_principal = "config-posture-service-principal-id"
+
+  # Include/Exclude specific parameters from onboarding module
+  include_management_groups = module.onboarding.include_management_groups
+  exclude_management_groups = module.onboarding.exclude_management_groups
+  include_subscriptions = module.onboarding.include_subscriptions
+  exclude_subscriptions = module.onboarding.exclude_subscriptions
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
