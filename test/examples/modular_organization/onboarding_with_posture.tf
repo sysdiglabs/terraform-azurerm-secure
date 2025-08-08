@@ -27,7 +27,6 @@ module "onboarding" {
   subscription_id      = "test-subscription"
   tenant_id            = "test-tenant"
   is_organizational    = true
-  management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 
   # Optional: pre-existing SP pointing to Sysdig Onboarding App ID
   onboarding_service_principal = "onboarding-service-principal-id"
