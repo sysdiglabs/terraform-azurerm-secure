@@ -42,6 +42,6 @@ jobs:
           job_name: "qa/QA-secure/onboarding/terraform-azurerm-secure-onboarding-tests/"
           job_params: |
             {
-              "MODULE_BRANCH": "${{ github.head_ref }}",
+              "MODULE_BRANCH": "${{ github.head_ref }}"
             }
           job_timeout: "5400"
