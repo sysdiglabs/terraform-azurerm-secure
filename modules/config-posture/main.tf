@@ -58,11 +58,19 @@ resource "azurerm_role_assignment" "sysdig_reader" {
   principal_id         = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
+# A random resource is used to generate unique key names.
+# This prevents conflicts when creating a CSPM role for Mgmt Subscription with the same name.
+resource "random_string" "random" {
+  length  = 4
+  special = false
+  upper   = false
+}
+
 #---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
-  name        = "sysdig-cspm-role-${var.subscription_id}"
+  name        = "sysdig-cspm-role-${var.subscription_id}-${random_string.random.result}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 

@@ -59,3 +59,9 @@ variable "enable_automatic_onboarding" {
   default     = false
   description = "true/false whether Sysdig should automatically discover latest set of accounts in onboarded organization or not"
 }
+
+variable "use_existing_role_assignments" {
+  description = "(Optional) set this to true when onboarding_service_principal is set and roles are already assigned to SP."
+  type        = bool
+  default     = false
+}
