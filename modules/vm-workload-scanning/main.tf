@@ -1,7 +1,7 @@
 module "aks_discovery" {
   count = var.aks_enabled ? 1 : 0
 
-  source = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning/aks-discovery"
+  source = "../../modules/vm-workload-scanning/aks-discovery"
 
   sysdig_secure_account_id = var.sysdig_secure_account_id
   subscription_id          = var.subscription_id
