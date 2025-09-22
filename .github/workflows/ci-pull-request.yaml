@@ -3,7 +3,7 @@ name: CI - Pull Request
 on:
   pull_request:
     branches:
-      - master
+      - main
 env:
   GO_VERSION: "^1.20"
 
@@ -41,7 +41,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Cache modules
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
