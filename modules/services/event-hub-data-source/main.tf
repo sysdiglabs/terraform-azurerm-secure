@@ -14,6 +14,7 @@ locals {
 # This prevents conflicts when recreating an Event Hub Namespace with the same name.
 # Azure caches the Event Hub name after deletion.
 # If the namespace is recreated, Azure restores the existing Event Hub, causing a Terraform apply failure.
+# tflint-ignore: terraform_required_providers
 resource "random_string" "random" {
   length  = 4
   special = false

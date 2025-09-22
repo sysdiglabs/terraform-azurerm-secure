@@ -12,6 +12,7 @@ locals {
 #---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
+# tflint-ignore: terraform_required_providers
 resource "random_string" "random1" {
   length  = 4
   special = false
