@@ -15,7 +15,7 @@ jobs:
   sanity-tests:
     if: (github.event_name == 'pull_request' && github.event.action == 'ready_for_review') ||
       (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-    runs-on: tools-runner-small
+    runs-on: tools-runner
 
     steps:
       - name: Check for skip sanity test label
