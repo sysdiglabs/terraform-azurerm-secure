@@ -2,10 +2,9 @@ name: Sanity Test Jenkins Trigger
 
 on:
   workflow_call:
-  pull_request:
-    types: [ ready_for_review ]
-  pull_request_review:
-    types: [ submitted ]
+  push:
+    branches:
+      - main
 
 concurrency:
   group: main-${{ github.ref }}
