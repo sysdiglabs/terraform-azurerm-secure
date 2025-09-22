@@ -27,7 +27,7 @@ resource "azuread_service_principal" "sysdig_sp" {
   lifecycle {
     prevent_destroy = true
   }
-  notes        = "Service Principal linked to the Sysdig Secure CNAPP"
+  notes = "Service Principal linked to the Sysdig Secure CNAPP"
 }
 
 #---------------------------------------------------------------------------------------------

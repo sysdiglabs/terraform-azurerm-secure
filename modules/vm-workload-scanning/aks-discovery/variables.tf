@@ -26,7 +26,7 @@ variable "management_group_ids" {
 
 variable "sysdig_cspm_sp_object_id" {
   description = "Object ID of the CSPM SP within the client's infra"
-  type = string
+  type        = string
 }
 
 variable "include_management_groups" {
