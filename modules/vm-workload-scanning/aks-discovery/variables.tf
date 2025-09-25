@@ -1,3 +1,4 @@
+# tflint-ignore: terraform_unused_declarations
 variable "sysdig_secure_account_id" {
   type        = string
   description = "ID of the Sysdig Cloud Account to enable Config Posture for (incase of organization, ID of the Sysdig management account)"
@@ -26,7 +27,7 @@ variable "management_group_ids" {
 
 variable "sysdig_cspm_sp_object_id" {
   description = "Object ID of the CSPM SP within the client's infra"
-  type = string
+  type        = string
 }
 
 variable "include_management_groups" {

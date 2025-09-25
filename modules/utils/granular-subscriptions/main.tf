@@ -1,7 +1,9 @@
+# tflint-ignore: terraform_required_version
 #---------------------------------------------------------------------------------------------
 # Fetch management groups and discover their child management groups and subscriptions
 #---------------------------------------------------------------------------------------------
 # Get management group details for each provided management group ID
+# tflint-ignore: terraform_required_providers
 data "azurerm_management_group" "mg" {
   for_each = toset(var.management_group_ids)
   name     = each.value

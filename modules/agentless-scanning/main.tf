@@ -1,6 +1,7 @@
 #---------------------------------------------------------------------------------------------
 # Fetch the subscription data
 #---------------------------------------------------------------------------------------------
+#tflint-ignore: terraform_unused_declarations
 data "azurerm_subscription" "primary" {
   subscription_id = var.subscription_id
 }
