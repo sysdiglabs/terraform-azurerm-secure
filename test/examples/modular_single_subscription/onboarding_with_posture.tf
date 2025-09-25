@@ -1,13 +1,16 @@
+# tflint-ignore: terraform_required_providers
 provider "azurerm" {
   features { }
   subscription_id = "test-subscription"
   tenant_id       = "test-tenant"
 }
 
+# tflint-ignore: terraform_required_providers
 provider "azuread" {
   tenant_id       = "test-tenant"
 }
 
+# tflint-ignore: terraform_required_version
 terraform {
   required_providers {
     sysdig = {

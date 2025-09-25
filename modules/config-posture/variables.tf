@@ -60,3 +60,9 @@ variable "exclude_subscriptions" {
   type        = set(string)
   default     = []
 }
+
+variable "use_existing_role_assignments" {
+  description = "(Optional) set this to true when config_posture_service_principal is set and roles are already assigned to SP."
+  type        = bool
+  default     = false
+}

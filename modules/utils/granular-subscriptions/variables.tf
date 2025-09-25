@@ -8,7 +8,7 @@ variable "exclude_management_groups" {
   type        = set(string)
   default     = []
 }
-
+# tflint-ignore: terraform_unused_declarations
 variable "include_subscriptions" {
   description = "List of subscription ids to include for organization in the format '<subscription_id>'"
   type        = set(string)
