@@ -30,7 +30,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
   lifecycle {
     prevent_destroy = true
   }
-  notes        = "Service Principal linked to the Sysdig Secure CNAPP"
+  notes = "Service Principal linked to the Sysdig Secure CNAPP"
 }
 
 #---------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ resource "azuread_service_principal" "sysdig_service_principal" {
 #---------------------------------------------------------------------------------------------
 data "azurerm_resource_group" "existing" {
   count = var.resource_group != null ? 1 : 0
-  name = var.resource_group
+  name  = var.resource_group
 }
 
 #---------------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ resource "azurerm_role_assignment" "sysdig_data_receiver" {
 # Create diagnostic settings for the subscription
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_diagnostic_setting" {
-  count = var.is_organizational ? 0 : 1 
+  count = var.is_organizational ? 0 : 1
 
   name                           = "${var.diagnostic_settings_name}-${local.subscription_hash}"
   target_resource_id             = data.azurerm_subscription.sysdig_subscription.id

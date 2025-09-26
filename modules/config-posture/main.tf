@@ -87,7 +87,7 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
 
 # add some timing
 resource "time_sleep" "wait_for_apply_permissions" {
-  depends_on = [azurerm_role_assignment.sysdig_cspm_role_assignment]
+  depends_on      = [azurerm_role_assignment.sysdig_cspm_role_assignment]
   create_duration = "30s"
 }
 
