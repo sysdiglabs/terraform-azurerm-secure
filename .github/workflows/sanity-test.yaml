@@ -2,10 +2,9 @@ name: Sanity Test Jenkins Trigger
 
 on:
   workflow_call:
-  pull_request:
-    types: [ ready_for_review ]
-  pull_request_review:
-    types: [ submitted ]
+  push:
+    branches:
+      - main
 
 concurrency:
   group: main-${{ github.ref }}
@@ -15,7 +14,7 @@ jobs:
   sanity-tests:
     if: (github.event_name == 'pull_request' && github.event.action == 'ready_for_review') ||
       (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-    runs-on: ubuntu-latest
+    runs-on: tools-runner
 
     steps:
       - name: Check for skip sanity test label
