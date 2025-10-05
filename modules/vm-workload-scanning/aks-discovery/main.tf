@@ -13,7 +13,7 @@ locals {
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 # tflint-ignore: terraform_required_providers
-resource "random_string" "random1" {
+resource "random_string" "random" {
   length  = 4
   special = false
   upper   = false
@@ -21,7 +21,7 @@ resource "random_string" "random1" {
 
 resource "azurerm_role_definition" "sysdig_cspm_aks_discovery_role" {
 
-  name        = "sysdig-cspm-role-aks-discovery-${var.subscription_id}-${random_string.random1.result}"
+  name        = "sysdig-cspm-role-aks-discovery-${var.subscription_id}-${random_string.random.result}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for AKS Discovery"
 

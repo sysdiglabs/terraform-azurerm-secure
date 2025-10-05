@@ -71,11 +71,6 @@ data "azurerm_role_definition" "storage_blob_reader" {
   name = "Storage Blob Data Reader"
 }
 
-resource "random_string" "random" {
-  length  = 4
-  special = false
-  upper   = false
-}
 
 resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_role" {
   count = var.functions_enabled ? 1 : 0
