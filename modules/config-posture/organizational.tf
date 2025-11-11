@@ -14,17 +14,18 @@ locals {
 
 # A random resource is used to generate unique key names.
 # This prevents conflicts when creating a CSPM role for tenant/MGs with the same name.
+# tflint-ignore: terraform_required_providers
 resource "random_string" "random" {
   length  = 4
   special = false
   upper   = false
 }
-
 #---------------------------------------------------------------------------------------------
 # Assign "Reader" role to Sysdig SP for customer tenant
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_reader_for_tenant" {
-  for_each = var.is_organizational ? (local.check_old_management_group_ids_param ? local.management_groups : local.scopes_for_resources) : []
+
+  for_each = var.is_organizational && !(var.use_existing_role_assignments && var.config_posture_service_principal != "") ? (local.check_old_management_group_ids_param ? local.management_groups : local.scopes_for_resources) : []
 
   scope                = each.key
   role_definition_name = "Reader"

@@ -14,6 +14,7 @@ locals {
 
 # A random resource is used to generate unique key names.
 # This prevents conflicts when creating a Workload scanning role for tenant/MGs with the same name.
+# tflint-ignore: terraform_required_providers
 resource "random_string" "random" {
   length  = 4
   special = false

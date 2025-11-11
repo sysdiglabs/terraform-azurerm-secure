@@ -58,11 +58,12 @@ resource "azurerm_role_assignment" "sysdig_reader" {
   principal_id         = var.config_posture_service_principal != "" ? data.azuread_service_principal.sysdig_cspm_sp[0].object_id : azuread_service_principal.sysdig_cspm_sp[0].object_id
 }
 
+
 #---------------------------------------------------------------------------------------------
 # Create a Custom role for collecting authsettings
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_cspm_role" {
-  name        = "sysdig-cspm-role-${var.subscription_id}"
+  name        = "sysdig-cspm-role-${var.subscription_id}-${random_string.random.result}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for collecting Authsettings for CIS Benchmark"
 
@@ -76,6 +77,7 @@ resource "azurerm_role_definition" "sysdig_cspm_role" {
   ]
 }
 
+
 #---------------------------------------------------------------------------------------------
 # Custom role assignment for collecting authsettings
 #---------------------------------------------------------------------------------------------
@@ -87,7 +89,7 @@ resource "azurerm_role_assignment" "sysdig_cspm_role_assignment" {
 
 # add some timing
 resource "time_sleep" "wait_for_apply_permissions" {
-  depends_on = [azurerm_role_assignment.sysdig_cspm_role_assignment]
+  depends_on      = [azurerm_role_assignment.sysdig_cspm_role_assignment]
   create_duration = "30s"
 }
 

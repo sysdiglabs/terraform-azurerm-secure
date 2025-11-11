@@ -1,7 +1,7 @@
 module "aks_discovery" {
   count = var.aks_enabled ? 1 : 0
 
-  source = "sysdiglabs/secure/azurerm//modules/vm-workload-scanning/aks-discovery"
+  source = "../../modules/vm-workload-scanning/aks-discovery"
 
   sysdig_secure_account_id = var.sysdig_secure_account_id
   subscription_id          = var.subscription_id
@@ -71,10 +71,11 @@ data "azurerm_role_definition" "storage_blob_reader" {
   name = "Storage Blob Data Reader"
 }
 
+
 resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_role" {
   count = var.functions_enabled ? 1 : 0
 
-  name        = "sysdig-vm-workload-scanning-workload-function-app-reader-role-${var.subscription_id}"
+  name        = "sysdig-vm-workload-scanning-workload-function-app-reader-role-${var.subscription_id}-${random_string.random.result}"
   scope       = data.azurerm_subscription.primary.id
   description = "Custom role for reading function app configuration"
   permissions {
