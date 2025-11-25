@@ -30,13 +30,12 @@ module "onboarding" {
   subscription_id      = "test-subscription"
   tenant_id            = "test-tenant"
   is_organizational    = true
-  management_group_ids = ["mgmt-group-id1", "mgmt-group-id2"] // if not provided, takes root management group by default
 
   # Optional: pre-existing SP pointing to Sysdig Onboarding App ID
   onboarding_service_principal = "onboarding-service-principal-id"
 
   # Include/Exclude specific parameters
-  include_management_groups = []
+  include_management_groups = ["mgmt-group-id1", "mgmt-group-id2"]
   exclude_management_groups = []
   include_subscriptions = []
   exclude_subscriptions = []
@@ -50,7 +49,6 @@ module "config-posture" {
   subscription_id          = module.onboarding.subscription_id
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
-  management_group_ids     = module.onboarding.management_group_ids
 
   # Optional: pre-existing SP pointing to Sysdig CSPM App ID
   # config_posture_service_principal = "config-posture-service-principal-id"

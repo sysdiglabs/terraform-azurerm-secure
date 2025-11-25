@@ -1,10 +1,5 @@
 data "azurerm_client_config" "current" {}
 
-data "azurerm_management_group" "onboarded_management_group" {
-  for_each = var.is_organizational && length(var.management_group_ids) > 0 ? toset(var.management_group_ids) : toset([])
-  name     = each.value
-}
-
 data "azurerm_management_group" "root_management_group" {
   count        = var.is_organizational ? 1 : 0
   display_name = "Tenant Root Group"

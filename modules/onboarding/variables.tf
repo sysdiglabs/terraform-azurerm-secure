@@ -14,16 +14,6 @@ variable "is_organizational" {
   default     = false
 }
 
-variable "management_group_ids" {
-  description = <<-EOF
-    TO BE DEPRECATED on 30th November, 2025: Please work with Sysdig to migrate to using `include_management_groups` instead.
-    When set, restrict onboarding to a set of Azure Management Groups identifiers whose child management groups and subscriptions are to be onboarded.
-    Default: onboard all management groups.
-    EOF
-  type        = set(string)
-  default     = []
-}
-
 variable "onboarding_service_principal" {
   description = "(Optional) Service Principal to be used for onboarding. If not provided, a new one will be created."
   type        = string

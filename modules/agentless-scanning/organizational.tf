@@ -7,11 +7,6 @@ data "azurerm_management_group" "root_management_group" {
   display_name = "Tenant Root Group"
 }
 
-data "azurerm_management_group" "management_groups" {
-  for_each = var.is_organizational && length(var.management_group_ids) > 0 ? var.management_group_ids : []
-  name     = each.value
-}
-
 data "azurerm_subscription" "all_subscriptions" {
   for_each        = toset(local.all_mg_subscription_ids)
   subscription_id = each.value
