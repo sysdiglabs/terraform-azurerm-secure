@@ -13,11 +13,6 @@ output "is_organizational" {
   description = "Boolean value to indicate if secure-for-cloud is deployed to an entire Azure Tenant or not"
 }
 
-output "management_group_ids" {
-  value       = var.management_group_ids
-  description = "List of Azure Management Group IDs on which secure-for-cloud is deployed"
-}
-
 output "include_management_groups" {
   description = "management_groups to include for organization"
   value       = var.include_management_groups

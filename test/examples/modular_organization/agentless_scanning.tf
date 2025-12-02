@@ -8,7 +8,6 @@ module "agentless-scanning" {
   subscription_id             = module.onboarding.subscription_id
   sysdig_secure_account_id    = module.onboarding.sysdig_secure_account_id
   is_organizational           = module.onboarding.is_organizational
-  management_group_ids        = module.onboarding.management_group_ids
 
   # Include/Exclude specific parameters from onboarding module
   include_management_groups = module.onboarding.include_management_groups

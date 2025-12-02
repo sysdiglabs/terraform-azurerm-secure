@@ -9,16 +9,6 @@ variable "is_organizational" {
   default     = false
 }
 
-variable "management_group_ids" {
-  description = <<-EOF
-    TO BE DEPRECATED on 30th November, 2025: Please work with Sysdig to migrate to using `include_management_groups` instead.
-    When set, restrict onboarding to a set of Azure Management Groups identifiers whose child management groups and subscriptions are to be onboarded.
-    Default: onboard all management groups.
-    EOF
-  type        = set(string)
-  default     = []
-}
-
 variable "sysdig_secure_account_id" {
   type        = string
   description = "ID of the Sysdig Cloud Account to enable Agentless Scanning for (incase of organization, ID of the Sysdig management account)"

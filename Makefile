@@ -16,7 +16,7 @@ deps: $(TFLINT)
 	go install github.com/hashicorp/terraform-config-inspect@latest
 
 lint: $(TFLINT)
-	$(MAKE) -C modules lint
+	$(TFLINT) --recursive --chdir=modules --config=.tflint.hcl
 
 fmt:
 	terraform fmt -check -recursive modules

@@ -6,7 +6,6 @@ module "aks_discovery" {
   sysdig_secure_account_id = var.sysdig_secure_account_id
   subscription_id          = var.subscription_id
   is_organizational        = var.is_organizational
-  management_group_ids     = var.management_group_ids
 
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
 
