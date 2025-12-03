@@ -19,7 +19,7 @@ resource "random_string" "random" {
 # Create a custom role for accessing function app config
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_role_for_tenant" {
-  for_each = var.is_organizational && var.functions_enabled ? local.scopes_for_resources : []
+  for_each = var.is_organizational && var.functions_enabled ? toset(local.scopes_for_resources) : []
 
   name        = "sysdig-vm-workload-scanning-function-app-reader-role-for-tenant-${random_string.random.result}-${each.key}"
   scope       = each.key
@@ -37,7 +37,7 @@ resource "azurerm_role_definition" "sysdig_vm_workload_scanning_func_app_config_
 # Assign "AcrPull" role to Sysdig Onboarding SP for customer tenant, for retrieving inventory
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_for_tenant" {
-  for_each = var.is_organizational ? local.scopes_for_resources : []
+  for_each = var.is_organizational ? toset(local.scopes_for_resources) : []
 
   scope                = each.key
   role_definition_name = "AcrPull"
@@ -48,7 +48,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_acrpull_for_tena
 # Custom role assignment for accessing function app config
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_role_assignment_for_tenant" {
-  for_each = var.is_organizational && var.functions_enabled ? local.scopes_for_resources : []
+  for_each = var.is_organizational && var.functions_enabled ? toset(local.scopes_for_resources) : []
 
   scope              = each.key
   role_definition_id = azurerm_role_definition.sysdig_vm_workload_scanning_func_app_config_role_for_tenant[each.key].role_definition_resource_id
@@ -60,7 +60,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_func_app_config_
 # Storage File Data Privileged Reader
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role_assignment_for_tenant" {
-  for_each = var.is_organizational && var.functions_enabled ? local.scopes_for_resources : []
+  for_each = var.is_organizational && var.functions_enabled ? toset(local.scopes_for_resources) : []
 
   scope              = each.key
   role_definition_id = data.azurerm_role_definition.storage_file_reader[0].role_definition_id
@@ -72,7 +72,7 @@ resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_file_reader_role
 # Storage Blob Data Reader
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_vm_workload_scanning_blob_reader_role_assignment_for_tenant" {
-  for_each = var.is_organizational && var.functions_enabled ? local.scopes_for_resources : []
+  for_each = var.is_organizational && var.functions_enabled ? toset(local.scopes_for_resources) : []
 
   scope              = each.key
   role_definition_id = data.azurerm_role_definition.storage_blob_reader[0].role_definition_id

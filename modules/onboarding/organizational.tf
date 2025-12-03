@@ -10,7 +10,7 @@ data "azurerm_management_group" "root_management_group" {
 # Assign "Reader" role to Sysdig Onboarding SP for customer tenant, for retrieving inventory
 #---------------------------------------------------------------------------------------------
 resource "azurerm_role_assignment" "sysdig_onboarding_reader_for_tenant" {
-  for_each = var.is_organizational && !(var.use_existing_role_assignments && var.onboarding_service_principal != "") ? local.scopes_for_resources : []
+  for_each = var.is_organizational && !(var.use_existing_role_assignments && var.onboarding_service_principal != "") ? toset(local.scopes_for_resources) : []
 
   scope                = each.key
   role_definition_name = "Reader"
