@@ -19,7 +19,7 @@ If instrumenting an Azure Tenant, the following resources will be created:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0  |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 1.19.0 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | ~> 3.3 |
 
 ## Providers
 
