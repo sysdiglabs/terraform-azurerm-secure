@@ -55,3 +55,9 @@ variable "use_existing_role_assignments" {
   type        = bool
   default     = false
 }
+
+variable "root_management_group_display_name" {
+  type        = string
+  description = "(Optional) root management group display name only used for organizational onboarding to identify the root management group of the organization"
+  default     = "Tenant Root Group"
+}

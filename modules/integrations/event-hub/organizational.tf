@@ -2,7 +2,7 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_management_group" "root_management_group" {
   count        = var.is_organizational ? 1 : 0
-  display_name = "Tenant Root Group"
+  display_name = var.root_management_group_display_name
 }
 
 

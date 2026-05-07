@@ -3,9 +3,10 @@ module "aks_discovery" {
 
   source = "../../modules/vm-workload-scanning/aks-discovery"
 
-  sysdig_secure_account_id = var.sysdig_secure_account_id
-  subscription_id          = var.subscription_id
-  is_organizational        = var.is_organizational
+  sysdig_secure_account_id           = var.sysdig_secure_account_id
+  subscription_id                    = var.subscription_id
+  is_organizational                  = var.is_organizational
+  root_management_group_display_name = var.root_management_group_display_name
 
   sysdig_cspm_sp_object_id = var.sysdig_cspm_sp_object_id
 

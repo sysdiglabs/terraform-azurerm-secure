@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------------------------
 data "azurerm_management_group" "root_management_group" {
   count        = var.is_organizational ? 1 : 0
-  display_name = "Tenant Root Group"
+  display_name = var.root_management_group_display_name
 }
 
 # A random resource is used to generate unique key names.
