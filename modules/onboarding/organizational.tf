@@ -2,8 +2,8 @@
 # Fetch the management groups for customer tenant and onboard subscriptions under them
 #---------------------------------------------------------------------------------------------
 data "azurerm_management_group" "root_management_group" {
-  count        = var.is_organizational ? 1 : 0
-  display_name = "Tenant Root Group"
+  count = var.is_organizational ? 1 : 0
+  name  = data.azurerm_subscription.primary.tenant_id
 }
 
 #---------------------------------------------------------------------------------------------

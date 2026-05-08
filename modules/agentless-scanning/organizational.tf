@@ -3,8 +3,8 @@
 #---------------------------------------------------------------------------------------------
 # If no management group is present, then the root management group is used to onboard all the subscriptions
 data "azurerm_management_group" "root_management_group" {
-  count        = var.is_organizational ? 1 : 0
-  display_name = "Tenant Root Group"
+  count = var.is_organizational ? 1 : 0
+  name  = data.azurerm_subscription.primary.tenant_id
 }
 
 data "azurerm_subscription" "all_subscriptions" {
