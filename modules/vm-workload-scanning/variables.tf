@@ -14,12 +14,6 @@ variable "is_organizational" {
   default     = false
 }
 
-variable "root_management_group_display_name" {
-  type        = string
-  description = "(Optional) root management group display name only used for organizational onboarding to identify the root management group of the organization"
-  default     = "Tenant Root Group"
-}
-
 variable "aks_enabled" {
   description = "(Optional) Set this field to 'true' to grant AKS discovery permissions to the secure-posture service principal."
   type        = bool
