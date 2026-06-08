@@ -1,13 +1,13 @@
 # tflint-ignore: terraform_required_providers
 provider "azurerm" {
-  features { }
+  features {}
   subscription_id = "test-subscription"
   tenant_id       = "test-tenant"
 }
 
 # tflint-ignore: terraform_required_providers
 provider "azuread" {
-  tenant_id       = "test-tenant"
+  tenant_id = "test-tenant"
 }
 
 # tflint-ignore: terraform_required_version
@@ -26,9 +26,9 @@ provider "sysdig" {
 }
 
 module "onboarding" {
-  source           = "../../../modules/onboarding"
-  subscription_id  = "test-subscription"
-  tenant_id        = "test-tenant"
+  source          = "../../../modules/onboarding"
+  subscription_id = "test-subscription"
+  tenant_id       = "test-tenant"
 }
 
 module "config-posture" {
@@ -45,20 +45,9 @@ resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
   type       = "FEATURE_SECURE_CONFIG_POSTURE"
   enabled    = true
   components = [module.config-posture.service_principal_component_id]
-  depends_on = [ module.config-posture ]
+  depends_on = [module.config-posture]
 }
 
-resource "sysdig_secure_cloud_auth_account_feature" "identity_entitlement_basic" {
-  account_id = module.onboarding.sysdig_secure_account_id
-  type       = "FEATURE_SECURE_IDENTITY_ENTITLEMENT"
-  enabled    = true
-  components = [module.config-posture.service_principal_component_id]
-  depends_on = [module.config-posture, sysdig_secure_cloud_auth_account_feature.config_posture]
-  flags = {
-    "CIEM_FEATURE_MODE": "basic"
-  }
-
-  lifecycle {
-    ignore_changes = [flags, components]
-  }
-}
+# CIEM (identity_entitlement) is not supported for single-subscription onboarding.
+# Directory Readers is a tenant-level permission and is only assigned when onboarding
+# at the tenant/organizational level with CIEM explicitly enabled.

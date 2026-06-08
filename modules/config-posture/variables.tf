@@ -56,3 +56,10 @@ variable "use_existing_role_assignments" {
   type        = bool
   default     = false
 }
+
+variable "enable_ciem" {
+  description = "(Optional) Set to 'true' to enable CIEM (Cloud Identity and Entitlement Management) for tenant-level onboarding. When enabled, the Sysdig Service Principal will be assigned the Entra ID Directory Readers role, which requires the installer to have Privileged Role Administrator permissions. Has no effect when is_organizational = false."
+  type        = bool
+  default     = true
+}
+

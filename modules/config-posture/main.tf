@@ -39,12 +39,15 @@ resource "azuread_service_principal" "sysdig_cspm_sp" {
   notes        = "Service Principal linked to the Sysdig Secure CNAPP - CSPM module"
 }
 
+
 #---------------------------------------------------------------------------------------------
 # Assign "Directory Reader" AD role to Sysdig SP
+# Only assigned for tenant-level onboarding when CIEM is explicitly enabled.
+# Directory Readers is a tenant-wide Entra ID role required for CIEM identity enumeration.
+# Requires the installer to have Privileged Role Administrator permissions.
 #---------------------------------------------------------------------------------------------
-
 resource "azuread_directory_role_assignment" "sysdig_ad_reader" {
-  count               = var.config_posture_service_principal != "" ? 0 : 1
+  count               = (var.is_organizational && var.enable_ciem && var.config_posture_service_principal == "") ? 1 : 0
   role_id             = "88d8e3e3-8f55-4a1e-953a-9b9898b8876b" // template ID of Directory Reader AD role
   principal_object_id = azuread_service_principal.sysdig_cspm_sp[0].object_id
 }

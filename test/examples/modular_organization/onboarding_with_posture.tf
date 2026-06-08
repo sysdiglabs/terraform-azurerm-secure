@@ -1,13 +1,13 @@
 # tflint-ignore: terraform_required_providers
 provider "azurerm" {
-  features { }
+  features {}
   subscription_id = "test-subscription"
   tenant_id       = "test-tenant"
 }
 
 # tflint-ignore: terraform_required_providers
 provider "azuread" {
-  tenant_id       = "test-tenant"
+  tenant_id = "test-tenant"
 }
 
 # tflint-ignore: terraform_required_version
@@ -26,10 +26,10 @@ provider "sysdig" {
 }
 
 module "onboarding" {
-  source               = "../../../modules/onboarding"
-  subscription_id      = "test-subscription"
-  tenant_id            = "test-tenant"
-  is_organizational    = true
+  source            = "../../../modules/onboarding"
+  subscription_id   = "test-subscription"
+  tenant_id         = "test-tenant"
+  is_organizational = true
 
   # Optional: pre-existing SP pointing to Sysdig Onboarding App ID
   onboarding_service_principal = "onboarding-service-principal-id"
@@ -37,8 +37,8 @@ module "onboarding" {
   # Include/Exclude specific parameters
   include_management_groups = ["mgmt-group-id1", "mgmt-group-id2"]
   exclude_management_groups = []
-  include_subscriptions = []
-  exclude_subscriptions = []
+  include_subscriptions     = []
+  exclude_subscriptions     = []
 
   # optionally pass automatic onboarding for orgs (defaults to false)
   enable_automatic_onboarding = false
@@ -49,6 +49,7 @@ module "config-posture" {
   subscription_id          = module.onboarding.subscription_id
   sysdig_secure_account_id = module.onboarding.sysdig_secure_account_id
   is_organizational        = module.onboarding.is_organizational
+  enable_ciem              = true
 
   # Optional: pre-existing SP pointing to Sysdig CSPM App ID
   # config_posture_service_principal = "config-posture-service-principal-id"
@@ -56,8 +57,8 @@ module "config-posture" {
   # Include/Exclude specific parameters from onboarding module
   include_management_groups = module.onboarding.include_management_groups
   exclude_management_groups = module.onboarding.exclude_management_groups
-  include_subscriptions = module.onboarding.include_subscriptions
-  exclude_subscriptions = module.onboarding.exclude_subscriptions
+  include_subscriptions     = module.onboarding.include_subscriptions
+  exclude_subscriptions     = module.onboarding.exclude_subscriptions
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
@@ -65,7 +66,7 @@ resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
   type       = "FEATURE_SECURE_CONFIG_POSTURE"
   enabled    = true
   components = [module.config-posture.service_principal_component_id]
-  depends_on = [ module.config-posture ]
+  depends_on = [module.config-posture]
 }
 
 resource "sysdig_secure_cloud_auth_account_feature" "identity_entitlement_basic" {
@@ -75,7 +76,7 @@ resource "sysdig_secure_cloud_auth_account_feature" "identity_entitlement_basic"
   components = [module.config-posture.service_principal_component_id]
   depends_on = [module.config-posture, sysdig_secure_cloud_auth_account_feature.config_posture]
   flags = {
-    "CIEM_FEATURE_MODE": "basic"
+    "CIEM_FEATURE_MODE" : "basic"
   }
 
   lifecycle {
