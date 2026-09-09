@@ -23,19 +23,17 @@ data "azurerm_subscription" "onboarded_subscriptions" {
 }
 
 locals {
-  enabled_subscriptions = var.is_organizational ? {
-    for k, s in data.azurerm_subscription.onboarded_subscriptions : k => s if s.state == "Enabled"
-  } : {}
+  enabled_subscriptions = var.is_organizational ? [for s in data.azurerm_subscription.onboarded_subscriptions : s if s.state == "Enabled"] : []
 }
 
 #---------------------------------------------------------------------------------------------
 # Create diagnostic settings for the tenant
 #---------------------------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "sysdig_org_diagnostic_setting" {
-  for_each = local.enabled_subscriptions
+  count = var.is_organizational ? length(local.enabled_subscriptions) : 0
 
   name                           = "${var.diagnostic_settings_name}-${local.subscription_hash}"
-  target_resource_id             = each.value.id
+  target_resource_id             = local.enabled_subscriptions[count.index].id
   eventhub_authorization_rule_id = azurerm_eventhub_namespace_authorization_rule.sysdig_rule.id
   eventhub_name                  = azurerm_eventhub.sysdig_event_hub.name
 
