@@ -23,6 +23,8 @@ terraform {
 provider "sysdig" {
   sysdig_secure_url       = "https://secure-staging.sysdig.com"
   sysdig_secure_api_token = "<client_secret>"
+  # default; set to true for large organizations, whose create outlasts the API timeout
+  sysdig_secure_org_api_async = false
 }
 
 module "onboarding" {
