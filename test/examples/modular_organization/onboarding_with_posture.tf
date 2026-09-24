@@ -15,7 +15,7 @@ terraform {
   required_providers {
     sysdig = {
       source  = "sysdiglabs/sysdig"
-      version = "~> 3.3"
+      version = "~> 3.11"
     }
   }
 }
@@ -23,6 +23,8 @@ terraform {
 provider "sysdig" {
   sysdig_secure_url       = "https://secure-staging.sysdig.com"
   sysdig_secure_api_token = "<client_secret>"
+  # default; set to true for large organizations, whose create outlasts the API timeout
+  sysdig_secure_org_api_async = false
 }
 
 module "onboarding" {
