@@ -46,6 +46,10 @@ resource "sysdig_secure_cloud_auth_account_feature" "config_posture" {
   enabled    = true
   components = [module.config-posture.service_principal_component_id]
   depends_on = [module.config-posture]
+
+  lifecycle {
+    ignore_changes = [flags]
+  }
 }
 
 # CIEM (identity_entitlement) is not supported for single-subscription onboarding.
