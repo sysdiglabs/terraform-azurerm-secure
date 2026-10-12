@@ -49,24 +49,6 @@ resource "sysdig_secure_cloud_auth_account" "azure_account" {
   provider_alias     = data.azurerm_subscription.primary.display_name
   provider_tenant_id = var.tenant_id
 
-  component {
-    type     = "COMPONENT_SERVICE_PRINCIPAL"
-    instance = "secure-onboarding"
-    version  = "v0.1.0"
-    service_principal_metadata = jsonencode({
-      azure = {
-        active_directory_service_principal = {
-          account_enabled           = true
-          display_name              = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].display_name : azuread_service_principal.sysdig_onboarding_sp[0].display_name
-          id                        = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].object_id : azuread_service_principal.sysdig_onboarding_sp[0].object_id
-          app_display_name          = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].display_name : azuread_service_principal.sysdig_onboarding_sp[0].display_name
-          app_id                    = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].client_id : azuread_service_principal.sysdig_onboarding_sp[0].client_id
-          app_owner_organization_id = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].application_tenant_id : azuread_service_principal.sysdig_onboarding_sp[0].application_tenant_id
-        }
-      }
-    })
-  }
-
   depends_on = [azurerm_role_assignment.sysdig_onboarding_reader]
 
   lifecycle {
@@ -75,4 +57,27 @@ resource "sysdig_secure_cloud_auth_account" "azure_account" {
       feature
     ]
   }
+}
+
+#--------------------------------------------------------------------------------------------------------------
+# Call Sysdig Backend to add the service-principal integration for Onboarding to the Sysdig Cloud Account
+# (kept apart from the account, whose component and feature are ignored, so a new onboarding SP reaches it)
+#--------------------------------------------------------------------------------------------------------------
+resource "sysdig_secure_cloud_auth_account_component" "onboarding_service_principal" {
+  account_id = sysdig_secure_cloud_auth_account.azure_account.id
+  type       = "COMPONENT_SERVICE_PRINCIPAL"
+  instance   = "secure-onboarding"
+  version    = "v0.1.0"
+  service_principal_metadata = jsonencode({
+    azure = {
+      active_directory_service_principal = {
+        account_enabled           = true
+        display_name              = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].display_name : azuread_service_principal.sysdig_onboarding_sp[0].display_name
+        id                        = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].object_id : azuread_service_principal.sysdig_onboarding_sp[0].object_id
+        app_display_name          = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].display_name : azuread_service_principal.sysdig_onboarding_sp[0].display_name
+        app_id                    = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].client_id : azuread_service_principal.sysdig_onboarding_sp[0].client_id
+        app_owner_organization_id = var.onboarding_service_principal != "" ? data.azuread_service_principal.sysdig_onboarding_sp[0].application_tenant_id : azuread_service_principal.sysdig_onboarding_sp[0].application_tenant_id
+      }
+    }
+  })
 }
