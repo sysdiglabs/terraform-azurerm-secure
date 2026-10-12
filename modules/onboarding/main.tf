@@ -59,6 +59,15 @@ resource "sysdig_secure_cloud_auth_account" "azure_account" {
   }
 }
 
+# upserting the component starts an org scrape, so the SP must hold Reader first; re-runs when the SP changes
+resource "time_sleep" "wait_for_onboarding_reader" {
+  triggers = {
+    principal_id = azurerm_role_assignment.sysdig_onboarding_reader.principal_id
+  }
+  depends_on      = [azurerm_role_assignment.sysdig_onboarding_reader, azurerm_role_assignment.sysdig_onboarding_reader_for_tenant]
+  create_duration = "30s"
+}
+
 #--------------------------------------------------------------------------------------------------------------
 # Call Sysdig Backend to add the service-principal integration for Onboarding to the Sysdig Cloud Account
 # (kept apart from the account, whose component and feature are ignored, so a new onboarding SP reaches it)
@@ -80,4 +89,5 @@ resource "sysdig_secure_cloud_auth_account_component" "onboarding_service_princi
       }
     }
   })
+  depends_on = [time_sleep.wait_for_onboarding_reader]
 }
