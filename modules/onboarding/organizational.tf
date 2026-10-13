@@ -31,7 +31,7 @@ resource "sysdig_secure_organization" "azure_organization" {
   included_cloud_accounts        = var.include_subscriptions
   excluded_cloud_accounts        = var.exclude_subscriptions
   automatic_onboarding           = var.enable_automatic_onboarding
-  depends_on                     = [azurerm_role_assignment.sysdig_onboarding_reader_for_tenant]
+  depends_on                     = [azurerm_role_assignment.sysdig_onboarding_reader_for_tenant, sysdig_secure_cloud_auth_account_component.onboarding_service_principal]
 
   lifecycle {
     ignore_changes = [automatic_onboarding]

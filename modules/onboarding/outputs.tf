@@ -6,6 +6,8 @@ output "subscription_id" {
 output "sysdig_secure_account_id" {
   value       = sysdig_secure_cloud_auth_account.azure_account.id
   description = "ID of the Sysdig Cloud Account created"
+  # dependent modules need the onboarding component on the account
+  depends_on = [sysdig_secure_cloud_auth_account_component.onboarding_service_principal]
 }
 
 output "is_organizational" {

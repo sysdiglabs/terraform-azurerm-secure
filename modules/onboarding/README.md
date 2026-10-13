@@ -41,7 +41,8 @@ Note:
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.76.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.43.0 |
-| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | ~> 3.3 |
+| <a name="requirement_sysdig"></a> [sysdig](#requirement\_sysdig) | >= 3.11.2, < 4.0.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | 0.13.1 |
 
 ## Providers
 
@@ -61,7 +62,9 @@ No modules.
 | [azurerm_role_assignment.sysdig_onboarding_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.sysdig_onboarding_reader_for_tenant](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [sysdig_secure_cloud_auth_account.azure_account](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/resources/secure_cloud_auth_account) | resource |
+| [sysdig_secure_cloud_auth_account_component.onboarding_service_principal](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/resources/secure_cloud_auth_account_component) | resource |
 | [sysdig_secure_organization.azure_organization](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/resources/secure_organization) | resource |
+| [time_sleep.wait_for_onboarding_reader](https://registry.terraform.io/providers/hashicorp/time/0.13.1/docs/resources/sleep) | resource |
 | [azurerm_subscription.primary](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [sysdig_secure_trusted_azure_app.onboarding](https://registry.terraform.io/providers/sysdiglabs/sysdig/latest/docs/data-sources/secure_trusted_azure_app) | data source |
 | [azurerm_management_group.root_management_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
